@@ -4,21 +4,22 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
-import router from './router/router.js';
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+window.Vue = require("vue");
+import router from "./router/router.js";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
 
-Vue.use(Vuetify)
+Vue.prototype.$eventBus = new Vue();
+Vue.use(Vuetify);
 
 const opts = {
-    theme: { dark: true },
-    icons:{
-        iconfont:'mdi',
-    },
-}
+  theme: { dark: true },
+  icons: {
+    iconfont: "mdi"
+  }
+};
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,8 +28,16 @@ const opts = {
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const files = require.context("./", true, /\.vue$/i);
+files.keys().map(key =>
+  Vue.component(
+    key
+      .split("/")
+      .pop()
+      .split(".")[0],
+    files(key).default
+  )
+);
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // acVue.component('App', require('./App.vue').default);
@@ -40,10 +49,10 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  */
 
 const app = new Vue({
-    el: '#app',
-    router,
-    vuetify:new Vuetify(opts),
-    props: {
-        source: String,
-    },
+  el: "#app",
+  router,
+  vuetify: new Vuetify(opts),
+  props: {
+    source: String
+  }
 });
