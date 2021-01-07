@@ -18,7 +18,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('username', $request->username)->first();
-        return dd($user);
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'username' => ['Akun atau Password anda salah.'],
@@ -26,5 +26,11 @@ class AuthController extends Controller
         }
 
         return $user->createToken($request->device_name)->plainTextToken;
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return response()->json(['msg' => 'Logout Success']);
     }
 }

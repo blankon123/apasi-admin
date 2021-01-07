@@ -2,49 +2,72 @@
   <div id="app">
     <v-app id="inspire">
       <v-app id="inspire">
-        
-        <v-navigation-drawer
-          v-model="drawer"
-          app
-        >
+        <v-navigation-drawer v-model="drawer" app>
+          <v-divider></v-divider>
+
+          <v-list-item two-line>
+            <v-list-item-avatar>
+              <img v-bind:src="linkFoto" />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>{{
+                currentUser.nama_bidang
+              }}</v-list-item-title>
+              <v-list-item-subtitle>{{
+                currentUser.role
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
           <v-list dense>
-            <v-list-item link to="/dashboard">
+            <v-list-item
+              v-for="item in items"
+              :key="item.title"
+              link
+              :to="item.link"
+            >
               <v-list-item-action>
-                <v-icon>mdi-home</v-icon>
+                <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Dashboard</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item link to="/account">
-              <v-list-item-action>
-                <v-icon>mdi-email</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>Account</v-list-item-title>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
+
+          <template v-slot:append>
+            <div class="pa-2">
+              <v-list>
+                <v-list-item link @click="logout">
+                  <v-list-item-icon>
+                    <v-icon>mdi-logout</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>Logout</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </div>
+          </template>
         </v-navigation-drawer>
-    
-        <v-app-bar
-          app
-          color="indigo"
-          dark
-        >
-          <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-          <v-toolbar-title>Application</v-toolbar-title>
-        </v-app-bar>
-    
-        <v-main>
-          <v-container
-            class="fill-height"
-            fluid
+
+        <v-app-bar app color="blue" dark>
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+          <v-toolbar-title
+            ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
+            Diseminasi</v-toolbar-title
           >
-            <v-row
-              align="center"
-              justify="center"
-            >
+        </v-app-bar>
+
+        <v-main>
+          <v-container class="fill-height" fluid>
+            <v-row align="center" justify="center">
               <v-col class="text-center">
                 <router-view class="main-view" name="MainView"></router-view>
               </v-col>
@@ -52,22 +75,68 @@
           </v-container>
         </v-main>
 
-        <v-footer
-          color="indigo"
-          app
-        >
-          <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
+        <v-footer color="blue" app>
+          <v-row align="center" justify="center">
+            <v-col class="text-center">
+              <span
+                ><span> {{ thisYear }} </span> © Made by
+                <a
+                  href="https://github.com/blankon123/"
+                  style="text-decoration: none;color: rgb(233 255 48)"
+                >
+                  blankon123
+                </a>
+                with 👶</span
+              >
+            </v-col>
+          </v-row>
         </v-footer>
-
       </v-app>
     </v-app>
   </div>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      drawer: null,
-    }),
+export default {
+  data: () => ({
+    items: [
+      { title: "Dashboard", icon: "mdi-view-dashboard", link: "/dashboard" },
+      { title: "Publikasi", icon: "mdi-book-open-variant", link: "/publikasi" },
+      { title: "Tabel", icon: "mdi-table", link: "/tabel" },
+      { title: "Akun", icon: "mdi-account", link: "/account" }
+    ],
+    drawer: true,
+    currentUser: {},
+    token: localStorage.getItem("token"),
+    linkFoto: "",
+    thisYear: new Date().getFullYear()
+  }),
+  methods: {
+    getUser() {
+      axios
+        .get("/api/v1/user")
+        .then(response => {
+          this.currentUser = response.data;
+          this.linkFoto =
+            "https://ui-avatars.com/api/?name=" +
+            this.currentUser.nama_bidang +
+            "&rounded=true";
+        })
+        .catch(error => console.log(error));
+    },
+    logout() {
+      axios
+        .post("/api/v1/logout")
+        .then(response => {
+          localStorage.removeItem("token");
+          this.$router.push("/login");
+        })
+        .catch(error => console.log(error));
+    }
+  },
+  created() {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+    this.getUser();
   }
+};
 </script>
