@@ -74,28 +74,32 @@ const router = new VueRouter({
 });
 
 function loggedIn() {
-  return localStorage.getItem("token");
+  return axios.get("api/v1/user");
 }
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!loggedIn()) {
-      next({
-        path: "/login",
-        query: { redirect: to.fullPath }
+    loggedIn()
+      .then(() => {
+        next();
+      })
+      .catch(() => {
+        next({
+          path: "/login",
+          query: { redirect: to.fullPath }
+        });
       });
-    } else {
-      next();
-    }
   } else if (to.matched.some(record => record.meta.guest)) {
-    if (loggedIn()) {
-      next({
-        path: "/dashboard",
-        query: { redirect: to.fullPath }
+    loggedIn()
+      .then(() => {
+        next({
+          path: "/dashboard",
+          query: { redirect: to.fullPath }
+        });
+      })
+      .catch(() => {
+        next();
       });
-    } else {
-      next();
-    } // make sure to always call next()!
   } else {
     next(); // make sure to always call next()!
   }

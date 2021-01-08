@@ -20,9 +20,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/user', function (Request $request) {
             return $request->user();
         });
-
-        Route::post('/logout', [AuthController::class, 'logout']);
     });
-
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/login', [AuthController::class, 'login']);
 });
