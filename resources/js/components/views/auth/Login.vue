@@ -64,8 +64,7 @@ export default {
       isLoading: false,
       form: {
         username: "",
-        password: "",
-        device_name: "browser"
+        password: ""
       },
       errors: {}
     };
@@ -73,18 +72,20 @@ export default {
   methods: {
     doLogin() {
       this.isLoading = "white";
-      axios
-        .post("api/v1/login", this.form)
-        .then(response => {
-          localStorage.setItem("token", response.data);
-          this.$router.push("/dashboard");
-        })
-        .catch(errors => {
-          this.errors = errors.response.data.errors;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      axios.get("/sanctum/csrf-cookie").then(response => {
+        axios
+          .post("/api/v1/login", this.form)
+          .then(response => {
+            this.$router.push("/dashboard");
+          })
+          .catch(errors => {
+            console.log(errors);
+            this.errors = errors.response.data.errors;
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      });
     }
   }
 };

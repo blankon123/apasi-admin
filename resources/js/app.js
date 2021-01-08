@@ -7,12 +7,13 @@
 require("./bootstrap");
 
 window.Vue = require("vue");
-import router from "./router/router.js";
-import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css";
 
-Vue.prototype.$eventBus = new Vue();
+import router from "./router/router.js";
+import Vuetify from "vuetify/lib";
+import "@mdi/font/css/materialdesignicons.css";
+
 Vue.use(Vuetify);
+Vue.prototype.$eventBus = new Vue();
 
 const opts = {
   theme: { dark: true },
@@ -20,6 +21,7 @@ const opts = {
     iconfont: "mdi"
   }
 };
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -48,7 +50,7 @@ files.keys().map(key =>
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
+let app = new Vue({
   el: "#app",
   router,
   vuetify: new Vuetify(opts),

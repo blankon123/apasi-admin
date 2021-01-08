@@ -1,97 +1,105 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-app id="inspire">
-        <v-navigation-drawer v-model="drawer" app>
-          <v-divider></v-divider>
+      <v-navigation-drawer v-model="drawer" permanent expand-on-hover>
+        <v-divider></v-divider>
 
-          <v-list-item two-line>
-            <v-list-item-avatar>
-              <img v-bind:src="linkFoto" />
-            </v-list-item-avatar>
+        <v-list-item two-line>
+          <v-list-item-avatar>
+            <img v-bind:src="linkFoto" />
+          </v-list-item-avatar>
 
+          <v-list-item-content>
+            <v-list-item-title>{{ currentUser.nama_bidang }}</v-list-item-title>
+            <v-list-item-subtitle>{{ currentUser.role }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            link
+            :to="item.link"
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>{{
-                currentUser.nama_bidang
-              }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                currentUser.role
-              }}</v-list-item-subtitle>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+        </v-list>
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-list>
+              <v-list-item link @click="logout">
+                <v-list-item-icon>
+                  <v-icon>mdi-logout</v-icon>
+                </v-list-item-icon>
 
-          <v-divider></v-divider>
+                <v-list-item-content>
+                  <v-list-item-title>Logout</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </div>
+        </template>
+      </v-navigation-drawer>
 
-          <v-list dense>
-            <v-list-item
-              v-for="item in items"
-              :key="item.title"
-              link
-              :to="item.link"
-            >
-              <v-list-item-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+      <v-app-bar app color="blue">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title
+          ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
+          Diseminasi</v-toolbar-title
+        >
+        <v-spacer></v-spacer>
 
-          <template v-slot:append>
-            <div class="pa-2">
-              <v-list>
-                <v-list-item link @click="logout">
-                  <v-list-item-icon>
-                    <v-icon>mdi-logout</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title>Logout</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </div>
-          </template>
-        </v-navigation-drawer>
-
-        <v-app-bar app color="blue" dark>
-          <v-app-bar-nav-icon
-            @click.stop="drawer = !drawer"
-          ></v-app-bar-nav-icon>
-          <v-toolbar-title
-            ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
-            Diseminasi</v-toolbar-title
+        <v-btn
+          icon
+          id="mode-switcher"
+          @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+        >
+          <v-icon
+            :color="
+              $vuetify.theme.dark ? 'primary darken-4' : 'primary lighten-4'
+            "
           >
-        </v-app-bar>
+            {{
+              $vuetify.theme.dark ? "mdi-weather-night" : "mdi-weather-sunny"
+            }}
+          </v-icon>
+        </v-btn>
+      </v-app-bar>
 
-        <v-main>
-          <v-container class="fill-height" fluid>
-            <v-row align="center" justify="center">
-              <v-col class="text-center">
-                <router-view class="main-view" name="MainView"></router-view>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-main>
-
-        <v-footer color="blue" app>
+      <v-main>
+        <v-container class="fill-height" fluid>
           <v-row align="center" justify="center">
             <v-col class="text-center">
-              <span
-                ><span> {{ thisYear }} </span> © Made by
-                <a
-                  href="https://github.com/blankon123/"
-                  style="text-decoration: none;color: rgb(233 255 48)"
-                >
-                  blankon123
-                </a>
-                with 👶</span
-              >
+              <router-view class="main-view" name="MainView"></router-view>
             </v-col>
           </v-row>
-        </v-footer>
-      </v-app>
+        </v-container>
+      </v-main>
+
+      <v-footer color="blue" app>
+        <v-row align="center" justify="center">
+          <v-col class="text-center">
+            <span
+              ><span> {{ thisYear }} </span> © Made by
+              <a
+                href="https://github.com/blankon123/"
+                style="text-decoration: none;color: rgb(233 255 48)"
+              >
+                blankon123
+              </a>
+              with 👶</span
+            >
+          </v-col>
+        </v-row>
+      </v-footer>
     </v-app>
   </div>
 </template>
@@ -109,7 +117,8 @@ export default {
     currentUser: {},
     token: localStorage.getItem("token"),
     linkFoto: "",
-    thisYear: new Date().getFullYear()
+    thisYear: new Date().getFullYear(),
+    snackbar: true
   }),
   methods: {
     getUser() {
@@ -128,7 +137,6 @@ export default {
       axios
         .post("/api/v1/logout")
         .then(response => {
-          localStorage.removeItem("token");
           this.$router.push("/login");
         })
         .catch(error => console.log(error));

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\user;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -14,23 +13,18 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
-            'device_name' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'username' => ['Akun atau Password anda salah.'],
-            ]);
+        if (Auth::attempt($request->only('username', 'password'))) {
+            return response()->json(Auth::user(), 200);
         }
-
-        return $user->createToken($request->device_name)->plainTextToken;
+        throw ValidationException::withMessages([
+            'username' => 'Username atau Password Salah',
+        ]);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        return response()->json(['msg' => 'Logout Success']);
+        return Auth::logout();
     }
 }
