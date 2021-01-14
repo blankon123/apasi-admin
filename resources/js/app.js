@@ -5,15 +5,12 @@
  */
 
 require("./bootstrap");
-
-window.Vue = require("vue");
-
 import router from "./router/router.js";
-import Vuetify from "vuetify/lib";
+import Vuetify from "vuetify";
 import "@mdi/font/css/materialdesignicons.css";
 
+window.Vue = require("vue");
 Vue.use(Vuetify);
-Vue.prototype.$eventBus = new Vue();
 
 const opts = {
   theme: { dark: true },
@@ -42,7 +39,7 @@ files.keys().map(key =>
 );
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// acVue.component('App', require('./App.vue').default);
+// Vue.component('App', require('./components/App.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -50,10 +47,10 @@ files.keys().map(key =>
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-let app = new Vue({
+const app = new Vue({
   el: "#app",
-  router,
   vuetify: new Vuetify(opts),
+  router,
   props: {
     source: String
   }

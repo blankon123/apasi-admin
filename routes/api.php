@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PublikasiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', function (Request $request) {
             return $request->user();
+        });
+        Route::prefix('publikasi')->group(function () {
+            Route::get('/', [PublikasiController::class, 'logout']);
+            Route::post('/import', [PublikasiController::class, 'import']);
         });
     });
     Route::post('/logout', [AuthController::class, 'logout']);
