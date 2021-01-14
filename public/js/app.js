@@ -2145,12 +2145,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2380,10 +2374,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2456,7 +2446,339 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      snackbar: {
+        show: false,
+        timeout: 3000,
+        color: "success",
+        text: ""
+      },
+      importDialog: {
+        dialog: false,
+        loading: false,
+        errorStatus: false,
+        errorText: "",
+        file: null
+      },
+      table: {
+        loading: false
+      },
+      dialog: false,
+      dialogDelete: false,
+      headers: [{
+        text: "Judul Publikasi",
+        align: "start",
+        sortable: false,
+        value: "name"
+      }, {
+        text: "Rilis",
+        value: "rilis"
+      }, {
+        text: "Status",
+        value: "status"
+      }, {
+        text: "",
+        value: "actions",
+        sortable: false
+      }],
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        name: "",
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0
+      },
+      defaultItem: {
+        name: "",
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0
+      }
+    };
+  },
+  computed: {
+    formTitle: function formTitle() {
+      return this.editedIndex === -1 ? "Tambah Publikasi" : "Detail Publikasi";
+    }
+  },
+  watch: {
+    dialog: function dialog(val) {
+      val || this.close();
+    },
+    dialogDelete: function dialogDelete(val) {
+      val || this.closeDelete();
+    }
+  },
+  created: function created() {
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {},
+    showSnackbar: function showSnackbar(text, type) {
+      this.snackbar.color = type;
+      this.snackbar.text = text;
+      this.snackbar.show = true;
+    },
+    editItem: function editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm: function deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+    close: function close() {
+      var _this = this;
+
+      this.dialog = false;
+      this.$nextTick(function () {
+        _this.editedItem = Object.assign({}, _this.defaultItem);
+        _this.editedIndex = -1;
+      });
+    },
+    closeDelete: function closeDelete() {
+      var _this2 = this;
+
+      this.dialogDelete = false;
+      this.$nextTick(function () {
+        _this2.editedItem = Object.assign({}, _this2.defaultItem);
+        _this2.editedIndex = -1;
+      });
+    },
+    importExcel: function importExcel() {
+      var _this3 = this;
+
+      var formData = new FormData();
+      formData.append("file", this.importDialog.file);
+      this.importDialog.loading = true;
+      axios.post("/api/v1/publikasi/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function () {
+        _this3.importDialog.loading = false;
+        _this3.importDialog.dialog = false;
+
+        _this3.showSnackbar("Sukses Import List", "success");
+      })["catch"](function (err) {
+        _this3.importDialog.loading = false;
+        _this3.importDialog.errorStatus = true;
+        _this3.importDialog.errorText = "Ups terdapat kesalahan saat Import Publikasi, Pastikan Isian sudah sesuai Template";
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -3605,7 +3927,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "app" } }, [_c("router-view")], 1)
+  return _c("div", [_c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3677,176 +3999,143 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { attrs: { id: "app" } },
+    "v-app",
+    { attrs: { id: "inspire" } },
     [
       _c(
-        "v-app",
-        { attrs: { id: "inspire" } },
+        "v-main",
         [
           _c(
-            "v-app",
-            { attrs: { id: "inspire" } },
+            "v-container",
+            { staticClass: "fill-height", attrs: { fluid: "" } },
             [
               _c(
-                "v-main",
+                "v-row",
+                { attrs: { align: "center", justify: "center" } },
                 [
                   _c(
-                    "v-container",
-                    { staticClass: "fill-height", attrs: { fluid: "" } },
+                    "v-col",
+                    { attrs: { cols: "12", sm: "8", md: "4" } },
                     [
                       _c(
-                        "v-row",
-                        { attrs: { align: "center", justify: "center" } },
+                        "v-card",
+                        {
+                          staticClass: "elevation-12",
+                          attrs: { loading: _vm.isLoading }
+                        },
                         [
                           _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "8", md: "4" } },
+                            "v-toolbar",
+                            { attrs: { color: "primary", dark: "", flat: "" } },
                             [
+                              _c("v-toolbar-title", [
+                                _vm._v("Aplikasi Pembantu Diseminasi")
+                              ]),
+                              _vm._v(" "),
+                              _c("v-spacer"),
+                              _vm._v(" "),
                               _c(
-                                "v-card",
+                                "v-tooltip",
                                 {
-                                  staticClass: "elevation-12",
-                                  attrs: { loading: _vm.isLoading }
-                                },
-                                [
-                                  _c(
-                                    "v-toolbar",
+                                  attrs: { bottom: "" },
+                                  scopedSlots: _vm._u([
                                     {
-                                      attrs: {
-                                        color: "primary",
-                                        dark: "",
-                                        flat: ""
-                                      }
-                                    },
-                                    [
-                                      _c("v-toolbar-title", [
-                                        _vm._v("Aplikasi Pembantu Diseminasi")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("v-spacer"),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-tooltip",
-                                        {
-                                          attrs: { bottom: "" },
-                                          scopedSlots: _vm._u([
-                                            {
-                                              key: "activator",
-                                              fn: function(ref) {
-                                                var on = ref.on
-                                                return [
-                                                  _c(
-                                                    "v-btn",
-                                                    _vm._g(
-                                                      {
-                                                        attrs: {
-                                                          icon: "",
-                                                          large: "",
-                                                          target: "_blank"
-                                                        }
-                                                      },
-                                                      on
-                                                    ),
-                                                    [
-                                                      _c("v-icon", [
-                                                        _vm._v("mdi-bookshelf")
-                                                      ])
-                                                    ],
-                                                    1
-                                                  )
-                                                ]
-                                              }
-                                            }
-                                          ])
-                                        },
-                                        [
-                                          _vm._v(" "),
-                                          _c("span", [_vm._v("[APASI]")])
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card-text",
-                                    [
-                                      _c(
-                                        "v-form",
-                                        {
-                                          on: {
-                                            submit: function($event) {
-                                              $event.preventDefault()
-                                              return _vm.doLogin($event)
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              label: "Username",
-                                              name: "username",
-                                              "prepend-icon": "mdi-account",
-                                              type: "text",
-                                              "error-messages":
-                                                _vm.errors.username
-                                            },
-                                            model: {
-                                              value: _vm.form.username,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.form,
-                                                  "username",
-                                                  $$v
-                                                )
-                                              },
-                                              expression: "form.username"
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              id: "password",
-                                              label: "Password",
-                                              name: "password",
-                                              "prepend-icon": "mdi-lock",
-                                              type: "password",
-                                              "error-messages":
-                                                _vm.errors.username
-                                            },
-                                            model: {
-                                              value: _vm.form.password,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.form,
-                                                  "password",
-                                                  $$v
-                                                )
-                                              },
-                                              expression: "form.password"
-                                            }
-                                          }),
-                                          _vm._v(" "),
+                                      key: "activator",
+                                      fn: function(ref) {
+                                        var on = ref.on
+                                        return [
                                           _c(
-                                            "v-col",
-                                            { staticClass: "text-right mt-3" },
+                                            "v-btn",
+                                            _vm._g(
+                                              {
+                                                attrs: {
+                                                  icon: "",
+                                                  large: "",
+                                                  target: "_blank"
+                                                }
+                                              },
+                                              on
+                                            ),
                                             [
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    color: "primary",
-                                                    type: "submit"
-                                                  }
-                                                },
-                                                [_vm._v("Login")]
-                                              )
+                                              _c("v-icon", [
+                                                _vm._v("mdi-bookshelf")
+                                              ])
                                             ],
                                             1
                                           )
-                                        ],
-                                        1
+                                        ]
+                                      }
+                                    }
+                                  ])
+                                },
+                                [_vm._v(" "), _c("span", [_vm._v("[APASI]")])]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-form",
+                                {
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.doLogin($event)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Username",
+                                      name: "username",
+                                      "prepend-icon": "mdi-account",
+                                      type: "text",
+                                      "error-messages": _vm.errors.username
+                                    },
+                                    model: {
+                                      value: _vm.form.username,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.form, "username", $$v)
+                                      },
+                                      expression: "form.username"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      id: "password",
+                                      label: "Password",
+                                      name: "password",
+                                      "prepend-icon": "mdi-lock",
+                                      type: "password",
+                                      "error-messages": _vm.errors.username
+                                    },
+                                    model: {
+                                      value: _vm.form.password,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.form, "password", $$v)
+                                      },
+                                      expression: "form.password"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { staticClass: "text-right mt-3" },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            color: "primary",
+                                            type: "submit"
+                                          }
+                                        },
+                                        [_vm._v("Login")]
                                       )
                                     ],
                                     1
@@ -4067,7 +4356,7 @@ var render = function() {
                                 [
                                   _c(
                                     "v-list-item-icon",
-                                    [_c("v-icon", [_vm._v("mdi-logout")])],
+                                    [_c("v-icon", [_vm._v("mdi-power")])],
                                     1
                                   ),
                                   _vm._v(" "),
@@ -4163,7 +4452,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-app-bar",
-            { attrs: { app: "", color: "blue" } },
+            { attrs: { app: "", dense: "", color: "blue" } },
             [
               _c("v-app-bar-nav-icon", {
                 on: {
@@ -4196,27 +4485,17 @@ var render = function() {
                   }
                 },
                 [
-                  _c(
-                    "v-icon",
-                    {
-                      attrs: {
-                        color: _vm.$vuetify.theme.dark
-                          ? "primary darken-4"
-                          : "primary lighten-4"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n          " +
-                          _vm._s(
-                            _vm.$vuetify.theme.dark
-                              ? "mdi-weather-night"
-                              : "mdi-weather-sunny"
-                          ) +
-                          "\n        "
-                      )
-                    ]
-                  )
+                  _c("v-icon", [
+                    _vm._v(
+                      "\n          " +
+                        _vm._s(
+                          _vm.$vuetify.theme.dark
+                            ? "mdi-weather-night"
+                            : "mdi-weather-sunny"
+                        ) +
+                        "\n        "
+                    )
+                  ])
                 ],
                 1
               )
@@ -4229,11 +4508,11 @@ var render = function() {
             [
               _c(
                 "v-container",
-                { staticClass: "fill-height", attrs: { fluid: "" } },
+                { attrs: { fluid: "" } },
                 [
                   _c(
                     "v-row",
-                    { attrs: { align: "center", justify: "center" } },
+                    { attrs: { align: "start", justify: "center" } },
                     [
                       _c(
                         "v-col",
@@ -4317,7 +4596,639 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n  Ini Publikasi\n")])
+  return _c(
+    "div",
+    [
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.snackbar.timeout, color: _vm.snackbar.color },
+          scopedSlots: _vm._u([
+            {
+              key: "action",
+              fn: function(ref) {
+                var attrs = ref.attrs
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._b(
+                      {
+                        attrs: { color: "blue", text: "" },
+                        on: {
+                          click: function($event) {
+                            _vm.snackbar = false
+                          }
+                        }
+                      },
+                      "v-btn",
+                      attrs,
+                      false
+                    ),
+                    [_vm._v("\n        Tutup\n      ")]
+                  )
+                ]
+              }
+            }
+          ]),
+          model: {
+            value: _vm.snackbar.show,
+            callback: function($$v) {
+              _vm.$set(_vm.snackbar, "show", $$v)
+            },
+            expression: "snackbar.show"
+          }
+        },
+        [_vm._v("\n    " + _vm._s(_vm.snackbar.text) + "\n\n    ")]
+      ),
+      _vm._v(" "),
+      _c("v-data-table", {
+        staticClass: "elevation-1",
+        attrs: {
+          headers: _vm.headers,
+          items: _vm.desserts,
+          "sort-by": "calories",
+          loading: _vm.table.loading,
+          "loading-text": "Memuat... Mohon Tunggu",
+          "hide-default-footer": ""
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "top",
+            fn: function() {
+              return [
+                _c(
+                  "v-toolbar",
+                  { attrs: { flat: "" } },
+                  [
+                    _c("v-toolbar-title", [_vm._v("Daftar Publikasi")]),
+                    _vm._v(" "),
+                    _c("v-divider", {
+                      staticClass: "mx-4",
+                      attrs: { inset: "", vertical: "" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-tooltip",
+                      {
+                        attrs: { bottom: "" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "activator",
+                            fn: function(ref) {
+                              var tooltip = ref.on
+                              return [
+                                _c(
+                                  "v-btn",
+                                  _vm._g(
+                                    {
+                                      staticClass: "mb-2",
+                                      attrs: { small: "", color: "primary" }
+                                    },
+                                    Object.assign({}, tooltip)
+                                  ),
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      { on: { click: _vm.initialize } },
+                                      [_vm._v("mdi-refresh")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ]
+                            }
+                          }
+                        ])
+                      },
+                      [_vm._v(" "), _c("span", [_vm._v("Refresh Konten")])]
+                    ),
+                    _vm._v(" "),
+                    _c("v-spacer"),
+                    _vm._v(" "),
+                    _c(
+                      "v-dialog",
+                      {
+                        attrs: { "max-width": "500px" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "activator",
+                            fn: function(ref) {
+                              var dialog = ref.on
+                              return [
+                                _c(
+                                  "v-tooltip",
+                                  {
+                                    attrs: { bottom: "" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "activator",
+                                          fn: function(ref) {
+                                            var tooltip = ref.on
+                                            return [
+                                              _c(
+                                                "v-btn",
+                                                _vm._g(
+                                                  {
+                                                    staticClass: "mb-2",
+                                                    attrs: {
+                                                      small: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  Object.assign(
+                                                    {},
+                                                    tooltip,
+                                                    dialog
+                                                  )
+                                                ),
+                                                [
+                                                  _c("v-icon", [
+                                                    _vm._v(
+                                                      "mdi-book-plus-multiple"
+                                                    )
+                                                  ])
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  },
+                                  [
+                                    _vm._v(" "),
+                                    _c("span", [
+                                      _vm._v("Import Publikasi dari Excel")
+                                    ])
+                                  ]
+                                )
+                              ]
+                            }
+                          }
+                        ]),
+                        model: {
+                          value: _vm.importDialog.dialog,
+                          callback: function($$v) {
+                            _vm.$set(_vm.importDialog, "dialog", $$v)
+                          },
+                          expression: "importDialog.dialog"
+                        }
+                      },
+                      [
+                        _vm._v(" "),
+                        _c(
+                          "v-card",
+                          [
+                            _c("v-card-title", [
+                              _c("span", { staticClass: "headline" }, [
+                                _vm._v("Import Publikasi")
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-text",
+                              [
+                                _c(
+                                  "v-container",
+                                  [
+                                    _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          [
+                                            _c("v-file-input", {
+                                              attrs: {
+                                                accept: ".xlsx",
+                                                label: "File Import Excel",
+                                                outlined: "",
+                                                dense: "",
+                                                "show-size": "",
+                                                loading:
+                                                  _vm.importDialog.loading
+                                              },
+                                              model: {
+                                                value: _vm.importDialog.file,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.importDialog,
+                                                    "file",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "importDialog.file"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-alert",
+                                      {
+                                        attrs: {
+                                          text: "",
+                                          prominent: "",
+                                          type: "error",
+                                          icon: "mdi-alert-remove"
+                                        },
+                                        model: {
+                                          value: _vm.importDialog.errorStatus,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.importDialog,
+                                              "errorStatus",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "importDialog.errorStatus"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(_vm.importDialog.errorText) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: {
+                                          href: "",
+                                          target: "_blank",
+                                          rel: "noopener noreferrer"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "File Template Import\n                "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-actions",
+                              [
+                                _c("v-spacer"),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.importDialog.dialog = false
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Cancel\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: { click: _vm.importExcel }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Import\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("v-divider", {
+                      staticClass: "mx-4",
+                      attrs: { inset: "", vertical: "" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-dialog",
+                      {
+                        attrs: { "max-width": "500px" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "activator",
+                            fn: function(ref) {
+                              var dialog = ref.on
+                              return [
+                                _c(
+                                  "v-tooltip",
+                                  {
+                                    attrs: { bottom: "" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "activator",
+                                          fn: function(ref) {
+                                            var tooltip = ref.on
+                                            return [
+                                              _c(
+                                                "v-btn",
+                                                _vm._g(
+                                                  {
+                                                    staticClass: "mb-2",
+                                                    attrs: {
+                                                      small: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  Object.assign(
+                                                    {},
+                                                    tooltip,
+                                                    dialog
+                                                  )
+                                                ),
+                                                [
+                                                  _c("v-icon", [
+                                                    _vm._v("mdi-book-plus")
+                                                  ])
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  },
+                                  [
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Tambah Publikasi")])
+                                  ]
+                                )
+                              ]
+                            }
+                          }
+                        ]),
+                        model: {
+                          value: _vm.dialog,
+                          callback: function($$v) {
+                            _vm.dialog = $$v
+                          },
+                          expression: "dialog"
+                        }
+                      },
+                      [
+                        _vm._v(" "),
+                        _c(
+                          "v-card",
+                          [
+                            _c("v-card-title", [
+                              _c("span", { staticClass: "headline" }, [
+                                _vm._v("Import Publikasi")
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-text",
+                              [
+                                _c(
+                                  "v-container",
+                                  [
+                                    _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "12",
+                                              sm: "6",
+                                              md: "4"
+                                            }
+                                          },
+                                          [
+                                            _c("v-file-input", {
+                                              attrs: {
+                                                accept: "image/*",
+                                                label: "File input",
+                                                outlined: "",
+                                                dense: ""
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "a",
+                                              {
+                                                attrs: {
+                                                  href: "",
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer"
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "File Template Import\n                    "
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-actions",
+                              [
+                                _c("v-spacer"),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: { click: _vm.close }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Cancel\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: { click: _vm.importExcel }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Import\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-dialog",
+                      {
+                        attrs: { "max-width": "500px" },
+                        model: {
+                          value: _vm.dialogDelete,
+                          callback: function($$v) {
+                            _vm.dialogDelete = $$v
+                          },
+                          expression: "dialogDelete"
+                        }
+                      },
+                      [
+                        _c(
+                          "v-card",
+                          [
+                            _c("v-card-title", { staticClass: "headline" }, [
+                              _vm._v(
+                                "Are you sure you want to delete this item?"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-actions",
+                              [
+                                _c("v-spacer"),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: { click: _vm.closeDelete }
+                                  },
+                                  [_vm._v("Cancel")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { color: "blue darken-1", text: "" },
+                                    on: { click: _vm.deleteItemConfirm }
+                                  },
+                                  [_vm._v("OK")]
+                                ),
+                                _vm._v(" "),
+                                _c("v-spacer")
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "item.actions",
+            fn: function(ref) {
+              var item = ref.item
+              return [
+                _c(
+                  "v-icon",
+                  {
+                    staticClass: "mr-2",
+                    attrs: { small: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.viewItem(item)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        mdi-eye\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-icon",
+                  {
+                    staticClass: "mr-2",
+                    attrs: { small: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editItem(item)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        mdi-pencil\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-icon",
+                  {
+                    attrs: { small: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteItem(item)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        mdi-delete\n      ")]
+                )
+              ]
+            }
+          },
+          {
+            key: "no-data",
+            fn: function() {
+              return [_vm._v("\n      Ups, Tidak ada daftar publikasi\n    ")]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -64307,12 +65218,11 @@ __webpack_require__.r(__webpack_exports__);
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+
+
+
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-
-
-
 Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
-Vue.prototype.$eventBus = new Vue();
 var opts = {
   theme: {
     dark: true
@@ -64334,7 +65244,7 @@ var files = __webpack_require__("./resources/js sync recursive \\.vue$/");
 files.keys().map(function (key) {
   return Vue.component(key.split("/").pop().split(".")[0], files(key)["default"]);
 }); // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// acVue.component('App', require('./App.vue').default);
+// Vue.component('App', require('./components/App.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -64344,8 +65254,8 @@ files.keys().map(function (key) {
 
 var app = new Vue({
   el: "#app",
-  router: _router_router_js__WEBPACK_IMPORTED_MODULE_0__["default"],
   vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_1___default.a(opts),
+  router: _router_router_js__WEBPACK_IMPORTED_MODULE_0__["default"],
   props: {
     source: String
   }
@@ -64380,7 +65290,7 @@ var app = new Vue({
  */
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.withCredentials = true;
+window.axios.defaults.withCredentials = true;
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

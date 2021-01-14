@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer v-model="drawer" permanent expand-on-hover>
+      <v-navigation-drawer v-model="drawer" app>
         <v-divider></v-divider>
 
         <v-list-item two-line>
@@ -37,7 +37,7 @@
             <v-list>
               <v-list-item link @click="logout">
                 <v-list-item-icon>
-                  <v-icon>mdi-logout</v-icon>
+                  <v-icon>mdi-power</v-icon>
                 </v-list-item-icon>
 
                 <v-list-item-content>
@@ -49,7 +49,7 @@
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app color="blue">
+      <v-app-bar app dense color="blue">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title
           ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
@@ -62,11 +62,7 @@
           id="mode-switcher"
           @click="$vuetify.theme.dark = !$vuetify.theme.dark"
         >
-          <v-icon
-            :color="
-              $vuetify.theme.dark ? 'primary darken-4' : 'primary lighten-4'
-            "
-          >
+          <v-icon>
             {{
               $vuetify.theme.dark ? "mdi-weather-night" : "mdi-weather-sunny"
             }}
@@ -75,8 +71,8 @@
       </v-app-bar>
 
       <v-main>
-        <v-container class="fill-height" fluid>
-          <v-row align="center" justify="center">
+        <v-container fluid>
+          <v-row align="start" justify="center">
             <v-col class="text-center">
               <router-view class="main-view" name="MainView"></router-view>
             </v-col>
