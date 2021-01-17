@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\PublikasiImport;
+use App\Models\Publikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,9 +15,9 @@ class PublikasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Publikasi::orderBy('arc', 'desc')->paginate($request->total);
     }
 
     /**

@@ -22,7 +22,7 @@ Route::prefix('v1')->group(function () {
             return $request->user();
         });
         Route::prefix('publikasi')->group(function () {
-            Route::get('/', [PublikasiController::class, 'logout']);
+            Route::get('/', [PublikasiController::class, 'index']);
             Route::post('/import', [PublikasiController::class, 'import']);
         });
     });

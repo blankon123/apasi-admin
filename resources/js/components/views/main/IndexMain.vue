@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer v-model="drawer" app>
-        <v-divider></v-divider>
-
-        <v-list-item two-line>
-          <v-list-item-avatar>
+      <v-navigation-drawer expand-on-hover v-model="drawer" app>
+        <v-list-item dense two-line>
+          <v-list-item-avatar size="32">
             <img v-bind:src="linkFoto" />
           </v-list-item-avatar>
 
@@ -16,10 +14,21 @@
         </v-list-item>
 
         <v-divider></v-divider>
+        <v-list dense>
+          <v-list-item link to="/dashboard">
+            <v-list-item-action>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Dashboard</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
 
+        <v-divider></v-divider>
         <v-list dense>
           <v-list-item
-            v-for="item in items"
+            v-for="item in publikasiItems"
             :key="item.title"
             link
             :to="item.link"
@@ -32,8 +41,38 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+
+        <v-divider></v-divider>
+        <v-list dense>
+          <v-list-item
+            v-for="item in tabelItems"
+            :key="item.title"
+            link
+            :to="item.link"
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+        <v-list dense>
+          <v-list-item link to="/account">
+            <v-list-item-action>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Akun</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
         <template v-slot:append>
-          <div class="pa-2">
+          <div>
             <v-list>
               <v-list-item link @click="logout">
                 <v-list-item-icon>
@@ -103,11 +142,25 @@
 <script>
 export default {
   data: () => ({
-    items: [
-      { title: "Dashboard", icon: "mdi-view-dashboard", link: "/dashboard" },
-      { title: "Publikasi", icon: "mdi-book-open-variant", link: "/publikasi" },
-      { title: "Tabel", icon: "mdi-table", link: "/tabel" },
-      { title: "Akun", icon: "mdi-account", link: "/account" }
+    publikasiItems: [
+      {
+        title: `Publikasi ${new Date().getFullYear()}`,
+        icon: "mdi-book-open-variant",
+        link: "/publikasi"
+      },
+      {
+        title: "Daftar Publikasi",
+        icon: "mdi-book-open",
+        link: "/publikasiAll"
+      }
+    ],
+    tabelItems: [
+      {
+        title: `Tabel ${new Date().getFullYear()}`,
+        icon: "mdi-table",
+        link: "/tabel"
+      },
+      { title: "Daftar Tabel", icon: "mdi-table-large", link: "/tabelAll" }
     ],
     drawer: true,
     currentUser: {},
