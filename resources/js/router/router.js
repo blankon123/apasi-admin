@@ -4,7 +4,9 @@ import IndexMain from "./../components/views/main/IndexMain.vue";
 import AccountData from "./../components/views/main/AccountData.vue";
 import Dashboard from "./../components/views/main/Dashboard.vue";
 import Publikasi from "./../components/views/main/Publikasi.vue";
+import PublikasiAll from "./../components/views/main/PublikasiAll.vue";
 import Tabel from "./../components/views/main/Tabel.vue";
+import TabelAll from "./../components/views/main/TabelAll.vue";
 import Login from "./../components/views/auth/Login.vue";
 import NotFound from "./../components/views/error/NotFound.vue";
 
@@ -51,6 +53,24 @@ const routes = [
         components: {
           default: IndexMain,
           MainView: Tabel
+        }
+      },
+      {
+        path: "/publikasiAll",
+        name: "PublikasiAll",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: PublikasiAll
+        }
+      },
+      {
+        path: "/tabelAll",
+        name: "TabelAll",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: TabelAll
         }
       }
     ]

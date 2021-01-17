@@ -14,9 +14,10 @@
       </template>
     </v-snackbar>
     <v-data-table
-      :headers="headers"
-      :items="desserts"
-      sort-by="calories"
+      :headers="table.headers"
+      :items="table.publikasiList"
+      dense
+      :itemsPerPage="table.itemsPerPage"
       class="elevation-1"
       :loading="table.loading"
       loading-text="Memuat... Mohon Tunggu"
@@ -169,9 +170,13 @@
 
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="headline"
-                >Are you sure you want to delete this item?</v-card-title
-              >
+              <v-card-title>
+                Konfirmasi Hapus
+              </v-card-title>
+              <v-card-text>
+                Apakah anda Yakin akan Menghapus publikasi Beserta seluruh
+                File-nya dari aplikasi ?
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete"
@@ -201,6 +206,11 @@
         Ups, Tidak ada daftar publikasi
       </template>
     </v-data-table>
+    <v-pagination
+      v-model="currentPage"
+      :length="table.pageLength"
+      total-visible="8"
+    ></v-pagination>
   </div>
 </template>
 
@@ -221,22 +231,26 @@ export default {
       file: null
     },
     table: {
-      loading: false
+      totalPublikasi: 0,
+      publikasiList: [],
+      pageLength: 0,
+      loading: false,
+      itemsPerPage: 5,
+      headers: [
+        {
+          text: "Judul Publikasi",
+          align: "start",
+          sortable: false,
+          value: "judul_publikasi"
+        },
+        { text: "Rilis", value: "arc" },
+        { text: "Status", value: "stage_id" },
+        { text: "", value: "actions", sortable: false }
+      ]
     },
+    currentPage: 1,
     dialog: false,
     dialogDelete: false,
-    headers: [
-      {
-        text: "Judul Publikasi",
-        align: "start",
-        sortable: false,
-        value: "name"
-      },
-      { text: "Rilis", value: "rilis" },
-      { text: "Status", value: "status" },
-      { text: "", value: "actions", sortable: false }
-    ],
-    desserts: [],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -266,6 +280,9 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
+    },
+    currentPage(val) {
+      this.initialize(val);
     }
   },
 
@@ -274,7 +291,32 @@ export default {
   },
 
   methods: {
-    initialize() {},
+    initialize(requestedPage = 1) {
+      this.table.loading = true;
+      console.log(requestedPage);
+      axios
+        .get("/api/v1/publikasi", {
+          params: {
+            page: requestedPage,
+            total: this.table.itemsPerPage
+          }
+        })
+        .then(res => {
+          let unprocessedTimeData = res.data.data;
+          let processedTimeData = unprocessedTimeData.map(item => {
+            const container = item;
+
+            container["arc"] = moment(container["arc"], "DD-MM-YYY").calendar();
+
+            return container;
+          });
+          this.table.publikasiList = res.data.data;
+          this.table.pageLength = res.data.last_page;
+          // this.table.totalPublikasi = res.
+          this.table.loading = false;
+        })
+        .catch(err => console.log(err));
+    },
 
     showSnackbar(text, type) {
       this.snackbar.color = type;
@@ -283,13 +325,19 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.publikasiList.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.publikasiList.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    viewItem(item) {
+      this.editedIndex = this.publikasiList.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
