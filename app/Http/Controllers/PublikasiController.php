@@ -17,7 +17,7 @@ class PublikasiController extends Controller
      */
     public function index(Request $request)
     {
-        return Publikasi::orderBy('arc', 'desc')->paginate($request->total);
+        return Publikasi::with('user')->orderBy('arc', 'ASC')->paginate($request->total);
     }
 
     /**
@@ -99,13 +99,13 @@ class PublikasiController extends Controller
         $file->move('publikasi_folder', $nama_file);
 
         // import data
-        // try {
-        //     Excel::import(new PublikasiImport(Auth::user()), public_path('/publikasi_folder/' . $nama_file));
-        //     return response('Sukses Import', 200);
-        // } catch (\Throwable $th) {
-        //     abort(500, 'Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format' . $th);
-        // }
-        Excel::import(new PublikasiImport(Auth::user()), public_path('/publikasi_folder/' . $nama_file));
+        try {
+            Excel::import(new PublikasiImport(Auth::user()), public_path('/publikasi_folder/' . $nama_file));
+            return response('Sukses Import', 200);
+        } catch (\Throwable $th) {
+            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th->getMessage(), 500);
+        }
+        // Excel::import(new PublikasiImport(Auth::user()), public_path('/publikasi_folder/' . $nama_file));
     }
 
     /**
@@ -114,8 +114,28 @@ class PublikasiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $req)
     {
-        //
+        $publikasi = Publikasi::find($req->id);
+        try {
+            $publikasi->delete();
+            response('Sukses Delete', 200);
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
+        }
+    }
+
+    /**
+     * Search resource from storage by keyword.
+     *
+     * @param  String  $keyword
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        return Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+            ->with('user')
+            ->orderBy('arc', 'ASC')
+            ->paginate($request->total);
     }
 }

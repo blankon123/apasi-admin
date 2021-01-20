@@ -1,4 +1,4 @@
-// window._ = require('lodash');
+// window._ = require("lodash");
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -20,6 +20,7 @@
  */
 
 window.moment = require("moment");
+window.moment.locale("id");
 
 window.axios = require("axios");
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";

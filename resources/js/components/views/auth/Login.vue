@@ -25,7 +25,6 @@
                     prepend-icon="mdi-account"
                     type="text"
                     v-model="form.username"
-                    :error-messages="errors.username"
                   ></v-text-field>
 
                   <v-text-field
@@ -35,9 +34,16 @@
                     prepend-icon="mdi-lock"
                     type="password"
                     v-model="form.password"
-                    :error-messages="errors.username"
                   ></v-text-field>
-
+                  <v-alert
+                    text
+                    v-if="errors.length > 0"
+                    prominent
+                    type="error"
+                    icon="mdi-alert-remove"
+                  >
+                    {{ errors }}
+                  </v-alert>
                   <v-col class="text-right mt-3">
                     <v-btn color="primary" type="submit">Login</v-btn>
                   </v-col>
@@ -73,8 +79,11 @@ export default {
             this.$router.push("/dashboard");
           })
           .catch(errors => {
-            console.log(errors);
-            this.errors = errors.response.data.errors;
+            if (errors.response.data.message) {
+              this.errors = errors.response.data.message;
+            } else {
+              this.errors = errors.response.data;
+            }
           })
           .finally(() => {
             this.isLoading = false;

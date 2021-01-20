@@ -6,6 +6,8 @@
 
 require("./bootstrap");
 import router from "./router/router.js";
+import publikasiStore from "./store/publikasiStore.js";
+import userStore from "./store/userStore.js";
 import Vuetify from "vuetify";
 import "@mdi/font/css/materialdesignicons.css";
 
@@ -51,6 +53,8 @@ const app = new Vue({
   el: "#app",
   vuetify: new Vuetify(opts),
   router,
+  publikasiStore,
+  userStore,
   props: {
     source: String
   }

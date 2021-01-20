@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\PublikasiFile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,5 +19,13 @@ class Publikasi extends Model
     public function files()
     {
         return $this->hasMany(PublikasiFile::class);
+    }
+
+    /**
+     * Get bidang.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

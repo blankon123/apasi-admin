@@ -61,6 +61,14 @@
 
         <v-divider></v-divider>
         <v-list dense>
+          <v-list-item link to="/pekerjaan">
+            <v-list-item-action>
+              <v-icon>mdi-briefcase</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Pekerjaan</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item link to="/account">
             <v-list-item-action>
               <v-icon>mdi-account</v-icon>

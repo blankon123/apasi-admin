@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
+use App\Models\Enums;
 use App\Models\Publikasi;
-use App\Models\Stage;
 use App\Models\User;
 use App\Notifications\PublikasiChange;
 use Illuminate\Support\Facades\Notification;
@@ -38,9 +38,10 @@ class PublikasiImport implements OnEachRow, WithHeadingRow
         $publikasi->judul_publikasi = $row['judul_publikasi'];
         $publikasi->jenis_arc = $row['tipe_arc'] == "ARC" ? 1 : 2;
         $publikasi->arc = $row['arc'] ? date('Y-m-d', strtotime($row['arc'])) : null;
+        $publikasi->batas_upload = $row['upload'] ? date('Y-m-d', strtotime($row['upload'])) : null;
         $publikasi->tahun_rilis = $row['arc'] ? date('Y', strtotime($row['arc'])) : null;
         if ($this->importedBy->role == 'ADMIN') {
-            $publikasi->user_id = Stage::KODE['KODE_BIDANG'][strtoupper(preg_replace('/\s+/', '', $row['bidang']))]['kode'];
+            $publikasi->user_id = Enums::KODE_BIDANG[strtoupper(preg_replace('/\s+/', '', $row['bidang']))]['kode'];
             $notify_user_id = $publikasi->user_id;
         } elseif ($this->importedBy->role == 'SM' && $row['judul_publikasi'] != null) {
             $publikasi->user_id = $this->importedBy->id;
