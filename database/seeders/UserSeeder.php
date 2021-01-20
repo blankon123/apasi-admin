@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'nama_bidang' => 'IPDS',
                 'name' => 'Integrasi Pengolahan dan Diseminasi Statistik',
                 'role' => 'ADMIN',
+                'color' => 'pink',
                 'password' => Hash::make('rahasia'),
             ),
             array(
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
                 'nama_bidang' => 'Tata Usaha',
                 'name' => 'Bagian Tata Usaha',
                 'role' => 'SM',
+                'color' => 'indigo',
                 'password' => Hash::make('tatausaha6200'),
             ),
             array(
@@ -35,6 +37,7 @@ class UserSeeder extends Seeder
                 'nama_bidang' => 'Sosial',
                 'name' => 'Bidang Statistik Sosial',
                 'role' => 'SM',
+                'color' => 'light-blue',
                 'password' => Hash::make('sosial6200'),
             ),
             array(
@@ -42,6 +45,7 @@ class UserSeeder extends Seeder
                 'nama_bidang' => 'Distribusi',
                 'name' => 'Bidang Statistik Distribusi',
                 'role' => 'SM',
+                'color' => 'yellow',
                 'password' => Hash::make('distribusi6200'),
             ),
             array(
@@ -49,12 +53,14 @@ class UserSeeder extends Seeder
                 'nama_bidang' => 'Produksi',
                 'name' => 'Bidang Statistik Produksi',
                 'role' => 'SM',
+                'color' => 'green',
                 'password' => Hash::make('produksi6200'),
             ),
             array(
                 'username' => 'nerwilis6200',
                 'nama_bidang' => 'Nerwilis',
                 'name' => 'Neraca Wilayah dan Analisis Statistik',
+                'color' => 'deep-orange',
                 'role' => 'SM',
                 'password' => Hash::make('nerwilis6200'),
             )];

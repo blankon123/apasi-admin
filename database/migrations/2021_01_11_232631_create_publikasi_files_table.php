@@ -19,7 +19,6 @@ class CreatePublikasiFilesTable extends Migration
             $table->string('keterangan')->nullable(); //Draft, Cover, File Cetak, Surat Rilis, Erata, Surat Lainnya,
             $table->foreignId('user_id')->nullable();
             $table->foreignId('publikasi_id')->nullable();
-            $table->timestamps();
         });
 
         Schema::table('publikasi_files', function (Blueprint $table) {

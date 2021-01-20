@@ -7,6 +7,7 @@ import Publikasi from "./../components/views/main/Publikasi.vue";
 import PublikasiAll from "./../components/views/main/PublikasiAll.vue";
 import Tabel from "./../components/views/main/Tabel.vue";
 import TabelAll from "./../components/views/main/TabelAll.vue";
+import Pekerjaan from "./../components/views/main/Pekerjaan.vue";
 import Login from "./../components/views/auth/Login.vue";
 import NotFound from "./../components/views/error/NotFound.vue";
 
@@ -71,6 +72,15 @@ const routes = [
         components: {
           default: IndexMain,
           MainView: TabelAll
+        }
+      },
+      {
+        path: "/pekerjaan",
+        name: "Pekerjaan",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: Pekerjaan
         }
       }
     ]

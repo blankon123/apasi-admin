@@ -8,7 +8,7 @@
       {{ snackbar.text }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
           Tutup
         </v-btn>
       </template>
@@ -16,12 +16,12 @@
     <v-data-table
       :headers="table.headers"
       :items="table.publikasiList"
-      dense
       :itemsPerPage="table.itemsPerPage"
-      class="elevation-1"
+      class="elevation-3"
       :loading="table.loading"
       loading-text="Memuat... Mohon Tunggu"
       hide-default-footer
+      disable-sort
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -34,11 +34,20 @@
               v-on="on"
             >
               <v-btn small color="primary" class="mb-2" v-on="{ ...tooltip }">
-                <v-icon @click="initialize">mdi-refresh</v-icon>
+                <v-icon @click="refreshTable">mdi-refresh</v-icon>
               </v-btn>
             </template>
             <span>Refresh Konten</span>
           </v-tooltip>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-text-field
+            clearable
+            @keyup.enter="searchPublikasi"
+            v-model="table.searchPublikasi"
+            hide-details
+            flat
+            label="Cari publikasi disini..."
+          ></v-text-field>
           <v-spacer></v-spacer>
           <v-dialog v-model="importDialog.dialog" max-width="500px">
             <template v-slot:activator="{ on: dialog }">
@@ -113,7 +122,7 @@
 
           <v-divider class="mx-4" inset vertical></v-divider>
 
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="addDialog.dialog" max-width="500px">
             <template v-slot:activator="{ on: dialog }">
               <v-tooltip bottom>
                 <template
@@ -135,34 +144,47 @@
             </template>
             <v-card>
               <v-card-title>
-                <span class="headline">Import Publikasi</span>
+                <span class="headline">Tambah Publikasi</span>
               </v-card-title>
 
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col>
                       <v-file-input
-                        accept="image/*"
-                        label="File input"
+                        accept=".xlsx"
+                        label="File Import Excel"
+                        v-model="addDialog.file"
                         outlined
                         dense
+                        show-size
+                        :loading="addDialog.loading"
                       ></v-file-input>
-                      <a href="" target="_blank" rel="noopener noreferrer"
-                        >File Template Import
-                      </a>
                     </v-col>
                   </v-row>
+                  <v-alert
+                    text
+                    v-model="addDialog.errorStatus"
+                    prominent
+                    type="error"
+                    icon="mdi-alert-remove"
+                  >
+                    {{ addDialog.errorText }}
+                  </v-alert>
                 </v-container>
               </v-card-text>
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="addDialog.dialog = false"
+                >
                   Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="importExcel">
-                  Import
+                <v-btn color="blue darken-1" text @click="addPublikasi">
+                  Simpan
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -205,6 +227,20 @@
       <template class="text-left" v-slot:no-data>
         Ups, Tidak ada daftar publikasi
       </template>
+      <template v-slot:item.judul="{ item }">
+        <div :class="[`font-weight-bold `]">
+          {{ item.judul_publikasi }}
+        </div>
+        <span :class="[`font-weight-black ${item.user.color}--text`]">
+          {{ item.user.nama_bidang }}
+        </span>
+        Rilis : {{ dateForHuman(item.arc) }}
+      </template>
+      <template v-slot:item.batas_uploadHuman="{ item }">
+        <div class="font-weight-medium">
+          {{ dateForHuman(item.batas_upload) }}
+        </div>
+      </template>
     </v-data-table>
     <v-pagination
       v-model="currentPage"
@@ -230,41 +266,54 @@ export default {
       errorText: "",
       file: null
     },
+    addDialog: {
+      dialog: false,
+      loading: false,
+      errorStatus: false,
+      errorText: ""
+    },
     table: {
+      baseUrl: "/api/v1/publikasi",
+      searchPublikasi: "",
       totalPublikasi: 0,
       publikasiList: [],
       pageLength: 0,
       loading: false,
-      itemsPerPage: 5,
+      itemsPerPage: 8,
       headers: [
         {
           text: "Judul Publikasi",
           align: "start",
-          sortable: false,
-          value: "judul_publikasi"
+          value: "judul"
         },
-        { text: "Rilis", value: "arc" },
+        { text: "Batas Upload", value: "batas_uploadHuman" },
         { text: "Status", value: "stage_id" },
-        { text: "", value: "actions", sortable: false }
+        { text: "", value: "actions" }
       ]
     },
+    user: [],
     currentPage: 1,
     dialog: false,
     dialogDelete: false,
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
+      judul_publikasi: "",
+      jenis_judul_publikasi: "",
+      arc: 0,
+      tanggal_arc: "",
+      bidang: 0,
+      tanggal_upload: 0,
+      arc: 0,
+      tanggal_arc: "",
+      bidang: 0,
+      tanggal_upload: 0
     },
     defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
+      judul_publikasi: "",
+      jenis_arc: 0,
+      tanggal_arc: "",
+      bidang: 0,
+      tanggal_upload: 0
     }
   }),
 
@@ -287,29 +336,21 @@ export default {
   },
 
   created() {
+    this.getUser();
     this.initialize();
   },
 
   methods: {
     initialize(requestedPage = 1) {
       this.table.loading = true;
-      console.log(requestedPage);
       axios
-        .get("/api/v1/publikasi", {
+        .get(this.table.baseUrl, {
           params: {
             page: requestedPage,
             total: this.table.itemsPerPage
           }
         })
         .then(res => {
-          let unprocessedTimeData = res.data.data;
-          let processedTimeData = unprocessedTimeData.map(item => {
-            const container = item;
-
-            container["arc"] = moment(container["arc"], "DD-MM-YYY").calendar();
-
-            return container;
-          });
           this.table.publikasiList = res.data.data;
           this.table.pageLength = res.data.last_page;
           // this.table.totalPublikasi = res.
@@ -318,10 +359,15 @@ export default {
         .catch(err => console.log(err));
     },
 
+    getUser() {
+      axios.get("api/v1/user").then(res => {
+        this.user = res.data;
+      });
+    },
     showSnackbar(text, type) {
+      this.snackbar.show = true;
       this.snackbar.color = type;
       this.snackbar.text = text;
-      this.snackbar.show = true;
     },
 
     editItem(item) {
@@ -331,7 +377,7 @@ export default {
     },
 
     deleteItem(item) {
-      this.editedIndex = this.publikasiList.indexOf(item);
+      this.editedIndex = this.table.publikasiList.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
@@ -343,11 +389,21 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
+      axios
+        .delete("/api/v1/publikasi/", {
+          data: { id: this.editedItem.id }
+        })
+        .then(res => {
+          this.initialize();
+          this.closeDelete();
+          this.showSnackbar("Sukses Hapus Publikasi", "success");
+        })
+        .catch(err => {
+          this.showSnackbar(err.response.data, "error");
+        });
     },
 
-    close() {
+    closeAdd() {
       this.dialog = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
@@ -377,13 +433,37 @@ export default {
           this.importDialog.loading = false;
           this.importDialog.dialog = false;
           this.showSnackbar("Sukses Import List", "success");
+          this.initialize();
         })
         .catch(err => {
           this.importDialog.loading = false;
           this.importDialog.errorStatus = true;
-          this.importDialog.errorText =
-            "Ups terdapat kesalahan saat Import Publikasi, Pastikan Isian sudah sesuai Template";
+          this.importDialog.errorText = err.response.data;
         });
+    },
+
+    dateForHuman(arcDate) {
+      return moment(arcDate, "YYYY-MM-DD")
+        .locale("id")
+        .calendar(null, {
+          lastDay: "[Kemarin]",
+          sameDay: "[Hari Ini,] D MMMM yyyy",
+          nextDay: "[Besok,] dddd",
+          lastWeek: "dddd [Kemarin]",
+          nextWeek: "dddd, D MMMM yyyy",
+          sameElse: "dddd, D MMMM yyyy"
+        });
+    },
+
+    searchPublikasi() {
+      this.table.baseUrl =
+        "/api/v1/publikasi/search?key=" + this.table.searchPublikasi;
+      this.initialize();
+    },
+    refreshTable() {
+      this.table.baseUrl = "/api/v1/publikasi";
+      this.table.searchPublikasi = "";
+      this.initialize();
     }
   }
 };

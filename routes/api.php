@@ -23,7 +23,15 @@ Route::prefix('v1')->group(function () {
         });
         Route::prefix('publikasi')->group(function () {
             Route::get('/', [PublikasiController::class, 'index']);
+            Route::get('/search', [PublikasiController::class, 'search']);
             Route::post('/import', [PublikasiController::class, 'import']);
+            Route::delete('/', [PublikasiController::class, 'destroy']);
+        });
+
+        Route::prefix('stage')->group(function () {
+            Route::get('/stage_publikasi', [EnumsController::class, 'getStagePublikasi']);
+            Route::get('/kode_publikasi', [EnumsController::class, 'getKodePublikasi']);
+            Route::get('/kode_tabel', [EnumsController::class, 'destroy']);
         });
     });
     Route::post('/logout', [AuthController::class, 'logout']);
