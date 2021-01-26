@@ -11,7 +11,7 @@ return [
     | authentication cookies. Typically, these should include your local
     | and production domains which access your API via a frontend SPA.
     |
-    */
+     */
 
     'stateful' => explode(',', env(
         'SANCTUM_STATEFUL_DOMAINS',
@@ -27,9 +27,9 @@ return [
     | considered expired. If this value is null, personal access tokens do
     | not expire. This won't tweak the lifetime of first-party sessions.
     |
-    */
+     */
 
-    'expiration' => null,
+    'expiration' => env('SESSION_LIFETIME', 1440),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | customize some of the middleware Sanctum uses while processing the
     | request. You may change the middleware listed below as required.
     |
-    */
+     */
 
     'middleware' => [
         'verify_csrf_token' => App\Http\Middleware\VerifyCsrfToken::class,

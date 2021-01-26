@@ -43,7 +43,7 @@
           <v-text-field
             clearable
             @keyup.enter="searchPublikasi"
-            v-model="table.searchPublikasi"
+            v-model="table.searchKey"
             hide-details
             flat
             label="Cari publikasi disini..."
@@ -190,7 +190,7 @@
             </v-card>
           </v-dialog>
 
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="deleteDialog" max-width="500px">
             <v-card>
               <v-card-title>
                 Konfirmasi Hapus
@@ -213,7 +213,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="viewItem(item)">
           mdi-eye
         </v-icon>
@@ -227,7 +227,7 @@
       <template class="text-left" v-slot:no-data>
         Ups, Tidak ada daftar publikasi
       </template>
-      <template v-slot:item.judul="{ item }">
+      <template v-slot:[`item.judul`]="{ item }">
         <div :class="[`font-weight-bold `]">
           {{ item.judul_publikasi }}
         </div>
@@ -236,7 +236,7 @@
         </span>
         Rilis : {{ dateForHuman(item.arc) }}
       </template>
-      <template v-slot:item.batas_uploadHuman="{ item }">
+      <template v-slot:[`item.batas_uploadHuman`]="{ item }">
         <div class="font-weight-medium">
           {{ dateForHuman(item.batas_upload) }}
         </div>
@@ -272,30 +272,11 @@ export default {
       errorStatus: false,
       errorText: ""
     },
-    table: {
-      baseUrl: "/api/v1/publikasi",
-      searchPublikasi: "",
-      totalPublikasi: 0,
-      publikasiList: [],
-      pageLength: 0,
-      loading: false,
-      itemsPerPage: 8,
-      headers: [
-        {
-          text: "Judul Publikasi",
-          align: "start",
-          value: "judul"
-        },
-        { text: "Batas Upload", value: "batas_uploadHuman" },
-        { text: "Status", value: "stage_id" },
-        { text: "", value: "actions" }
-      ]
-    },
-    user: [],
     currentPage: 1,
     dialog: false,
-    dialogDelete: false,
+    deleteDialog: false,
     editedIndex: -1,
+    keySearchPublikasi: "",
     editedItem: {
       judul_publikasi: "",
       jenis_judul_publikasi: "",
@@ -320,6 +301,14 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Tambah Publikasi" : "Detail Publikasi";
+    },
+
+    table() {
+      return this.$store.state.publikasiStore.table;
+    },
+
+    user() {
+      return this.$store.state.userStore.user;
     }
   },
 
@@ -336,13 +325,12 @@ export default {
   },
 
   created() {
-    this.getUser();
     this.initialize();
   },
 
   methods: {
     initialize(requestedPage = 1) {
-      this.table.loading = true;
+      this.$store.dispatch("publikasiStore/setLoading", true);
       axios
         .get(this.table.baseUrl, {
           params: {
@@ -351,19 +339,11 @@ export default {
           }
         })
         .then(res => {
-          this.table.publikasiList = res.data.data;
-          this.table.pageLength = res.data.last_page;
-          // this.table.totalPublikasi = res.
-          this.table.loading = false;
+          this.$store.dispatch("publikasiStore/setTableData", res);
         })
         .catch(err => console.log(err));
     },
 
-    getUser() {
-      axios.get("api/v1/user").then(res => {
-        this.user = res.data;
-      });
-    },
     showSnackbar(text, type) {
       this.snackbar.show = true;
       this.snackbar.color = type;
@@ -371,7 +351,7 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.publikasiList.indexOf(item);
+      this.editedIndex = this.table.publikasiList.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -379,7 +359,7 @@ export default {
     deleteItem(item) {
       this.editedIndex = this.table.publikasiList.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      this.deleteDialog = true;
     },
 
     viewItem(item) {
@@ -412,7 +392,7 @@ export default {
     },
 
     closeDelete() {
-      this.dialogDelete = false;
+      this.deleteDialog = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -456,15 +436,21 @@ export default {
     },
 
     searchPublikasi() {
-      this.table.baseUrl =
-        "/api/v1/publikasi/search?key=" + this.table.searchPublikasi;
+      this.$store.dispatch(
+        "publikasiStore/setSearch",
+        "/api/v1/publikasi/search?key=" + this.keySearchPublikasi
+      );
       this.initialize();
     },
+
     refreshTable() {
-      this.table.baseUrl = "/api/v1/publikasi";
-      this.table.searchPublikasi = "";
+      this.$store.dispatch("publikasiStore/refreshTable");
+      this.keySearchPublikasi = "";
       this.initialize();
-    }
+      this.currentPage = 1;
+    },
+
+    addPublikasi() {}
   }
 };
 </script>
