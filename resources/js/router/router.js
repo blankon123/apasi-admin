@@ -1,4 +1,6 @@
 import Vue from "vue";
+import axios from "axios";
+import store from "./../store/index.js";
 import VueRouter from "vue-router";
 import IndexMain from "./../components/views/main/IndexMain.vue";
 import AccountData from "./../components/views/main/AccountData.vue";
@@ -104,32 +106,45 @@ const router = new VueRouter({
 });
 
 function loggedIn() {
-  return axios.get("api/v1/user");
+  try {
+    if (localStorage.getItem("apasi_cred") == null) {
+      return false;
+    }
+    if (!store.getters["userStore/isSavedUser"]) {
+      axios
+        .get("api/v1/user")
+        .then(response => {
+          store.dispatch("userStore/setUser", response.data);
+        })
+        .catch(errors => {
+          console.log(errors);
+        });
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    loggedIn()
-      .then(() => {
-        next();
-      })
-      .catch(() => {
-        next({
-          path: "/login",
-          query: { redirect: to.fullPath }
-        });
+    if (loggedIn()) {
+      next();
+    } else {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath }
       });
+    }
   } else if (to.matched.some(record => record.meta.guest)) {
-    loggedIn()
-      .then(() => {
-        next({
-          path: "/dashboard",
-          query: { redirect: to.fullPath }
-        });
-      })
-      .catch(() => {
-        next();
+    if (loggedIn()) {
+      next({
+        path: "/dashboard",
+        query: { redirect: to.fullPath }
       });
+    } else {
+      next();
+    }
   } else {
     next(); // make sure to always call next()!
   }

@@ -6,15 +6,14 @@
 
 require("./bootstrap");
 import router from "./router/router.js";
-import publikasiStore from "./store/publikasiStore.js";
-import userStore from "./store/userStore.js";
 import Vuetify from "vuetify";
+import store from "./store/index.js";
 import "@mdi/font/css/materialdesignicons.css";
 
 window.Vue = require("vue");
 Vue.use(Vuetify);
 
-const opts = {
+const vuetifyOpts = {
   theme: { dark: true },
   icons: {
     iconfont: "mdi"
@@ -48,13 +47,11 @@ files.keys().map(key =>
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
 const app = new Vue({
   el: "#app",
-  vuetify: new Vuetify(opts),
+  vuetify: new Vuetify(vuetifyOpts),
   router,
-  publikasiStore,
-  userStore,
+  store,
   props: {
     source: String
   }

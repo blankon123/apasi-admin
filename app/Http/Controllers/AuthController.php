@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -12,12 +14,16 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
+            'device_name' => 'required',
         ]);
-        try {
-            return Auth::attempt($request->only('username', 'password')) ? response()->json(Auth::user(), 200) : response("Akun tidak ditemukan", 422);
-        } catch (\Throwable $th) {
-            return response("Pastikan Username dan Password Terisi " . $th->getMessage(), 422);
-        };
+        $user = User::where('username', $request->username)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            response("Akun tidak ditemukan", 422);
+        }
+        return [
+            "token" => $user->createToken($request->device_name)->plainTextToken,
+            "user" => $user,
+        ];
     }
 
     public function logout(Request $request)

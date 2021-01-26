@@ -63,32 +63,31 @@ export default {
     return {
       isLoading: false,
       form: {
-        username: "",
-        password: ""
+        username: "ipds6200",
+        password: "rahasia",
+        device_name: "browser"
       },
       errors: {}
     };
   },
+  created() {},
   methods: {
     doLogin() {
       this.isLoading = "white";
-      axios.get("/sanctum/csrf-cookie").then(response => {
-        axios
-          .post("/api/v1/login", this.form)
-          .then(response => {
-            this.$router.push("/dashboard");
-          })
-          .catch(errors => {
-            if (errors.response.data.message) {
-              this.errors = errors.response.data.message;
-            } else {
-              this.errors = errors.response.data;
-            }
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
-      });
+      axios
+        .post("api/v1//login", this.form)
+        .then(response => {
+          localStorage.setItem("apasi_cred", response.data.token);
+          this.$store.dispatch("userStore/setUser", response.data.user);
+          this.$router.push("/dashboard");
+        })
+        .catch(errors => {
+          console.log(errors);
+          this.errors = errors.response;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
   }
 };

@@ -19,12 +19,42 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.moment = require("moment");
-window.moment.locale("id");
+import router from "./router/router.js";
 
 window.axios = require("axios");
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-window.axios.defaults.withCredentials = true;
+window.moment = require("moment");
+
+axios.interceptors.response.use(
+  function(response) {
+    return response;
+  },
+  function(error) {
+    if (error.response.status === 401) {
+      // store.dispatch('logout')
+      localStorage.removeItem("apasi_cred");
+      router.push("/login");
+    }
+    return Promise.reject(error);
+  }
+);
+axios.interceptors.request.use(
+  function(config) {
+    // assume your access token is stored in local storage
+    // (it should really be somewhere more secure but I digress for simplicity)
+    let token = localStorage.getItem("apasi_cred");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function(error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+window.moment.locale("id");
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

@@ -17,6 +17,7 @@ class PublikasiController extends Controller
      */
     public function index(Request $request)
     {
+
         return Publikasi::with('user')->orderBy('arc', 'ASC')->paginate($request->total);
     }
 

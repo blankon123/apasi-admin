@@ -28,7 +28,7 @@
         <v-divider></v-divider>
         <v-list dense>
           <v-list-item
-            v-for="item in publikasiItems"
+            v-for="item in menuPublikasiItems"
             :key="item.title"
             link
             :to="item.link"
@@ -45,7 +45,7 @@
         <v-divider></v-divider>
         <v-list dense>
           <v-list-item
-            v-for="item in tabelItems"
+            v-for="item in menuTabelItems"
             :key="item.title"
             link
             :to="item.link"
@@ -150,7 +150,7 @@
 <script>
 export default {
   data: () => ({
-    publikasiItems: [
+    menuPublikasiItems: [
       {
         title: `Publikasi ${new Date().getFullYear()}`,
         icon: "mdi-book-open-variant",
@@ -162,7 +162,7 @@ export default {
         link: "/publikasiAll"
       }
     ],
-    tabelItems: [
+    menuTabelItems: [
       {
         title: `Tabel ${new Date().getFullYear()}`,
         icon: "mdi-table",
@@ -171,37 +171,35 @@ export default {
       { title: "Daftar Tabel", icon: "mdi-table-large", link: "/tabelAll" }
     ],
     drawer: true,
-    currentUser: {},
-    token: localStorage.getItem("token"),
-    linkFoto: "",
-    thisYear: new Date().getFullYear(),
-    snackbar: true
+    thisYear: new Date().getFullYear()
   }),
   methods: {
-    getUser() {
-      axios
-        .get("/api/v1/user")
-        .then(response => {
-          this.currentUser = response.data;
-          this.linkFoto =
-            "https://ui-avatars.com/api/?name=" +
-            this.currentUser.nama_bidang +
-            "&rounded=true";
-        })
-        .catch(error => console.log(error));
-    },
     logout() {
       axios
         .post("/api/v1/logout")
         .then(response => {
+          localStorage.removeItem("apasi_cred");
           this.$router.push("/login");
         })
         .catch(error => console.log(error));
     }
   },
-  created() {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
-    this.getUser();
-  }
+  computed: {
+    currentUser: {
+      get() {
+        return this.$store.state.userStore.user;
+      }
+    },
+    linkFoto: {
+      get() {
+        return (
+          "https://ui-avatars.com/api/?name=" +
+          this.currentUser.nama_bidang +
+          "&rounded=true"
+        );
+      }
+    }
+  },
+  created() {}
 };
 </script>
