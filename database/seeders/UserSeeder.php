@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => 'ipds6200',
                 'nama_bidang' => 'IPDS',
-                'name' => 'Integrasi Pengolahan dan Diseminasi Statistik',
+                'name' => 'Bidang Integrasi Pengolahan dan Diseminasi Statistik',
                 'role' => 'ADMIN',
                 'color' => 'pink',
                 'password' => Hash::make('rahasia'),
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => 'nerwilis6200',
                 'nama_bidang' => 'Nerwilis',
-                'name' => 'Neraca Wilayah dan Analisis Statistik',
+                'name' => 'Bidang Neraca Wilayah dan Analisis Statistik',
                 'color' => 'deep-orange',
                 'role' => 'SM',
                 'password' => Hash::make('nerwilis6200'),

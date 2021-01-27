@@ -2236,7 +2236,112 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      searchPetugas: "",
+      searchUser: ""
+    };
+  },
+  created: function created() {
+    this.$store.dispatch("userStore/getUserTable");
+    this.$store.dispatch("petugasStore/getPetugasTable");
+  },
+  computed: {
+    users: function users() {
+      return this.$store.state.userStore.userTable;
+    },
+    petugases: function petugases() {
+      return this.$store.state.petugasStore.all;
+    },
+    petugasTable: function petugasTable() {
+      return this.$store.state.petugasStore.petugasTable;
+    }
+  },
+  methods: {
+    filterTextPetugas: function filterTextPetugas(value, search, item) {
+      return value != null && search != null && typeof value === "string" && value.toString().toLocaleLowerCase().indexOf(search) !== -1;
+    },
+    filterTextUser: function filterTextUser(value, search, item) {
+      return value != null && search != null && typeof value === "string" && value.toString().toLocaleLowerCase().indexOf(search) !== -1;
+    }
+  }
+});
 
 /***/ }),
 
@@ -2768,6 +2873,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _editedItem;
@@ -2945,7 +3058,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     searchPublikasi: function searchPublikasi() {
-      this.$store.dispatch("publikasiStore/setSearch", "/api/v1/publikasi/search?key=" + this.keySearchPublikasi);
+      this.$store.dispatch("publikasiStore/setSearch", "/api/v1/publikasi/search?key=" + this.table.keySearchPublikasi);
       this.initialize();
     },
     refreshTable: function refreshTable() {
@@ -26047,7 +26160,236 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n  Ini Account Data\n")])
+  return _c(
+    "div",
+    [
+      _c(
+        "v-row",
+        { attrs: { dense: "" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { lg: "6", sm: "12", xs: "12" } },
+            [
+              _c(
+                "v-card",
+                { attrs: { elevation: "2" } },
+                [
+                  _c(
+                    "v-row",
+                    {
+                      staticClass: "ma-0 pa-0",
+                      attrs: { align: "center", justify: "center" }
+                    },
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "10" } },
+                        [
+                          _c(
+                            "v-card-title",
+                            { staticClass: "justify-start text-left" },
+                            [
+                              _vm._v(
+                                "\n              Daftar User\n            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-subtitle",
+                            { staticClass: "justify-start text-left" },
+                            [
+                              _vm._v(
+                                "\n              User yaitu Bidang/Sub-Bagian\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "justify-center text-center",
+                          attrs: { cols: "2" }
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                color: "primary",
+                                elevation: "8",
+                                small: ""
+                              }
+                            },
+                            [
+                              _c("v-icon", [
+                                _vm._v(" mdi-account-multiple-plus")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-data-table", {
+                    staticClass: "elevation-1",
+                    attrs: {
+                      headers: _vm.users.header,
+                      items: _vm.users.items,
+                      "item-key": "name",
+                      search: _vm.searchUser,
+                      "custom-filter": _vm.filterTextUser,
+                      loading: _vm.users.loading
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "top",
+                        fn: function() {
+                          return [
+                            _c("v-text-field", {
+                              staticClass: "mx-4",
+                              attrs: { label: "Cari disini..." },
+                              model: {
+                                value: _vm.searchUser,
+                                callback: function($$v) {
+                                  _vm.searchUser = $$v
+                                },
+                                expression: "searchUser"
+                              }
+                            })
+                          ]
+                        },
+                        proxy: true
+                      }
+                    ])
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { lg: "6", sm: "12", xs: "12" } },
+            [
+              _c(
+                "v-card",
+                { attrs: { elevation: "2" } },
+                [
+                  _c(
+                    "v-row",
+                    {
+                      staticClass: "ma-0 pa-0",
+                      attrs: { align: "center", justify: "center" }
+                    },
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "10" } },
+                        [
+                          _c(
+                            "v-card-title",
+                            { staticClass: "justify-start text-left" },
+                            [
+                              _vm._v(
+                                "\n              Daftar Petugas\n            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-subtitle",
+                            { staticClass: "justify-start text-left" },
+                            [
+                              _vm._v(
+                                "\n              Petugas Layout atau Upload ke Portal Publikasi\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "justify-center text-center",
+                          attrs: { cols: "2" }
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                color: "primary",
+                                elevation: "8",
+                                small: ""
+                              }
+                            },
+                            [_c("v-icon", [_vm._v(" mdi-account-plus")])],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-data-table", {
+                    staticClass: "elevation-2",
+                    attrs: {
+                      headers: _vm.petugasTable.headers,
+                      items: _vm.petugases,
+                      "item-key": "nama",
+                      search: _vm.searchPetugas,
+                      "custom-filter": _vm.filterTextPetugas,
+                      loading: _vm.petugasTable.loading
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "top",
+                        fn: function() {
+                          return [
+                            _c("v-text-field", {
+                              staticClass: "mx-4",
+                              attrs: { label: "Cari disini..." },
+                              model: {
+                                value: _vm.searchPetugas,
+                                callback: function($$v) {
+                                  _vm.searchPetugas = $$v
+                                },
+                                expression: "searchPetugas"
+                              }
+                            })
+                          ]
+                        },
+                        proxy: true
+                      }
+                    ])
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -26665,11 +27007,11 @@ var render = function() {
                           }
                         },
                         model: {
-                          value: _vm.table.searchKey,
+                          value: _vm.table.keySearchPublikasi,
                           callback: function($$v) {
-                            _vm.$set(_vm.table, "searchKey", $$v)
+                            _vm.$set(_vm.table, "keySearchPublikasi", $$v)
                           },
-                          expression: "table.searchKey"
+                          expression: "table.keySearchPublikasi"
                         }
                       }),
                       _vm._v(" "),
@@ -27251,30 +27593,49 @@ var render = function() {
               fn: function(ref) {
                 var item = ref.item
                 return [
-                  _c("div", { class: ["font-weight-bold "] }, [
-                    _vm._v(
-                      "\n        " + _vm._s(item.judul_publikasi) + "\n      "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      class: ["font-weight-black " + item.user.color + "--text"]
-                    },
-                    [
+                  _c("span", [
+                    _c("div", {
+                      class: item.user.color,
+                      staticStyle: {
+                        width: "7px",
+                        height: "35px",
+                        float: "left",
+                        margin: "4px",
+                        "border-radius": "3px"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("div", { class: ["font-weight-bold "] }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(item.judul_publikasi) +
+                            "\n          "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          class: [
+                            "font-weight-black " + item.user.color + "--text"
+                          ]
+                        },
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(item.user.nama_bidang) +
+                              "\n          "
+                          )
+                        ]
+                      ),
                       _vm._v(
-                        "\n        " +
-                          _vm._s(item.user.nama_bidang) +
-                          "\n      "
+                        "\n          Rilis : " +
+                          _vm._s(_vm.dateForHuman(item.arc)) +
+                          "\n        "
                       )
-                    ]
-                  ),
-                  _vm._v(
-                    "\n      Rilis : " +
-                      _vm._s(_vm.dateForHuman(item.arc)) +
-                      "\n    "
-                  )
+                    ])
+                  ])
                 ]
               }
             },
@@ -89803,6 +90164,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_userStore_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/userStore.js */ "./resources/js/store/modules/userStore.js");
 /* harmony import */ var _modules_publikasiStore_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/publikasiStore.js */ "./resources/js/store/modules/publikasiStore.js");
+/* harmony import */ var _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/pekerjaanStore.js */ "./resources/js/store/modules/pekerjaanStore.js");
+/* harmony import */ var _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/petugasStore.js */ "./resources/js/store/modules/petugasStore.js");
+
+
 
 
 
@@ -89811,9 +90176,149 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     userStore: _modules_userStore_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-    publikasiStore: _modules_publikasiStore_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+    publikasiStore: _modules_publikasiStore_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    petugasStore: _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    pekerjaanStore: _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/pekerjaanStore.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/pekerjaanStore.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  table: {
+    baseUrl: "/api/v1/publikasi",
+    searchPublikasi: "",
+    searchKey: "",
+    totalPublikasi: 0,
+    publikasiList: [],
+    pageLength: 0,
+    loading: false,
+    itemsPerPage: 8,
+    headers: [{
+      text: "Judul Publikasi",
+      align: "start",
+      value: "judul"
+    }, {
+      text: "Batas Upload",
+      value: "batas_uploadHuman"
+    }, {
+      text: "Status",
+      value: "stage_id"
+    }, {
+      text: "",
+      value: "actions"
+    }]
+  }
+};
+var getters = {};
+var actions = {
+  setLoading: function setLoading(_ref, val) {
+    var commit = _ref.commit;
+    commit("changeLoading", val);
+  },
+  setTableData: function setTableData(_ref2, res) {
+    var commit = _ref2.commit;
+    commit("changeTableData", res);
+  },
+  refreshTable: function refreshTable(_ref3) {
+    var commit = _ref3.commit;
+    commit("refreshTable");
+  },
+  setSearch: function setSearch(_ref4, key) {
+    var commit = _ref4.commit;
+    commit("searchTable", key);
+  }
+};
+var mutations = {
+  changeLoading: function changeLoading(state, val) {
+    state.table.loading = val;
+  },
+  changeTableData: function changeTableData(state, res) {
+    state.table.publikasiList = res.data.data;
+    state.table.pageLength = res.data.last_page;
+    state.table.loading = false;
+  },
+  refreshTable: function refreshTable(state, res) {
+    state.table.baseUrl = "/api/v1/publikasi";
+  },
+  searchTable: function searchTable(state, key) {
+    state.table.baseUrl = key;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/petugasStore.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/petugasStore.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  baseUrl: "/api/v1/petugas",
+  petugasTable: {
+    loading: true,
+    headers: [{
+      text: "Nama",
+      align: "start",
+      sortable: false,
+      value: "nama"
+    }, {
+      text: "Tampilan",
+      align: "start",
+      sortable: false,
+      value: "nama_singkat"
+    }]
+  },
+  all: []
+};
+var getters = {};
+var actions = {
+  getPetugasTable: function getPetugasTable(_ref) {
+    var commit = _ref.commit,
+        state = _ref.state;
+    axios.get(state.baseUrl + "/all").then(function (res) {
+      commit("changePetugases", res.data);
+      commit("changeTableLoading", false);
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  }
+};
+var mutations = {
+  changePetugases: function changePetugases(state, val) {
+    state.all = val;
+  },
+  changeTableLoading: function changeTableLoading(state, val) {
+    state.petugasTable.loading = val;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
 
 /***/ }),
 
@@ -89906,8 +90411,31 @@ var mutations = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 var state = {
-  user: {}
+  baseURL: "api/v1/user",
+  user: {},
+  userTable: {
+    header: [{
+      text: "Bidang",
+      align: "start",
+      sortable: false,
+      value: "nama_bidang"
+    }, {
+      text: "Deskripsi",
+      align: "start",
+      sortable: false,
+      value: "name"
+    }, {
+      text: "Akun",
+      sortable: false,
+      value: "username"
+    }],
+    loading: true,
+    items: []
+  }
 };
 var getters = {
   isSavedUser: function isSavedUser(state) {
@@ -89918,11 +90446,24 @@ var actions = {
   setUser: function setUser(_ref, user) {
     var commit = _ref.commit;
     commit("changeUser", user);
+  },
+  getUserTable: function getUserTable(_ref2) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(state.baseURL + "/all").then(function (res) {
+      commit("changeUserTable", res.data);
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
   }
 };
 var mutations = {
   changeUser: function changeUser(state, user) {
     state.user = user;
+  },
+  changeUserTable: function changeUserTable(state, users) {
+    state.userTable.items = users;
+    state.userTable.loading = false;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

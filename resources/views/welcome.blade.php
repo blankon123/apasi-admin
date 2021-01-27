@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
 </head>
+l
 
 <body>
     <div id="app">
