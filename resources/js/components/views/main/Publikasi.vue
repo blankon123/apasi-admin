@@ -43,7 +43,7 @@
           <v-text-field
             clearable
             @keyup.enter="searchPublikasi"
-            v-model="table.searchKey"
+            v-model="table.keySearchPublikasi"
             hide-details
             flat
             label="Cari publikasi disini..."
@@ -228,13 +228,21 @@
         Ups, Tidak ada daftar publikasi
       </template>
       <template v-slot:[`item.judul`]="{ item }">
-        <div :class="[`font-weight-bold `]">
-          {{ item.judul_publikasi }}
-        </div>
-        <span :class="[`font-weight-black ${item.user.color}--text`]">
-          {{ item.user.nama_bidang }}
+        <span>
+          <div
+            style="width: 7px;height:35px;float:left;margin:4px;border-radius:3px"
+            :class="item.user.color"
+          ></div>
+          <div>
+            <div :class="[`font-weight-bold `]">
+              {{ item.judul_publikasi }}
+            </div>
+            <span :class="[`font-weight-black ${item.user.color}--text`]">
+              {{ item.user.nama_bidang }}
+            </span>
+            Rilis : {{ dateForHuman(item.arc) }}
+          </div>
         </span>
-        Rilis : {{ dateForHuman(item.arc) }}
       </template>
       <template v-slot:[`item.batas_uploadHuman`]="{ item }">
         <div class="font-weight-medium">
@@ -438,7 +446,7 @@ export default {
     searchPublikasi() {
       this.$store.dispatch(
         "publikasiStore/setSearch",
-        "/api/v1/publikasi/search?key=" + this.keySearchPublikasi
+        "/api/v1/publikasi/search?key=" + this.table.keySearchPublikasi
       );
       this.initialize();
     },

@@ -15,6 +15,10 @@ class CreatePekerjaansTable extends Migration
     {
         Schema::create('pekerjaans', function (Blueprint $table) {
             $table->id();
+            $table->string('nama')->nullable();
+            $table->string('tipe')->nullable();
+            $table->foreignId('petugas_id')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
