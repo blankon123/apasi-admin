@@ -36,7 +36,16 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->user()->role == "ADMIN") {
+            $newPetugas = new Petugas;
+            $newPetugas->nama = $request->nama;
+            $newPetugas->nama_singkat = $request->nama_singkat;
+            $newPetugas->save();
+            return response("Sukses Menambahkan Petugas", 200);
+        } else {
+            return response("Ups, Anda Bukan Admin ", 500);
+        }
+
     }
 
     /**
@@ -81,12 +90,12 @@ class PetugasController extends Controller
      */
     public function destroy(Request $req)
     {
-        $publikasi = Publikasi::find($req->id);
+        $petugas = Petugas::find($req->id);
         try {
-            $publikasi->delete();
+            $petugas->delete();
             response('Sukses Delete', 200);
         } catch (\Throwable $th) {
-            response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
+            response('Terdapat Kesalahan saat Delete Petugas' . $th, 500);
         }
     }
 

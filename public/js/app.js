@@ -2311,11 +2311,142 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      searchPetugas: "",
-      searchUser: ""
+      petugasDialog: {
+        title: "",
+        subtitle: "",
+        show: false,
+        form: {
+          nama: "",
+          nama_singkat: ""
+        },
+        targetUrl: "",
+        actionTitle: ""
+      },
+      deleteDialog: {
+        type: "",
+        show: false,
+        name: "",
+        targetUrl: "",
+        itemId: null
+      },
+      search: {
+        petugas: "",
+        user: ""
+      },
+      rules: {
+        required: function required(value) {
+          return !!value || "Harus Terisi.";
+        }
+      }
     };
   },
   created: function created() {
@@ -2339,6 +2470,74 @@ __webpack_require__.r(__webpack_exports__);
     },
     filterTextUser: function filterTextUser(value, search, item) {
       return value != null && search != null && typeof value === "string" && value.toString().toLocaleLowerCase().indexOf(search) !== -1;
+    },
+    petugasDialogInit: function petugasDialogInit() {
+      var petugasDialogDefault = {
+        title: "",
+        subtitle: "",
+        show: false,
+        form: {
+          nama: "",
+          nama_singkat: ""
+        },
+        targetUrl: ""
+      };
+      this.petugasDialog = petugasDialogDefault;
+    },
+    petugasDialogAddShow: function petugasDialogAddShow() {
+      var petugasDialogAdd = {
+        title: "Tambah Petugas",
+        subtitle: "Penambahan Petugas Layout dan Upload",
+        show: true,
+        form: {
+          nama: "",
+          nama_singkat: ""
+        },
+        targetUrl: "petugasStore/addPetugas",
+        actionTitle: "Tambah"
+      };
+      this.petugasDialog = petugasDialogAdd;
+    },
+    petugasDialogEditShow: function petugasDialogEditShow(item) {
+      this.petugasDialog = {
+        title: "Edit Petugas",
+        subtitle: "Perubahan Nama dan/atau Nama Panjang Petugas",
+        show: true,
+        form: {
+          nama: item.nama,
+          nama_singkat: item.nama_singkat
+        },
+        targetUrl: "petugasStore/editPetugas",
+        actionTitle: "Edit"
+      };
+    },
+    petugasDialogAction: function petugasDialogAction() {
+      if (this.$refs.formPetugas.validate()) {
+        this.$store.dispatch(this.petugasDialog.targetUrl, this.petugasDialog.form);
+        this.petugasDialogInit();
+      }
+    },
+    petugasDialogDeleteShow: function petugasDialogDeleteShow(item) {
+      this.deleteDialog = {
+        type: "Petugas",
+        show: true,
+        name: item.nama,
+        targetUrl: "petugasStore/deletePetugas",
+        itemId: item.id
+      };
+    },
+    deleteDialogInit: function deleteDialogInit() {
+      this.deleteDialog = {
+        type: "",
+        show: false,
+        name: "",
+        targetUrl: "",
+        itemId: null
+      };
+    },
+    deleteDialogAction: function deleteDialogAction() {
+      this.$store.dispatch(this.deleteDialog.targetUrl, this.deleteDialog.itemId);
+      this.deleteDialogInit();
     }
   }
 });
@@ -26164,6 +26363,201 @@ var render = function() {
     "div",
     [
       _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "400px" },
+          model: {
+            value: _vm.petugasDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.petugasDialog, "show", $$v)
+            },
+            expression: "petugasDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("p", { staticClass: "headline mb-0" }, [
+                  _vm._v(_vm._s(_vm.petugasDialog.title))
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "subtitle-2 my-0" }, [
+                  _vm._v(_vm._s(_vm.petugasDialog.subtitle))
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-form",
+                        { ref: "formPetugas" },
+                        [
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Nama Panjang*",
+                                  rules: [_vm.rules.required]
+                                },
+                                model: {
+                                  value: _vm.petugasDialog.form.nama,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.petugasDialog.form,
+                                      "nama",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "petugasDialog.form.nama"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Nama Singkat*",
+                                  rules: [_vm.rules.required]
+                                },
+                                model: {
+                                  value: _vm.petugasDialog.form.nama_singkat,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.petugasDialog.form,
+                                      "nama_singkat",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "petugasDialog.form.nama_singkat"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("*Harus Diisi")])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.petugasDialogInit }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.petugasDialogAction }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.petugasDialog.actionTitle) +
+                          "\n        "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "400" },
+          model: {
+            value: _vm.deleteDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.deleteDialog, "show", $$v)
+            },
+            expression: "deleteDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", { staticClass: "headline" }, [
+                _vm._v("\n        Yakin Menghapus?\n      ")
+              ]),
+              _vm._v(" "),
+              _c("v-card-text", [
+                _vm._v(
+                  "\n        Apakah anda yakin menghapus " +
+                    _vm._s(_vm.deleteDialog.type) +
+                    "\n        " +
+                    _vm._s(_vm.deleteDialog.name) +
+                    " ?\n      "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.deleteDialogInit }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "green darken-1", text: "" },
+                      on: { click: _vm.deleteDialogAction }
+                    },
+                    [_vm._v("\n          Yakin\n        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
         "v-row",
         { attrs: { dense: "" } },
         [
@@ -26217,20 +26611,48 @@ var render = function() {
                         },
                         [
                           _c(
-                            "v-btn",
+                            "v-tooltip",
                             {
-                              attrs: {
-                                color: "primary",
-                                elevation: "8",
-                                small: ""
-                              }
-                            },
-                            [
-                              _c("v-icon", [
-                                _vm._v(" mdi-account-multiple-plus")
+                              attrs: { bottom: "" },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function(ref) {
+                                    var tooltip = ref.on
+                                    return [
+                                      _c(
+                                        "v-btn",
+                                        _vm._g(
+                                          {
+                                            attrs: {
+                                              color: "primary",
+                                              elevation: "8",
+                                              small: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                return _vm.userDialogAddShow(
+                                                  $event
+                                                )
+                                              }
+                                            }
+                                          },
+                                          Object.assign({}, tooltip)
+                                        ),
+                                        [
+                                          _c("v-icon", [
+                                            _vm._v(" mdi-account-multiple-plus")
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  }
+                                }
                               ])
-                            ],
-                            1
+                            },
+                            [_vm._v(" "), _c("span", [_vm._v("Tambah User")])]
                           )
                         ],
                         1
@@ -26245,31 +26667,95 @@ var render = function() {
                       headers: _vm.users.header,
                       items: _vm.users.items,
                       "item-key": "name",
-                      search: _vm.searchUser,
+                      search: _vm.search.user,
                       "custom-filter": _vm.filterTextUser,
                       loading: _vm.users.loading
                     },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "top",
-                        fn: function() {
-                          return [
-                            _c("v-text-field", {
-                              staticClass: "mx-4",
-                              attrs: { label: "Cari disini..." },
-                              model: {
-                                value: _vm.searchUser,
-                                callback: function($$v) {
-                                  _vm.searchUser = $$v
-                                },
-                                expression: "searchUser"
-                              }
-                            })
-                          ]
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "top",
+                          fn: function() {
+                            return [
+                              _c("v-text-field", {
+                                staticClass: "mx-4",
+                                attrs: { label: "Cari disini..." },
+                                model: {
+                                  value: _vm.search.user,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.search, "user", $$v)
+                                  },
+                                  expression: "search.user"
+                                }
+                              })
+                            ]
+                          },
+                          proxy: true
                         },
-                        proxy: true
-                      }
-                    ])
+                        {
+                          key: "item.actions",
+                          fn: function(ref) {
+                            var item = ref.item
+                            return [
+                              _c(
+                                "v-icon",
+                                {
+                                  staticClass: "mr-2",
+                                  attrs: { small: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editUser(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              mdi-pencil\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-icon",
+                                {
+                                  staticClass: "mr-2",
+                                  attrs: { small: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteUser(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              mdi-delete\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-icon",
+                                {
+                                  attrs: { small: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.resetPasswordUser(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              mdi-lock-reset\n            "
+                                  )
+                                ]
+                              )
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      true
+                    )
                   })
                 ],
                 1
@@ -26328,16 +26814,51 @@ var render = function() {
                         },
                         [
                           _c(
-                            "v-btn",
+                            "v-tooltip",
                             {
-                              attrs: {
-                                color: "primary",
-                                elevation: "8",
-                                small: ""
-                              }
+                              attrs: { bottom: "" },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function(ref) {
+                                    var tooltip = ref.on
+                                    return [
+                                      _c(
+                                        "v-btn",
+                                        _vm._g(
+                                          {
+                                            attrs: {
+                                              color: "primary",
+                                              elevation: "8",
+                                              small: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                return _vm.petugasDialogAddShow(
+                                                  $event
+                                                )
+                                              }
+                                            }
+                                          },
+                                          Object.assign({}, tooltip)
+                                        ),
+                                        [
+                                          _c("v-icon", [
+                                            _vm._v(" mdi-account-plus")
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ]
+                                  }
+                                }
+                              ])
                             },
-                            [_c("v-icon", [_vm._v(" mdi-account-plus")])],
-                            1
+                            [
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Tambah Petugas")])
+                            ]
                           )
                         ],
                         1
@@ -26351,32 +26872,77 @@ var render = function() {
                     attrs: {
                       headers: _vm.petugasTable.headers,
                       items: _vm.petugases,
-                      "item-key": "nama",
-                      search: _vm.searchPetugas,
+                      search: _vm.search.petugas,
                       "custom-filter": _vm.filterTextPetugas,
                       loading: _vm.petugasTable.loading
                     },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "top",
-                        fn: function() {
-                          return [
-                            _c("v-text-field", {
-                              staticClass: "mx-4",
-                              attrs: { label: "Cari disini..." },
-                              model: {
-                                value: _vm.searchPetugas,
-                                callback: function($$v) {
-                                  _vm.searchPetugas = $$v
-                                },
-                                expression: "searchPetugas"
-                              }
-                            })
-                          ]
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "top",
+                          fn: function() {
+                            return [
+                              _c("v-text-field", {
+                                staticClass: "mx-4",
+                                attrs: { label: "Cari disini..." },
+                                model: {
+                                  value: _vm.search.petugas,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.search, "petugas", $$v)
+                                  },
+                                  expression: "search.petugas"
+                                }
+                              })
+                            ]
+                          },
+                          proxy: true
                         },
-                        proxy: true
-                      }
-                    ])
+                        {
+                          key: "item.actions",
+                          fn: function(ref) {
+                            var item = ref.item
+                            return [
+                              _c(
+                                "v-icon",
+                                {
+                                  staticClass: "mr-2",
+                                  attrs: { small: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.petugasDialogEditShow(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              mdi-pencil\n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-icon",
+                                {
+                                  attrs: { small: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.petugasDialogDeleteShow(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              mdi-delete\n            "
+                                  )
+                                ]
+                              )
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      true
+                    )
                   })
                 ],
                 1
@@ -90287,6 +90853,11 @@ var state = {
       align: "start",
       sortable: false,
       value: "nama_singkat"
+    }, {
+      text: "",
+      align: "start",
+      sortable: false,
+      value: "actions"
     }]
   },
   all: []
@@ -90299,6 +90870,33 @@ var actions = {
     axios.get(state.baseUrl + "/all").then(function (res) {
       commit("changePetugases", res.data);
       commit("changeTableLoading", false);
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  addPetugas: function addPetugas(_ref2, data) {
+    var state = _ref2.state,
+        dispatch = _ref2.dispatch;
+    state.petugasTable.loading = true;
+    axios.post(state.baseUrl + "/", {
+      nama: data.nama,
+      nama_singkat: data.nama_singkat
+    }).then(function (res) {
+      dispatch("getPetugasTable");
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  deletePetugas: function deletePetugas(_ref3, id) {
+    var state = _ref3.state,
+        dispatch = _ref3.dispatch;
+    state.petugasTable.loading = true;
+    axios["delete"](state.baseUrl + "/", {
+      data: {
+        id: id
+      }
+    }).then(function (res) {
+      dispatch("getPetugasTable");
     })["catch"](function (err) {
       console.log(err.message);
     });
@@ -90429,9 +91027,10 @@ var state = {
       sortable: false,
       value: "name"
     }, {
-      text: "Akun",
+      text: "",
+      align: "start",
       sortable: false,
-      value: "username"
+      value: "actions"
     }],
     loading: true,
     items: []
