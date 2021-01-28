@@ -18,9 +18,10 @@ const state = {
         value: "name"
       },
       {
-        text: "Akun",
+        text: "",
+        align: "start",
         sortable: false,
-        value: "username"
+        value: "actions"
       }
     ],
     loading: true,

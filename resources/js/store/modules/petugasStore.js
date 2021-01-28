@@ -14,6 +14,12 @@ const state = {
         align: "start",
         sortable: false,
         value: "nama_singkat"
+      },
+      {
+        text: "",
+        align: "start",
+        sortable: false,
+        value: "actions"
       }
     ]
   },
@@ -27,6 +33,33 @@ const actions = {
       .then(res => {
         commit("changePetugases", res.data);
         commit("changeTableLoading", false);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  addPetugas({ state, dispatch }, data) {
+    state.petugasTable.loading = true;
+    axios
+      .post(state.baseUrl + "/", {
+        nama: data.nama,
+        nama_singkat: data.nama_singkat
+      })
+      .then(res => {
+        dispatch("getPetugasTable");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  deletePetugas({ state, dispatch }, id) {
+    state.petugasTable.loading = true;
+    axios
+      .delete(state.baseUrl + "/", {
+        data: { id: id }
+      })
+      .then(res => {
+        dispatch("getPetugasTable");
       })
       .catch(err => {
         console.log(err.message);

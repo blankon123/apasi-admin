@@ -26,7 +26,6 @@ class Petugas extends Model
     protected $hidden = [
         'created_at',
         'deleted_at',
-        'id',
         'updated_at',
     ];
 }
