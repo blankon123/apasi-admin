@@ -22,6 +22,10 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('user')->group(function () {
             Route::get('/', [UserController::class, 'index']);
+            Route::post('/', [UserController::class, 'store']);
+            Route::put('/', [UserController::class, 'update']);
+            Route::put('/password', [UserController::class, 'updatePassword']);
+            Route::delete('/', [UserController::class, 'destroy']);
             Route::get('/all', [UserController::class, 'all']);
         });
         Route::prefix('publikasi')->group(function () {
@@ -41,7 +45,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [PetugasController::class, 'index']);
             Route::get('/all', [PetugasController::class, 'all']);
             Route::post('/', [PetugasController::class, 'store']);
-            Route::put('/', [PetugasController::class, 'edit']);
+            Route::put('/', [PetugasController::class, 'update']);
             Route::delete('/', [PetugasController::class, 'destroy']);
         });
 
@@ -49,7 +53,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [PekerjaanController::class, 'index']);
             Route::get('/all', [PekerjaanController::class, 'all']);
             Route::post('/', [PekerjaanController::class, 'store']);
-            Route::put('/', [PekerjaanController::class, 'edit']);
+            Route::put('/', [PekerjaanController::class, 'update']);
             Route::delete('/', [PekerjaanController::class, 'destroy']);
         });
     });

@@ -45,7 +45,6 @@ class PetugasController extends Controller
         } else {
             return response("Ups, Anda Bukan Admin ", 500);
         }
-
     }
 
     /**
@@ -77,9 +76,17 @@ class PetugasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if ($request->user()->role == "ADMIN") {
+            $petugas = Petugas::find($request->id);
+            $petugas->nama = $request->nama;
+            $petugas->nama_singkat = $request->nama_singkat;
+            $petugas->save();
+            return response("Sukses Menambahkan Petugas", 200);
+        } else {
+            return response("Ups, Anda Bukan Admin ", 500);
+        }
     }
 
     /**

@@ -38,6 +38,75 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="userDialog.show" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <p class="headline mb-0">{{ userDialog.title }}</p>
+          <br />
+          <p class="subtitle-2 my-0">{{ userDialog.subtitle }}</p>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-form ref="formUser">
+              <v-row>
+                <v-text-field
+                  v-model="userDialog.form.username"
+                  label="akun*"
+                  placeholder="Misal: ipds6200"
+                  :rules="[rules.required]"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  v-model="userDialog.form.name"
+                  label="Nama Bidang*"
+                  placeholder="Misal: Bidang Integrasi Pengolahan..."
+                  :rules="[rules.required]"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  v-model="userDialog.form.nama_bidang"
+                  label="Singkatan Bidang*"
+                  placeholder="Misal: IPDS"
+                  :rules="[rules.required]"
+                ></v-text-field>
+              </v-row>
+              <v-row v-if="userDialog.showPassword">
+                <v-text-field
+                  v-model="userDialog.form.password"
+                  label="Password*"
+                  type="password"
+                  :rules="[rules.required, rules.minimal]"
+                ></v-text-field>
+              </v-row>
+              <v-row v-if="userDialog.confirmPassword.show">
+                <v-text-field
+                  v-model="userDialog.confirmPassword.confirmPass"
+                  label="Konfirmasi Password*"
+                  type="password"
+                  :rules="[
+                    rules.required,
+                    rules.minimal,
+                    rules.confirmPassword
+                  ]"
+                ></v-text-field>
+              </v-row>
+            </v-form>
+          </v-container>
+          <small>*Harus Diisi</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="userDialogInit">
+            Batal
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="userDialogAction">
+            {{ userDialog.actionTitle }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="deleteDialog.show" persistent max-width="400">
       <v-card>
         <v-card-title class="headline">
@@ -54,6 +123,53 @@
           </v-btn>
           <v-btn color="green darken-1" text @click="deleteDialogAction">
             Yakin
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="resetPasswordDialog.show" persistent max-width="400">
+      <v-card>
+        <v-card-title>
+          <p class="headline mb-0">Reset Password</p>
+          <br />
+          <p class="subtitle-2 my-0">
+            Ganti Password User {{ resetPasswordDialog.form.name }}
+          </p>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-form ref="formPassword">
+              <v-row>
+                <v-text-field
+                  v-model="resetPasswordDialog.form.password"
+                  label="Password*"
+                  type="password"
+                  :rules="[rules.required, rules.minimal]"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  v-model="resetPasswordDialog.form.confirmPass"
+                  label="Konfirmasi Password*"
+                  type="password"
+                  :rules="[
+                    rules.required,
+                    rules.minimal,
+                    rules.confirmPasswordRe
+                  ]"
+                ></v-text-field>
+              </v-row>
+            </v-form>
+          </v-container>
+          <small>*Harus Diisi</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="resetPasswordDialogInit">
+            Batal
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="resetPasswordDialogAction">
+            Reset
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -109,13 +225,13 @@
               ></v-text-field>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon small class="mr-2" @click="editUser(item)">
+              <v-icon small class="mr-2" @click="userDialogEditShow(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small class="mr-2" @click="deleteUser(item)">
+              <v-icon small class="mr-2" @click="userDialogDeleteShow(item)">
                 mdi-delete
               </v-icon>
-              <v-icon small @click="resetPasswordUser(item)">
+              <v-icon small @click="resetPasswordDialogShow(item)">
                 mdi-lock-reset
               </v-icon>
             </template>
@@ -194,8 +310,28 @@ export default {
         subtitle: "",
         show: false,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
+        },
+        targetUrl: "",
+        actionTitle: ""
+      },
+      userDialog: {
+        title: "",
+        subtitle: "",
+        show: false,
+        showPassword: false,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: true,
+          confirmPass: ""
         },
         targetUrl: "",
         actionTitle: ""
@@ -207,12 +343,28 @@ export default {
         targetUrl: "",
         itemId: null
       },
+      resetPasswordDialog: {
+        show: false,
+        form: {
+          password: "",
+          name: "",
+          confirmPass: "",
+          id: null
+        },
+        targetUrl: "userStore/resetUserPassword"
+      },
       search: {
         petugas: "",
         user: ""
       },
       rules: {
-        required: value => !!value || "Harus Terisi."
+        required: value => !!value || "Harus Terisi.",
+        minimal: value => value.length >= 6 || "Min 6 Karakter",
+        confirmPassword: value =>
+          value === this.userDialog.form.password || "Password tidak sama",
+        confirmPasswordRe: value =>
+          value === this.resetPasswordDialog.form.password ||
+          "Password tidak sama"
       }
     };
   },
@@ -254,39 +406,140 @@ export default {
           .indexOf(search) !== -1
       );
     },
+    resetPasswordDialogInit() {
+      this.resetPasswordDialog = {
+        show: false,
+        form: {
+          password: "",
+          name: "",
+          confirmPass: "",
+          id: null
+        }
+      };
+    },
+    resetPasswordDialogShow(item) {
+      this.resetPasswordDialog = {
+        show: true,
+        form: {
+          password: "",
+          name: item.name,
+          confirmPass: "",
+          id: item.id
+        },
+        targetUrl: "userStore/resetUserPassword"
+      };
+    },
+    resetPasswordDialogAction() {
+      if (this.$refs.formPassword.validate()) {
+        this.$store.dispatch(
+          this.resetPasswordDialog.targetUrl,
+          this.resetPasswordDialog.form
+        );
+        this.resetPasswordDialogInit();
+      }
+    },
     petugasDialogInit() {
-      let petugasDialogDefault = {
+      this.petugasDialog = {
         title: "",
         subtitle: "",
         show: false,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
         },
-        targetUrl: ""
+        targetUrl: "userStore/resetUserPassword"
       };
-      this.petugasDialog = petugasDialogDefault;
+    },
+    userDialogInit() {
+      this.userDialog = {
+        title: "",
+        subtitle: "",
+        show: false,
+        showPassword: false,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: false,
+          confirmPass: ""
+        },
+        targetUrl: "",
+        actionTitle: ""
+      };
+    },
+    userDialogAddShow() {
+      this.userDialog = {
+        title: "Tambah User",
+        subtitle: "Penambahan User atau Bidang Terkait",
+        show: true,
+        showPassword: true,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: true,
+          confirmPass: ""
+        },
+        targetUrl: "userStore/addUser",
+        actionTitle: "Tambah"
+      };
     },
     petugasDialogAddShow() {
-      let petugasDialogAdd = {
+      this.petugasDialog = {
         title: "Tambah Petugas",
         subtitle: "Penambahan Petugas Layout dan Upload",
         show: true,
+        showPassword: true,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
         },
         targetUrl: "petugasStore/addPetugas",
-        actionTitle: "Tambah"
+        actionTitle: "Tambah",
+        confirmPassword: {
+          show: false,
+          value: ""
+        }
       };
-      this.petugasDialog = petugasDialogAdd;
+    },
+    userDialogEditShow(item) {
+      this.userDialog = {
+        title: "Edit User",
+        subtitle: "Perubahan User atau Bidang Terkait",
+        show: true,
+        showPassword: false,
+        form: {
+          id: item.id,
+          username: item.username,
+          nama_bidang: item.nama_bidang,
+          name: item.name,
+          password: item.password
+        },
+        confirmPassword: {
+          show: false,
+          confirmPass: ""
+        },
+        targetUrl: "userStore/editUser",
+        actionTitle: "Edit"
+      };
     },
     petugasDialogEditShow(item) {
       this.petugasDialog = {
         title: "Edit Petugas",
-        subtitle: "Perubahan Nama dan/atau Nama Panjang Petugas",
+        subtitle: "Perubahan deskripsi Petugas Layout dan Upload",
         show: true,
         form: {
+          id: item.id,
           nama: item.nama,
           nama_singkat: item.nama_singkat
         },
@@ -303,13 +556,38 @@ export default {
         this.petugasDialogInit();
       }
     },
+    userDialogAction() {
+      if (this.$refs.formUser.validate()) {
+        this.$store.dispatch(this.userDialog.targetUrl, this.userDialog.form);
+        this.userDialogInit();
+      }
+    },
     petugasDialogDeleteShow(item) {
       this.deleteDialog = {
         type: "Petugas",
         show: true,
         name: item.nama,
         targetUrl: "petugasStore/deletePetugas",
-        itemId: item.id
+        form: {
+          id: item.id,
+          nama: item.nama,
+          nama_singkat: item.nama_singkat
+        }
+      };
+    },
+    userDialogDeleteShow(item) {
+      this.deleteDialog = {
+        type: "User",
+        show: true,
+        name: item.name,
+        targetUrl: "userStore/deleteUser",
+        form: {
+          id: item.id,
+          username: item.username,
+          nama_bidang: item.nama_bidang,
+          name: item.name,
+          password: item.password
+        }
       };
     },
     deleteDialogInit() {
@@ -322,10 +600,7 @@ export default {
       };
     },
     deleteDialogAction() {
-      this.$store.dispatch(
-        this.deleteDialog.targetUrl,
-        this.deleteDialog.itemId
-      );
+      this.$store.dispatch(this.deleteDialog.targetUrl, this.deleteDialog.form);
       this.deleteDialogInit();
     }
   }

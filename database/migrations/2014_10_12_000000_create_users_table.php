@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('nama_bidang');
             $table->string('name');
             $table->string('color');
-            $table->string('role')->default('sm');
+            $table->string('role')->default('SM');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
