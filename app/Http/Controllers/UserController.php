@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,7 +37,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->user()->role == "ADMIN") {
+            $newUser = new User;
+            $color = ['red', 'purple', 'blue', 'amber', 'brown'];
+            $newUser->username = $request->username;
+            $newUser->nama_bidang = $request->nama_bidang;
+            $newUser->name = $request->name;
+            $newUser->password = Hash::make($request->password);
+            $newUser->color = $color[array_rand($color, 1)];
+            $newUser->save();
+            return response("Sukses Menambahkan User", 200);
+        } else {
+            return response("Ups, Anda Bukan Admin ", 500);
+        }
     }
 
     /**
@@ -68,9 +81,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if ($request->user()->role == "ADMIN") {
+            $user = User::find($request->id);
+            $user->username = $request->username;
+            $user->nama_bidang = $request->nama_bidang;
+            $user->name = $request->name;
+            $user->save();
+            return response("Sukses Merubah User", 200);
+        } else {
+            return response("Ups, Anda Bukan Admin ", 500);
+        }
+    }
+
+    /**
+     * Update the specified resource password in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        if ($request->user()->role == "ADMIN") {
+            $user = User::find($request->id);
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return response("Sukses Merubah User", 200);
+        } else {
+            return response("Ups, Anda Bukan Admin ", 500);
+        }
     }
 
     /**

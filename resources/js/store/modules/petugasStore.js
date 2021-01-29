@@ -52,11 +52,26 @@ const actions = {
         console.log(err.message);
       });
   },
-  deletePetugas({ state, dispatch }, id) {
+  editPetugas({ state, dispatch }, data) {
+    state.petugasTable.loading = true;
+    axios
+      .put(state.baseUrl + "/", {
+        id: data.id,
+        nama: data.nama,
+        nama_singkat: data.nama_singkat
+      })
+      .then(res => {
+        dispatch("getPetugasTable");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  deletePetugas({ state, dispatch }, data) {
     state.petugasTable.loading = true;
     axios
       .delete(state.baseUrl + "/", {
-        data: { id: id }
+        data: { id: data.id }
       })
       .then(res => {
         dispatch("getPetugasTable");

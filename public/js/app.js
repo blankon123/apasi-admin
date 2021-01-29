@@ -2417,16 +2417,154 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
+    var _this = this;
+
     return {
       petugasDialog: {
         title: "",
         subtitle: "",
         show: false,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
+        },
+        targetUrl: "",
+        actionTitle: ""
+      },
+      userDialog: {
+        title: "",
+        subtitle: "",
+        show: false,
+        showPassword: false,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: true,
+          confirmPass: ""
         },
         targetUrl: "",
         actionTitle: ""
@@ -2438,6 +2576,16 @@ __webpack_require__.r(__webpack_exports__);
         targetUrl: "",
         itemId: null
       },
+      resetPasswordDialog: {
+        show: false,
+        form: {
+          password: "",
+          name: "",
+          confirmPass: "",
+          id: null
+        },
+        targetUrl: "userStore/resetUserPassword"
+      },
       search: {
         petugas: "",
         user: ""
@@ -2445,6 +2593,15 @@ __webpack_require__.r(__webpack_exports__);
       rules: {
         required: function required(value) {
           return !!value || "Harus Terisi.";
+        },
+        minimal: function minimal(value) {
+          return value.length >= 6 || "Min 6 Karakter";
+        },
+        confirmPassword: function confirmPassword(value) {
+          return value === _this.userDialog.form.password || "Password tidak sama";
+        },
+        confirmPasswordRe: function confirmPasswordRe(value) {
+          return value === _this.resetPasswordDialog.form.password || "Password tidak sama";
         }
       }
     };
@@ -2471,39 +2628,137 @@ __webpack_require__.r(__webpack_exports__);
     filterTextUser: function filterTextUser(value, search, item) {
       return value != null && search != null && typeof value === "string" && value.toString().toLocaleLowerCase().indexOf(search) !== -1;
     },
+    resetPasswordDialogInit: function resetPasswordDialogInit() {
+      this.resetPasswordDialog = {
+        show: false,
+        form: {
+          password: "",
+          name: "",
+          confirmPass: "",
+          id: null
+        }
+      };
+    },
+    resetPasswordDialogShow: function resetPasswordDialogShow(item) {
+      this.resetPasswordDialog = {
+        show: true,
+        form: {
+          password: "",
+          name: item.name,
+          confirmPass: "",
+          id: item.id
+        },
+        targetUrl: "userStore/resetUserPassword"
+      };
+    },
+    resetPasswordDialogAction: function resetPasswordDialogAction() {
+      if (this.$refs.formPassword.validate()) {
+        this.$store.dispatch(this.resetPasswordDialog.targetUrl, this.resetPasswordDialog.form);
+        this.resetPasswordDialogInit();
+      }
+    },
     petugasDialogInit: function petugasDialogInit() {
-      var petugasDialogDefault = {
+      this.petugasDialog = {
         title: "",
         subtitle: "",
         show: false,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
         },
-        targetUrl: ""
+        targetUrl: "userStore/resetUserPassword"
       };
-      this.petugasDialog = petugasDialogDefault;
+    },
+    userDialogInit: function userDialogInit() {
+      this.userDialog = {
+        title: "",
+        subtitle: "",
+        show: false,
+        showPassword: false,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: false,
+          confirmPass: ""
+        },
+        targetUrl: "",
+        actionTitle: ""
+      };
+    },
+    userDialogAddShow: function userDialogAddShow() {
+      this.userDialog = {
+        title: "Tambah User",
+        subtitle: "Penambahan User atau Bidang Terkait",
+        show: true,
+        showPassword: true,
+        form: {
+          id: null,
+          username: "",
+          nama_bidang: "",
+          name: "",
+          password: ""
+        },
+        confirmPassword: {
+          show: true,
+          confirmPass: ""
+        },
+        targetUrl: "userStore/addUser",
+        actionTitle: "Tambah"
+      };
     },
     petugasDialogAddShow: function petugasDialogAddShow() {
-      var petugasDialogAdd = {
+      this.petugasDialog = {
         title: "Tambah Petugas",
         subtitle: "Penambahan Petugas Layout dan Upload",
         show: true,
+        showPassword: true,
         form: {
+          id: "",
           nama: "",
           nama_singkat: ""
         },
         targetUrl: "petugasStore/addPetugas",
-        actionTitle: "Tambah"
+        actionTitle: "Tambah",
+        confirmPassword: {
+          show: false,
+          value: ""
+        }
       };
-      this.petugasDialog = petugasDialogAdd;
+    },
+    userDialogEditShow: function userDialogEditShow(item) {
+      this.userDialog = {
+        title: "Edit User",
+        subtitle: "Perubahan User atau Bidang Terkait",
+        show: true,
+        showPassword: false,
+        form: {
+          id: item.id,
+          username: item.username,
+          nama_bidang: item.nama_bidang,
+          name: item.name,
+          password: item.password
+        },
+        confirmPassword: {
+          show: false,
+          confirmPass: ""
+        },
+        targetUrl: "userStore/editUser",
+        actionTitle: "Edit"
+      };
     },
     petugasDialogEditShow: function petugasDialogEditShow(item) {
       this.petugasDialog = {
         title: "Edit Petugas",
-        subtitle: "Perubahan Nama dan/atau Nama Panjang Petugas",
+        subtitle: "Perubahan deskripsi Petugas Layout dan Upload",
         show: true,
         form: {
+          id: item.id,
           nama: item.nama,
           nama_singkat: item.nama_singkat
         },
@@ -2517,13 +2772,38 @@ __webpack_require__.r(__webpack_exports__);
         this.petugasDialogInit();
       }
     },
+    userDialogAction: function userDialogAction() {
+      if (this.$refs.formUser.validate()) {
+        this.$store.dispatch(this.userDialog.targetUrl, this.userDialog.form);
+        this.userDialogInit();
+      }
+    },
     petugasDialogDeleteShow: function petugasDialogDeleteShow(item) {
       this.deleteDialog = {
         type: "Petugas",
         show: true,
         name: item.nama,
         targetUrl: "petugasStore/deletePetugas",
-        itemId: item.id
+        form: {
+          id: item.id,
+          nama: item.nama,
+          nama_singkat: item.nama_singkat
+        }
+      };
+    },
+    userDialogDeleteShow: function userDialogDeleteShow(item) {
+      this.deleteDialog = {
+        type: "User",
+        show: true,
+        name: item.name,
+        targetUrl: "userStore/deleteUser",
+        form: {
+          id: item.id,
+          username: item.username,
+          nama_bidang: item.nama_bidang,
+          name: item.name,
+          password: item.password
+        }
       };
     },
     deleteDialogInit: function deleteDialogInit() {
@@ -2536,7 +2816,7 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     deleteDialogAction: function deleteDialogAction() {
-      this.$store.dispatch(this.deleteDialog.targetUrl, this.deleteDialog.itemId);
+      this.$store.dispatch(this.deleteDialog.targetUrl, this.deleteDialog.form);
       this.deleteDialogInit();
     }
   }
@@ -26498,6 +26778,229 @@ var render = function() {
       _c(
         "v-dialog",
         {
+          attrs: { persistent: "", "max-width": "400px" },
+          model: {
+            value: _vm.userDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.userDialog, "show", $$v)
+            },
+            expression: "userDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("p", { staticClass: "headline mb-0" }, [
+                  _vm._v(_vm._s(_vm.userDialog.title))
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("p", { staticClass: "subtitle-2 my-0" }, [
+                  _vm._v(_vm._s(_vm.userDialog.subtitle))
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-form",
+                        { ref: "formUser" },
+                        [
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "akun*",
+                                  placeholder: "Misal: ipds6200",
+                                  rules: [_vm.rules.required]
+                                },
+                                model: {
+                                  value: _vm.userDialog.form.username,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.userDialog.form,
+                                      "username",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "userDialog.form.username"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Nama Bidang*",
+                                  placeholder:
+                                    "Misal: Bidang Integrasi Pengolahan...",
+                                  rules: [_vm.rules.required]
+                                },
+                                model: {
+                                  value: _vm.userDialog.form.name,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userDialog.form, "name", $$v)
+                                  },
+                                  expression: "userDialog.form.name"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Singkatan Bidang*",
+                                  placeholder: "Misal: IPDS",
+                                  rules: [_vm.rules.required]
+                                },
+                                model: {
+                                  value: _vm.userDialog.form.nama_bidang,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.userDialog.form,
+                                      "nama_bidang",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "userDialog.form.nama_bidang"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm.userDialog.showPassword
+                            ? _c(
+                                "v-row",
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Password*",
+                                      type: "password",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.minimal
+                                      ]
+                                    },
+                                    model: {
+                                      value: _vm.userDialog.form.password,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.userDialog.form,
+                                          "password",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "userDialog.form.password"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.userDialog.confirmPassword.show
+                            ? _c(
+                                "v-row",
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Konfirmasi Password*",
+                                      type: "password",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.minimal,
+                                        _vm.rules.confirmPassword
+                                      ]
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.userDialog.confirmPassword
+                                          .confirmPass,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.userDialog.confirmPassword,
+                                          "confirmPass",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "userDialog.confirmPassword.confirmPass"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("*Harus Diisi")])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.userDialogInit }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.userDialogAction }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.userDialog.actionTitle) +
+                          "\n        "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
           attrs: { persistent: "", "max-width": "400" },
           model: {
             value: _vm.deleteDialog.show,
@@ -26546,6 +27049,148 @@ var render = function() {
                       on: { click: _vm.deleteDialogAction }
                     },
                     [_vm._v("\n          Yakin\n        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "400" },
+          model: {
+            value: _vm.resetPasswordDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.resetPasswordDialog, "show", $$v)
+            },
+            expression: "resetPasswordDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("p", { staticClass: "headline mb-0" }, [
+                  _vm._v("Reset Password")
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("p", { staticClass: "subtitle-2 my-0" }, [
+                  _vm._v(
+                    "\n          Ganti Password User " +
+                      _vm._s(_vm.resetPasswordDialog.form.name) +
+                      "\n        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-form",
+                        { ref: "formPassword" },
+                        [
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Password*",
+                                  type: "password",
+                                  rules: [_vm.rules.required, _vm.rules.minimal]
+                                },
+                                model: {
+                                  value: _vm.resetPasswordDialog.form.password,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.resetPasswordDialog.form,
+                                      "password",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "resetPasswordDialog.form.password"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Konfirmasi Password*",
+                                  type: "password",
+                                  rules: [
+                                    _vm.rules.required,
+                                    _vm.rules.minimal,
+                                    _vm.rules.confirmPasswordRe
+                                  ]
+                                },
+                                model: {
+                                  value:
+                                    _vm.resetPasswordDialog.form.confirmPass,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.resetPasswordDialog.form,
+                                      "confirmPass",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "resetPasswordDialog.form.confirmPass"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("*Harus Diisi")])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.resetPasswordDialogInit }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.resetPasswordDialogAction }
+                    },
+                    [_vm._v("\n          Reset\n        ")]
                   )
                 ],
                 1
@@ -26704,7 +27349,7 @@ var render = function() {
                                   attrs: { small: "" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.editUser(item)
+                                      return _vm.userDialogEditShow(item)
                                     }
                                   }
                                 },
@@ -26722,7 +27367,7 @@ var render = function() {
                                   attrs: { small: "" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.deleteUser(item)
+                                      return _vm.userDialogDeleteShow(item)
                                     }
                                   }
                                 },
@@ -26739,7 +27384,7 @@ var render = function() {
                                   attrs: { small: "" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.resetPasswordUser(item)
+                                      return _vm.resetPasswordDialogShow(item)
                                     }
                                   }
                                 },
@@ -90887,13 +91532,27 @@ var actions = {
       console.log(err.message);
     });
   },
-  deletePetugas: function deletePetugas(_ref3, id) {
+  editPetugas: function editPetugas(_ref3, data) {
     var state = _ref3.state,
         dispatch = _ref3.dispatch;
     state.petugasTable.loading = true;
+    axios.put(state.baseUrl + "/", {
+      id: data.id,
+      nama: data.nama,
+      nama_singkat: data.nama_singkat
+    }).then(function (res) {
+      dispatch("getPetugasTable");
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  deletePetugas: function deletePetugas(_ref4, data) {
+    var state = _ref4.state,
+        dispatch = _ref4.dispatch;
+    state.petugasTable.loading = true;
     axios["delete"](state.baseUrl + "/", {
       data: {
-        id: id
+        id: data.id
       }
     }).then(function (res) {
       dispatch("getPetugasTable");
@@ -91013,7 +91672,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var state = {
-  baseURL: "api/v1/user",
+  baseUrl: "api/v1/user",
   user: {},
   userTable: {
     header: [{
@@ -91049,8 +91708,68 @@ var actions = {
   getUserTable: function getUserTable(_ref2) {
     var commit = _ref2.commit,
         state = _ref2.state;
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(state.baseURL + "/all").then(function (res) {
+    state.userTable.loading = true;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(state.baseUrl + "/all").then(function (res) {
       commit("changeUserTable", res.data);
+      state.userTable.loading = false;
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  addUser: function addUser(_ref3, data) {
+    var state = _ref3.state,
+        dispatch = _ref3.dispatch;
+    state.userTable.loading = true;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(state.baseUrl + "/", {
+      username: data.username,
+      nama_bidang: data.nama_bidang,
+      name: data.name,
+      password: data.password
+    }).then(function (res) {
+      dispatch("getUserTable");
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  editUser: function editUser(_ref4, form) {
+    var state = _ref4.state,
+        dispatch = _ref4.dispatch;
+    state.userTable.loading = true;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.put(state.baseUrl + "/", {
+      id: form.id,
+      username: form.username,
+      nama_bidang: form.nama_bidang,
+      name: form.name
+    }).then(function (res) {
+      dispatch("getUserTable");
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  resetUserPassword: function resetUserPassword(_ref5, form) {
+    var state = _ref5.state,
+        dispatch = _ref5.dispatch;
+    state.userTable.loading = true;
+    console.log(form.password);
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.put(state.baseUrl + "/password", {
+      id: form.id,
+      password: form.password
+    }).then(function (res) {
+      dispatch("getUserTable");
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  deleteUser: function deleteUser(_ref6, data) {
+    var state = _ref6.state,
+        dispatch = _ref6.dispatch;
+    state.userTable.loading = true;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](state.baseUrl + "/", {
+      data: {
+        id: data.id
+      }
+    }).then(function (res) {
+      dispatch("getUserTable");
     })["catch"](function (err) {
       console.log(err.message);
     });

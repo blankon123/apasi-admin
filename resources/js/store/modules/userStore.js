@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-  baseURL: "api/v1/user",
+  baseUrl: "api/v1/user",
   user: {},
   userTable: {
     header: [
@@ -38,10 +38,72 @@ const actions = {
     commit("changeUser", user);
   },
   getUserTable({ commit, state }) {
+    state.userTable.loading = true;
     axios
-      .get(state.baseURL + "/all")
+      .get(state.baseUrl + "/all")
       .then(res => {
         commit("changeUserTable", res.data);
+        state.userTable.loading = false;
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  addUser({ state, dispatch }, data) {
+    state.userTable.loading = true;
+    axios
+      .post(state.baseUrl + "/", {
+        username: data.username,
+        nama_bidang: data.nama_bidang,
+        name: data.name,
+        password: data.password
+      })
+      .then(res => {
+        dispatch("getUserTable");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  editUser({ state, dispatch }, form) {
+    state.userTable.loading = true;
+    axios
+      .put(state.baseUrl + "/", {
+        id: form.id,
+        username: form.username,
+        nama_bidang: form.nama_bidang,
+        name: form.name
+      })
+      .then(res => {
+        dispatch("getUserTable");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  resetUserPassword({ state, dispatch }, form) {
+    state.userTable.loading = true;
+    console.log(form.password);
+    axios
+      .put(state.baseUrl + "/password", {
+        id: form.id,
+        password: form.password
+      })
+      .then(res => {
+        dispatch("getUserTable");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  deleteUser({ state, dispatch }, data) {
+    state.userTable.loading = true;
+    axios
+      .delete(state.baseUrl + "/", {
+        data: { id: data.id }
+      })
+      .then(res => {
+        dispatch("getUserTable");
       })
       .catch(err => {
         console.log(err.message);
