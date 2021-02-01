@@ -3,6 +3,7 @@ import axios from "axios";
 const state = {
   baseUrl: "api/v1/user",
   user: {},
+  users: [],
   userTable: {
     header: [
       {
@@ -44,6 +45,16 @@ const actions = {
       .then(res => {
         commit("changeUserTable", res.data);
         state.userTable.loading = false;
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  },
+  getBidang({ commit, state }) {
+    axios
+      .get(state.baseUrl + "/bidang")
+      .then(res => {
+        commit("changeUserBidang", res.data);
       })
       .catch(err => {
         console.log(err.message);
@@ -117,6 +128,9 @@ const mutations = {
   changeUserTable(state, users) {
     state.userTable.items = users;
     state.userTable.loading = false;
+  },
+  changeUserBidang(state, bidangs) {
+    state.users = bidangs;
   }
 };
 

@@ -3098,8 +3098,54 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3362,6 +3408,276 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
+    return {
+      jenis_arcs: [{
+        jenis_arc: "ARC",
+        id: 1
+      }, {
+        jenis_arc: "Non-ARC",
+        id: 2
+      }],
+      currentPage: 1,
+      keySearchPublikasi: "",
+      dateShow: false,
+      publikasi: {
+        targetUrl: "publikasiStore/addPublikasi",
+        actionButton: "Simpan",
+        title: "Tambah Publikasi",
+        subtitle: "Penambahan Publikasi BPS Provinsi Kalimantan Tengah",
+        judul_publikasi: "",
+        arc: "",
+        tanggal_arc: "",
+        bidang: "",
+        id: ""
+      },
+      rules: {
+        required: function required(value) {
+          return !!value || "Harus Terisi.";
+        },
+        includeTahun: function includeTahun(value) {
+          return value.toLocaleLowerCase().indexOf("20") != -1 || "Harus Menyertakan Tahun";
+        }
+      }
+    };
+  },
+  computed: {
+    publikasiTable: function publikasiTable() {
+      return this.$store.state.publikasiStore.publikasiTable;
+    },
+    bidangs: function bidangs() {
+      return this.$store.state.userStore.users;
+    },
+    snackbar: function snackbar() {
+      return this.$store.state.publikasiStore.snackbar;
+    },
+    importDialog: function importDialog() {
+      return this.$store.state.publikasiStore.importDialog;
+    },
+    dialog: function dialog() {
+      return this.$store.state.publikasiStore.dialog;
+    },
+    deleteDialog: function deleteDialog() {
+      return this.$store.state.publikasiStore.deleteDialog;
+    },
+    user: function user() {
+      return this.$store.state.userStore.user;
+    },
+    showDatePicker: function showDatePicker() {
+      return this.dateForHuman(this.publikasi.tanggal_arc);
+    }
+  },
+  watch: {
+    currentPage: function currentPage(val) {
+      this.$store.dispatch("publikasiStore/setTableData", val);
+    },
+    user: function user() {
+      this.publikasi.bidang = this.user.id;
+    }
+  },
+  created: function created() {
+    this.$store.dispatch("publikasiStore/setTableData", 1);
+    this.$store.dispatch("userStore/getBidang");
+  },
+  methods: {
+    deleteDialogShow: function deleteDialogShow(item) {
+      this.$store.dispatch("publikasiStore/deleteDialogShow", item);
+    },
+    deleteDialogInit: function deleteDialogInit() {
+      this.$store.dispatch("publikasiStore/deleteDialogInit");
+    },
+    dialogInit: function dialogInit() {
+      this.$store.dispatch("publikasiStore/dialogInit");
+      this.publikasi = {
+        targetUrl: "publikasiStore/addPublikasi",
+        actionButton: "Simpan",
+        title: "Tambah Publikasi",
+        subtitle: "Penambahan Publikasi BPS Provinsi Kalimantan Tengah",
+        judul_publikasi: "",
+        arc: 0,
+        tanggal_arc: "",
+        bidang: this.user.id
+      };
+    },
+    deleteDialogAction: function deleteDialogAction() {
+      this.$store.dispatch("publikasiStore/deletePublikasi");
+    },
+    editDialogShow: function editDialogShow(item) {
+      this.dialog.show = true;
+      this.publikasi = {
+        targetUrl: "publikasiStore/editPublikasi",
+        actionButton: "Ubah",
+        title: "Perubahan Publikasi",
+        subtitle: "Perubahan Publikasi BPS Provinsi Kalimantan Tengah",
+        judul_publikasi: item.judul_publikasi,
+        arc: item.jenis_arc,
+        tanggal_arc: item.arc,
+        id: item.id,
+        bidang: item.user_id
+      };
+    },
+    importDialogAction: function importDialogAction() {
+      this.$store.dispatch("publikasiStore/importPublikasi");
+    },
+    searchPublikasi: function searchPublikasi() {
+      this.$store.dispatch("publikasiStore/setSearch", this.keySearchPublikasi);
+      this.currentPage = 1;
+    },
+    refreshTable: function refreshTable() {
+      this.$store.dispatch("publikasiStore/refreshTable");
+      this.currentPage = 1;
+      this.keySearchPublikasi = "";
+    },
+    dateForHuman: function dateForHuman(arcDate) {
+      var dateResult = moment(arcDate, "YYYY-MM-DD");
+      return dateResult.isValid() ? dateResult.locale("id").calendar(null, {
+        lastDay: "[Kemarin]",
+        sameDay: "[Hari Ini,] D MMMM yyyy",
+        nextDay: "[Besok,] dddd",
+        lastWeek: "dddd [Kemarin]",
+        nextWeek: "dddd, D MMMM yyyy",
+        sameElse: "dddd, D MMMM yyyy"
+      }) : "Belum Ditentukan Admin";
+    },
+    dialogAction: function dialogAction() {
+      if (this.$refs.formPublikasi.validate()) {
+        this.$store.dispatch(this.publikasi.targetUrl, this.publikasi);
+        this.dialogInit();
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/main/PublikasiAll.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/main/PublikasiAll.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
     var _editedItem;
 
     return {
@@ -3370,19 +3686,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         timeout: 3000,
         color: "success",
         text: ""
-      },
-      importDialog: {
-        dialog: false,
-        loading: false,
-        errorStatus: false,
-        errorText: "",
-        file: null
-      },
-      addDialog: {
-        dialog: false,
-        loading: false,
-        errorStatus: false,
-        errorText: ""
       },
       currentPage: 1,
       dialog: false,
@@ -3503,29 +3806,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this4.editedIndex = -1;
       });
     },
-    importExcel: function importExcel() {
-      var _this5 = this;
-
-      var formData = new FormData();
-      formData.append("file", this.importDialog.file);
-      this.importDialog.loading = true;
-      axios.post("/api/v1/publikasi/import", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }).then(function () {
-        _this5.importDialog.loading = false;
-        _this5.importDialog.dialog = false;
-
-        _this5.showSnackbar("Sukses Import List", "success");
-
-        _this5.initialize();
-      })["catch"](function (err) {
-        _this5.importDialog.loading = false;
-        _this5.importDialog.errorStatus = true;
-        _this5.importDialog.errorText = err.response.data;
-      });
-    },
     dateForHuman: function dateForHuman(arcDate) {
       return moment(arcDate, "YYYY-MM-DD").locale("id").calendar(null, {
         lastDay: "[Kemarin]",
@@ -3545,29 +3825,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.keySearchPublikasi = "";
       this.initialize();
       this.currentPage = 1;
-    },
-    addPublikasi: function addPublikasi() {}
+    }
   }
 });
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/main/PublikasiAll.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/main/PublikasiAll.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -27861,50 +28121,52 @@ var render = function() {
               _vm._v(" "),
               _c("v-divider"),
               _vm._v(" "),
-              _c(
-                "v-list",
-                { attrs: { dense: "" } },
-                [
-                  _c(
-                    "v-list-item",
-                    { attrs: { link: "", to: "/pekerjaan" } },
+              _vm.currentUser.role == "ADMIN"
+                ? _c(
+                    "v-list",
+                    { attrs: { dense: "" } },
                     [
                       _c(
-                        "v-list-item-action",
-                        [_c("v-icon", [_vm._v("mdi-briefcase")])],
+                        "v-list-item",
+                        { attrs: { link: "", to: "/pekerjaan" } },
+                        [
+                          _c(
+                            "v-list-item-action",
+                            [_c("v-icon", [_vm._v("mdi-briefcase")])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item-content",
+                            [_c("v-list-item-title", [_vm._v("Pekerjaan")])],
+                            1
+                          )
+                        ],
                         1
                       ),
                       _vm._v(" "),
                       _c(
-                        "v-list-item-content",
-                        [_c("v-list-item-title", [_vm._v("Pekerjaan")])],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-item",
-                    { attrs: { link: "", to: "/account" } },
-                    [
-                      _c(
-                        "v-list-item-action",
-                        [_c("v-icon", [_vm._v("mdi-account")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-item-content",
-                        [_c("v-list-item-title", [_vm._v("Akun")])],
+                        "v-list-item",
+                        { attrs: { link: "", to: "/account" } },
+                        [
+                          _c(
+                            "v-list-item-action",
+                            [_c("v-icon", [_vm._v("mdi-account")])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item-content",
+                            [_c("v-list-item-title", [_vm._v("Akun")])],
+                            1
+                          )
+                        ],
                         1
                       )
                     ],
                     1
                   )
-                ],
-                1
-              )
+                : _vm._e()
             ],
             1
           ),
@@ -28124,6 +28386,991 @@ var render = function() {
         [_vm._v("\n    " + _vm._s(_vm.snackbar.text) + "\n\n    ")]
       ),
       _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.deleteDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.deleteDialog, "show", $$v)
+            },
+            expression: "deleteDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _vm._v("\n        Konfirmasi Hapus\n      ")
+              ]),
+              _vm._v(" "),
+              _c("v-card-text", [
+                _vm._v(
+                  "\n        Apakah anda Yakin akan Menghapus publikasi\n        " +
+                    _vm._s(_vm.deleteDialog.form.name) +
+                    " Beserta seluruh File-nya dari aplikasi ?\n      "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.deleteDialogInit }
+                    },
+                    [_vm._v("Batal")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.deleteDialogAction }
+                    },
+                    [_vm._v("Hapus")]
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.importDialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.importDialog, "show", $$v)
+            },
+            expression: "importDialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("span", { staticClass: "headline" }, [
+                  _vm._v("Import Publikasi")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-row",
+                        [
+                          _c(
+                            "v-col",
+                            [
+                              _c("v-file-input", {
+                                attrs: {
+                                  accept: ".xlsx",
+                                  label: "File Import Excel",
+                                  outlined: "",
+                                  dense: "",
+                                  "show-size": "",
+                                  loading: _vm.importDialog.loading
+                                },
+                                model: {
+                                  value: _vm.importDialog.file,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.importDialog, "file", $$v)
+                                  },
+                                  expression: "importDialog.file"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-alert",
+                        {
+                          attrs: {
+                            text: "",
+                            prominent: "",
+                            type: "error",
+                            icon: "mdi-alert-remove"
+                          },
+                          model: {
+                            value: _vm.importDialog.errorStatus,
+                            callback: function($$v) {
+                              _vm.$set(_vm.importDialog, "errorStatus", $$v)
+                            },
+                            expression: "importDialog.errorStatus"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(_vm.importDialog.errorText) +
+                              "\n          "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "",
+                            target: "_blank",
+                            rel: "noopener noreferrer"
+                          }
+                        },
+                        [_vm._v("File Template Import\n          ")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.importDialog.show = false
+                        }
+                      }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.importDialogAction }
+                    },
+                    [_vm._v("\n          Import\n        ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.dialog.show,
+            callback: function($$v) {
+              _vm.$set(_vm.dialog, "show", $$v)
+            },
+            expression: "dialog.show"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("p", { staticClass: "headline mb-0" }, [
+                  _vm._v(_vm._s(_vm.publikasi.title))
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "caption mt-0" }, [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.publikasi.subtitle) +
+                      "\n        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-form",
+                        { ref: "formPublikasi" },
+                        [
+                          _c(
+                            "v-row",
+                            { staticClass: "mb-0" },
+                            [
+                              _c(
+                                "v-col",
+                                { staticClass: "pa-0" },
+                                [
+                                  _c("v-textarea", {
+                                    attrs: {
+                                      label: "Judul Publikasi",
+                                      "prepend-icon": "mdi-notebook",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.includeTahun
+                                      ],
+                                      rows: "1",
+                                      "row-height": "15",
+                                      "auto-grow": ""
+                                    },
+                                    model: {
+                                      value: _vm.publikasi.judul_publikasi,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.publikasi,
+                                          "judul_publikasi",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "publikasi.judul_publikasi"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            { staticClass: "my-0" },
+                            [
+                              _c(
+                                "v-col",
+                                { staticClass: "pa-0", attrs: { md: "4" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.jenis_arcs,
+                                      rules: [_vm.rules.required],
+                                      "item-text": "jenis_arc",
+                                      "item-value": "id",
+                                      label: "Jenis ARC",
+                                      "prepend-icon": "mdi-calendar-star",
+                                      mandatory: ""
+                                    },
+                                    model: {
+                                      value: _vm.publikasi.arc,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.publikasi, "arc", $$v)
+                                      },
+                                      expression: "publikasi.arc"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { staticClass: "pa-0", attrs: { md: "8" } },
+                                [
+                                  _c(
+                                    "v-menu",
+                                    {
+                                      ref: "menu",
+                                      attrs: {
+                                        transition: "scale-transition",
+                                        "offset-y": "",
+                                        "min-width": "auto"
+                                      },
+                                      scopedSlots: _vm._u([
+                                        {
+                                          key: "activator",
+                                          fn: function(ref) {
+                                            var on = ref.on
+                                            var attrs = ref.attrs
+                                            return [
+                                              _c(
+                                                "v-text-field",
+                                                _vm._g(
+                                                  _vm._b(
+                                                    {
+                                                      attrs: {
+                                                        label:
+                                                          "Tanggal Perkiraan Terbit ",
+                                                        "prepend-icon":
+                                                          "mdi-calendar",
+                                                        readonly: ""
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.showDatePicker,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.showDatePicker = $$v
+                                                        },
+                                                        expression:
+                                                          "showDatePicker"
+                                                      }
+                                                    },
+                                                    "v-text-field",
+                                                    attrs,
+                                                    false
+                                                  ),
+                                                  on
+                                                )
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ]),
+                                      model: {
+                                        value: _vm.dateShow,
+                                        callback: function($$v) {
+                                          _vm.dateShow = $$v
+                                        },
+                                        expression: "dateShow"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(" "),
+                                      _c("v-date-picker", {
+                                        on: {
+                                          input: function($event) {
+                                            _vm.dateShow = false
+                                          }
+                                        },
+                                        model: {
+                                          value: _vm.publikasi.tanggal_arc,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.publikasi,
+                                              "tanggal_arc",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "publikasi.tanggal_arc"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            { staticClass: "my-0" },
+                            [
+                              _c(
+                                "v-col",
+                                { staticClass: "pa-0" },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      disabled: _vm.user.role != "ADMIN",
+                                      items: _vm.bidangs,
+                                      rules: [_vm.rules.required],
+                                      "item-text": "nama_bidang",
+                                      "item-value": "id",
+                                      label: "Bidang",
+                                      "prepend-icon": "mdi-account-group",
+                                      mandatory: ""
+                                    },
+                                    model: {
+                                      value: _vm.publikasi.bidang,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.publikasi, "bidang", $$v)
+                                      },
+                                      expression: "publikasi.bidang"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-alert",
+                            {
+                              attrs: {
+                                text: "",
+                                prominent: "",
+                                type: "error",
+                                icon: "mdi-alert-remove"
+                              },
+                              model: {
+                                value: _vm.dialog.errorStatus,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.dialog, "errorStatus", $$v)
+                                },
+                                expression: "dialog.errorStatus"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.dialog.errorText) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red darken-1", text: "" },
+                      on: { click: _vm.dialogInit }
+                    },
+                    [_vm._v("\n          Batal\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "blue darken-1",
+                        loading: _vm.dialog.loading,
+                        text: ""
+                      },
+                      on: { click: _vm.dialogAction }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.publikasi.actionButton) +
+                          "\n        "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-data-table", {
+        staticClass: "elevation-3",
+        attrs: {
+          headers: _vm.publikasiTable.headers,
+          items: _vm.publikasiTable.publikasiList,
+          itemsPerPage: _vm.publikasiTable.itemsPerPage,
+          loading: _vm.publikasiTable.loading,
+          "loading-text": "Memuat... Mohon Tunggu",
+          "hide-default-footer": "",
+          "disable-sort": ""
+        },
+        scopedSlots: _vm._u(
+          [
+            {
+              key: "top",
+              fn: function() {
+                return [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { flat: "" } },
+                    [
+                      _c("v-toolbar-title", [_vm._v("Daftar Publikasi")]),
+                      _vm._v(" "),
+                      _c("v-divider", {
+                        staticClass: "mx-4",
+                        attrs: { inset: "", vertical: "" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-tooltip",
+                        {
+                          attrs: { bottom: "" },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "activator",
+                              fn: function(ref) {
+                                var tooltip = ref.on
+                                return [
+                                  _c(
+                                    "v-btn",
+                                    _vm._g(
+                                      {
+                                        staticClass: "mb-2",
+                                        attrs: { small: "", color: "primary" }
+                                      },
+                                      Object.assign({}, tooltip)
+                                    ),
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        { on: { click: _vm.refreshTable } },
+                                        [_vm._v("mdi-refresh")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ]
+                              }
+                            }
+                          ])
+                        },
+                        [_vm._v(" "), _c("span", [_vm._v("Refresh Konten")])]
+                      ),
+                      _vm._v(" "),
+                      _c("v-divider", {
+                        staticClass: "mx-4",
+                        attrs: { inset: "", vertical: "" }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          clearable: "",
+                          "hide-details": "",
+                          flat: "",
+                          label: "Cari publikasi disini..."
+                        },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.searchPublikasi($event)
+                          }
+                        },
+                        model: {
+                          value: _vm.keySearchPublikasi,
+                          callback: function($$v) {
+                            _vm.keySearchPublikasi = $$v
+                          },
+                          expression: "keySearchPublikasi"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _vm.user.role == "ADMIN"
+                        ? _c(
+                            "v-tooltip",
+                            {
+                              attrs: { bottom: "" },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "activator",
+                                    fn: function(ref) {
+                                      var tooltip = ref.on
+                                      return [
+                                        _c(
+                                          "v-btn",
+                                          _vm._g(
+                                            {
+                                              staticClass: "mb-2",
+                                              attrs: {
+                                                small: "",
+                                                color: "primary"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.importDialog.show = true
+                                                }
+                                              }
+                                            },
+                                            Object.assign({}, tooltip)
+                                          ),
+                                          [
+                                            _c("v-icon", [
+                                              _vm._v("mdi-book-plus-multiple")
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ],
+                                null,
+                                false,
+                                709206479
+                              )
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("span", [
+                                _vm._v("Import Publikasi dari Excel")
+                              ])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("v-divider", {
+                        staticClass: "mx-4",
+                        attrs: { inset: "", vertical: "" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-tooltip",
+                        {
+                          attrs: { bottom: "" },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "activator",
+                              fn: function(ref) {
+                                var tooltip = ref.on
+                                return [
+                                  _c(
+                                    "v-btn",
+                                    _vm._g(
+                                      {
+                                        staticClass: "mb-2",
+                                        attrs: { small: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.dialog.show = true
+                                          }
+                                        }
+                                      },
+                                      Object.assign({}, tooltip)
+                                    ),
+                                    [_c("v-icon", [_vm._v("mdi-book-plus")])],
+                                    1
+                                  )
+                                ]
+                              }
+                            }
+                          ])
+                        },
+                        [_vm._v(" "), _c("span", [_vm._v("Tambah Publikasi")])]
+                      )
+                    ],
+                    1
+                  )
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "item.actions",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _c(
+                    "v-icon",
+                    {
+                      staticClass: "mr-2",
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.viewItem(item)
+                        }
+                      }
+                    },
+                    [_vm._v("\n        mdi-eye\n      ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-icon",
+                    {
+                      staticClass: "mr-2",
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editDialogShow(item)
+                        }
+                      }
+                    },
+                    [_vm._v("\n        mdi-pencil\n      ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-icon",
+                    {
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteDialogShow(item)
+                        }
+                      }
+                    },
+                    [_vm._v("\n        mdi-delete\n      ")]
+                  )
+                ]
+              }
+            },
+            {
+              key: "no-data",
+              fn: function() {
+                return [_vm._v("\n      Ups, Tidak ada daftar publikasi\n    ")]
+              },
+              proxy: true
+            },
+            {
+              key: "item.judul",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _c("span", [
+                    _c("div", {
+                      class: item.user.color,
+                      staticStyle: {
+                        width: "7px",
+                        height: "35px",
+                        float: "left",
+                        margin: "4px",
+                        "border-radius": "3px"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("div", { class: ["font-weight-bold "] }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(item.judul_publikasi) +
+                            "\n          "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          class: [
+                            "font-weight-black " + item.user.color + "--text"
+                          ]
+                        },
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(item.user.nama_bidang) +
+                              "\n          "
+                          )
+                        ]
+                      ),
+                      _vm._v(
+                        "\n          Rilis : " +
+                          _vm._s(_vm.dateForHuman(item.arc)) +
+                          "\n        "
+                      )
+                    ])
+                  ])
+                ]
+              }
+            },
+            {
+              key: "item.batas_uploadHuman",
+              fn: function(ref) {
+                var item = ref.item
+                return [
+                  _c("div", { staticClass: "font-weight-medium" }, [
+                    _vm._v(
+                      "\n        " +
+                        _vm._s(_vm.dateForHuman(item.batas_upload)) +
+                        "\n      "
+                    )
+                  ])
+                ]
+              }
+            }
+          ],
+          null,
+          true
+        )
+      }),
+      _vm._v(" "),
+      _c("v-pagination", {
+        attrs: { length: _vm.publikasiTable.pageLength, "total-visible": "8" },
+        model: {
+          value: _vm.currentPage,
+          callback: function($$v) {
+            _vm.currentPage = $$v
+          },
+          expression: "currentPage"
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/main/PublikasiAll.vue?vue&type=template&id=47915c35&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/main/PublikasiAll.vue?vue&type=template&id=47915c35& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.snackbar.timeout, color: _vm.snackbar.color },
+          scopedSlots: _vm._u([
+            {
+              key: "action",
+              fn: function(ref) {
+                var attrs = ref.attrs
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._b(
+                      {
+                        attrs: { color: "white", text: "" },
+                        on: {
+                          click: function($event) {
+                            _vm.snackbar = false
+                          }
+                        }
+                      },
+                      "v-btn",
+                      attrs,
+                      false
+                    ),
+                    [_vm._v("\n        Tutup\n      ")]
+                  )
+                ]
+              }
+            }
+          ]),
+          model: {
+            value: _vm.snackbar.show,
+            callback: function($$v) {
+              _vm.$set(_vm.snackbar, "show", $$v)
+            },
+            expression: "snackbar.show"
+          }
+        },
+        [_vm._v("\n    " + _vm._s(_vm.snackbar.text) + "\n\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "500px" },
+          model: {
+            value: _vm.deleteDialog,
+            callback: function($$v) {
+              _vm.deleteDialog = $$v
+            },
+            expression: "deleteDialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _vm._v("\n        Konfirmasi Hapus\n      ")
+              ]),
+              _vm._v(" "),
+              _c("v-card-text", [
+                _vm._v(
+                  "\n        Apakah anda Yakin akan Menghapus publikasi Beserta seluruh File-nya\n        dari aplikasi ?\n      "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.closeDelete }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", text: "" },
+                      on: { click: _vm.deleteItemConfirm }
+                    },
+                    [_vm._v("OK")]
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-3",
         attrs: {
@@ -28224,519 +29471,7 @@ var render = function() {
                           },
                           expression: "table.keySearchPublikasi"
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("v-spacer"),
-                      _vm._v(" "),
-                      _c(
-                        "v-dialog",
-                        {
-                          attrs: { "max-width": "500px" },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "activator",
-                              fn: function(ref) {
-                                var dialog = ref.on
-                                return [
-                                  _c(
-                                    "v-tooltip",
-                                    {
-                                      attrs: { bottom: "" },
-                                      scopedSlots: _vm._u(
-                                        [
-                                          {
-                                            key: "activator",
-                                            fn: function(ref) {
-                                              var tooltip = ref.on
-                                              return [
-                                                _c(
-                                                  "v-btn",
-                                                  _vm._g(
-                                                    {
-                                                      staticClass: "mb-2",
-                                                      attrs: {
-                                                        small: "",
-                                                        color: "primary"
-                                                      }
-                                                    },
-                                                    Object.assign(
-                                                      {},
-                                                      tooltip,
-                                                      dialog
-                                                    )
-                                                  ),
-                                                  [
-                                                    _c("v-icon", [
-                                                      _vm._v(
-                                                        "mdi-book-plus-multiple"
-                                                      )
-                                                    ])
-                                                  ],
-                                                  1
-                                                )
-                                              ]
-                                            }
-                                          }
-                                        ],
-                                        null,
-                                        true
-                                      )
-                                    },
-                                    [
-                                      _vm._v(" "),
-                                      _c("span", [
-                                        _vm._v("Import Publikasi dari Excel")
-                                      ])
-                                    ]
-                                  )
-                                ]
-                              }
-                            }
-                          ]),
-                          model: {
-                            value: _vm.importDialog.dialog,
-                            callback: function($$v) {
-                              _vm.$set(_vm.importDialog, "dialog", $$v)
-                            },
-                            expression: "importDialog.dialog"
-                          }
-                        },
-                        [
-                          _vm._v(" "),
-                          _c(
-                            "v-card",
-                            [
-                              _c("v-card-title", [
-                                _c("span", { staticClass: "headline" }, [
-                                  _vm._v("Import Publikasi")
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-text",
-                                [
-                                  _c(
-                                    "v-container",
-                                    [
-                                      _c(
-                                        "v-row",
-                                        [
-                                          _c(
-                                            "v-col",
-                                            [
-                                              _c("v-file-input", {
-                                                attrs: {
-                                                  accept: ".xlsx",
-                                                  label: "File Import Excel",
-                                                  outlined: "",
-                                                  dense: "",
-                                                  "show-size": "",
-                                                  loading:
-                                                    _vm.importDialog.loading
-                                                },
-                                                model: {
-                                                  value: _vm.importDialog.file,
-                                                  callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.importDialog,
-                                                      "file",
-                                                      $$v
-                                                    )
-                                                  },
-                                                  expression:
-                                                    "importDialog.file"
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-alert",
-                                        {
-                                          attrs: {
-                                            text: "",
-                                            prominent: "",
-                                            type: "error",
-                                            icon: "mdi-alert-remove"
-                                          },
-                                          model: {
-                                            value: _vm.importDialog.errorStatus,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.importDialog,
-                                                "errorStatus",
-                                                $$v
-                                              )
-                                            },
-                                            expression:
-                                              "importDialog.errorStatus"
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                  " +
-                                              _vm._s(
-                                                _vm.importDialog.errorText
-                                              ) +
-                                              "\n                "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          attrs: {
-                                            href: "",
-                                            target: "_blank",
-                                            rel: "noopener noreferrer"
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            "File Template Import\n                "
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.importDialog.dialog = false
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                Cancel\n              "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: { click: _vm.importExcel }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                Import\n              "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-divider", {
-                        staticClass: "mx-4",
-                        attrs: { inset: "", vertical: "" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "v-dialog",
-                        {
-                          attrs: { "max-width": "500px" },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "activator",
-                              fn: function(ref) {
-                                var dialog = ref.on
-                                return [
-                                  _c(
-                                    "v-tooltip",
-                                    {
-                                      attrs: { bottom: "" },
-                                      scopedSlots: _vm._u(
-                                        [
-                                          {
-                                            key: "activator",
-                                            fn: function(ref) {
-                                              var tooltip = ref.on
-                                              return [
-                                                _c(
-                                                  "v-btn",
-                                                  _vm._g(
-                                                    {
-                                                      staticClass: "mb-2",
-                                                      attrs: {
-                                                        small: "",
-                                                        color: "primary"
-                                                      }
-                                                    },
-                                                    Object.assign(
-                                                      {},
-                                                      tooltip,
-                                                      dialog
-                                                    )
-                                                  ),
-                                                  [
-                                                    _c("v-icon", [
-                                                      _vm._v("mdi-book-plus")
-                                                    ])
-                                                  ],
-                                                  1
-                                                )
-                                              ]
-                                            }
-                                          }
-                                        ],
-                                        null,
-                                        true
-                                      )
-                                    },
-                                    [
-                                      _vm._v(" "),
-                                      _c("span", [_vm._v("Tambah Publikasi")])
-                                    ]
-                                  )
-                                ]
-                              }
-                            }
-                          ]),
-                          model: {
-                            value: _vm.addDialog.dialog,
-                            callback: function($$v) {
-                              _vm.$set(_vm.addDialog, "dialog", $$v)
-                            },
-                            expression: "addDialog.dialog"
-                          }
-                        },
-                        [
-                          _vm._v(" "),
-                          _c(
-                            "v-card",
-                            [
-                              _c("v-card-title", [
-                                _c("span", { staticClass: "headline" }, [
-                                  _vm._v("Tambah Publikasi")
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-text",
-                                [
-                                  _c(
-                                    "v-container",
-                                    [
-                                      _c(
-                                        "v-row",
-                                        [
-                                          _c(
-                                            "v-col",
-                                            [
-                                              _c("v-file-input", {
-                                                attrs: {
-                                                  accept: ".xlsx",
-                                                  label: "File Import Excel",
-                                                  outlined: "",
-                                                  dense: "",
-                                                  "show-size": "",
-                                                  loading: _vm.addDialog.loading
-                                                },
-                                                model: {
-                                                  value: _vm.addDialog.file,
-                                                  callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.addDialog,
-                                                      "file",
-                                                      $$v
-                                                    )
-                                                  },
-                                                  expression: "addDialog.file"
-                                                }
-                                              })
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-alert",
-                                        {
-                                          attrs: {
-                                            text: "",
-                                            prominent: "",
-                                            type: "error",
-                                            icon: "mdi-alert-remove"
-                                          },
-                                          model: {
-                                            value: _vm.addDialog.errorStatus,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.addDialog,
-                                                "errorStatus",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "addDialog.errorStatus"
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                  " +
-                                              _vm._s(_vm.addDialog.errorText) +
-                                              "\n                "
-                                          )
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.addDialog.dialog = false
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                Cancel\n              "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: { click: _vm.addPublikasi }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                Simpan\n              "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-dialog",
-                        {
-                          attrs: { "max-width": "500px" },
-                          model: {
-                            value: _vm.deleteDialog,
-                            callback: function($$v) {
-                              _vm.deleteDialog = $$v
-                            },
-                            expression: "deleteDialog"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-card",
-                            [
-                              _c("v-card-title", [
-                                _vm._v(
-                                  "\n              Konfirmasi Hapus\n            "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("v-card-text", [
-                                _vm._v(
-                                  "\n              Apakah anda Yakin akan Menghapus publikasi Beserta seluruh\n              File-nya dari aplikasi ?\n            "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: { click: _vm.closeDelete }
-                                    },
-                                    [_vm._v("Cancel")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        text: ""
-                                      },
-                                      on: { click: _vm.deleteItemConfirm }
-                                    },
-                                    [_vm._v("OK")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("v-spacer")
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
+                      })
                     ],
                     1
                   )
@@ -28884,30 +29619,6 @@ var render = function() {
     ],
     1
   )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/main/PublikasiAll.vue?vue&type=template&id=47915c35&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/main/PublikasiAll.vue?vue&type=template&id=47915c35& ***!
-  \**************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n  Ini Publikasi ALl\n")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -91589,8 +92300,8 @@ var mutations = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
-  table: {
-    baseUrl: "/api/v1/publikasi",
+  baseUrl: "/api/v1/publikasi",
+  publikasiTable: {
     searchPublikasi: "",
     searchKey: "",
     totalPublikasi: 0,
@@ -91606,12 +92317,44 @@ var state = {
       text: "Batas Upload",
       value: "batas_uploadHuman"
     }, {
-      text: "Status",
-      value: "stage_id"
-    }, {
       text: "",
       value: "actions"
     }]
+  },
+  keySearchPublikasi: "",
+  currentPage: 1,
+  importDialog: {
+    show: false,
+    loading: false,
+    errorStatus: false,
+    errorText: "",
+    file: null
+  },
+  dialog: {
+    show: false,
+    loading: false,
+    errorStatus: false,
+    errorText: "",
+    publikasi: {
+      judul_publikasi: "",
+      arc: 0,
+      tanggal_arc: "",
+      bidang: 0
+    }
+  },
+  deleteDialog: {
+    show: false,
+    targetUrl: "publikasiStore/deletePublikasi",
+    form: {
+      id: null,
+      name: ""
+    }
+  },
+  snackbar: {
+    show: false,
+    timeout: 3000,
+    color: "success",
+    text: ""
   }
 };
 var getters = {};
@@ -91620,35 +92363,181 @@ var actions = {
     var commit = _ref.commit;
     commit("changeLoading", val);
   },
-  setTableData: function setTableData(_ref2, res) {
-    var commit = _ref2.commit;
-    commit("changeTableData", res);
+  setTableData: function setTableData(_ref2) {
+    var state = _ref2.state,
+        commit = _ref2.commit;
+    var requestedPage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    state.publikasiTable.loading = true;
+    axios.get(state.baseUrl, {
+      params: {
+        page: requestedPage,
+        total: state.publikasiTable.itemsPerPage
+      }
+    }).then(function (res) {
+      state.publikasiTable.publikasiList = res.data.data;
+      state.publikasiTable.pageLength = res.data.last_page;
+      state.currentPage = requestedPage;
+      state.publikasiTable.loading = false;
+    })["catch"](function (err) {
+      dispatch("showSnackbar", {
+        text: err.response.data,
+        type: "error"
+      });
+    });
   },
-  refreshTable: function refreshTable(_ref3) {
-    var commit = _ref3.commit;
-    commit("refreshTable");
+  showSnackbar: function showSnackbar(_ref3, _ref4) {
+    var state = _ref3.state;
+    var text = _ref4.text,
+        type = _ref4.type;
+    state.snackbar.show = true;
+    state.snackbar.color = type;
+    state.snackbar.text = text;
   },
-  setSearch: function setSearch(_ref4, key) {
-    var commit = _ref4.commit;
-    commit("searchTable", key);
+  refreshTable: function refreshTable(_ref5) {
+    var state = _ref5.state,
+        dispatch = _ref5.dispatch;
+    state.baseUrl = "/api/v1/publikasi";
+    dispatch("setTableData", 1);
+  },
+  importPublikasi: function importPublikasi(_ref6) {
+    var state = _ref6.state,
+        dispatch = _ref6.dispatch;
+    var formData = new FormData();
+    formData.append("file", state.importDialog.file);
+    state.importDialog.loading = true;
+    axios.post("/api/v1/publikasi/import", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then(function () {
+      state.importDialog.loading = false;
+      state.importDialog.show = false;
+      dispatch("refreshTable");
+      dispatch("showSnackbar", {
+        text: "Sukses Import List",
+        type: "success"
+      });
+    })["catch"](function (err) {
+      state.importDialog.loading = false;
+      state.importDialog.errorStatus = true;
+      state.importDialog.errorText = err.response.data;
+    });
+  },
+  deleteDialogShow: function deleteDialogShow(_ref7, item) {
+    var state = _ref7.state;
+    state.deleteDialog = {
+      show: true,
+      targetUrl: "publikasiStore/deletePublikasi",
+      form: {
+        id: item.id,
+        name: item.judul_publikasi
+      }
+    };
+  },
+  deleteDialogInit: function deleteDialogInit(_ref8) {
+    var state = _ref8.state;
+    state.deleteDialog = {
+      show: false,
+      targetUrl: "publikasiStore/deletePublikasi",
+      form: {
+        id: "",
+        name: ""
+      }
+    };
+  },
+  dialogInit: function dialogInit(_ref9) {
+    var state = _ref9.state;
+    state.dialog = {
+      show: false,
+      loading: false,
+      errorStatus: false,
+      errorText: "",
+      publikasi: {
+        judul_publikasi: "",
+        arc: 0,
+        tanggal_arc: "",
+        bidang: 0
+      }
+    };
+  },
+  deletePublikasi: function deletePublikasi(_ref10, form) {
+    var state = _ref10.state,
+        commit = _ref10.commit,
+        dispatch = _ref10.dispatch;
+    axios["delete"]("/api/v1/publikasi/", {
+      data: {
+        id: state.deleteDialog.form.id
+      }
+    }).then(function (res) {
+      dispatch("setTableData", 1);
+      state.deleteDialog.show = false;
+      dispatch("showSnackbar", {
+        text: "Sukses Hapus Publikasi",
+        type: "success"
+      });
+    })["catch"](function (err) {
+      dispatch("showSnackbar", {
+        text: err.response.data,
+        type: "error"
+      });
+    });
+  },
+  setSearch: function setSearch(_ref11, val) {
+    var state = _ref11.state,
+        dispatch = _ref11.dispatch;
+    state.keySearchPublikasi = val;
+    state.baseUrl = "/api/v1/publikasi/search?key=" + state.keySearchPublikasi;
+    dispatch("setTableData", 1);
+  },
+  addPublikasi: function addPublikasi(_ref12, form) {
+    var state = _ref12.state,
+        dispatch = _ref12.dispatch;
+    state.publikasiTable.loading = true;
+    axios.post(state.baseUrl + "/", {
+      judul_publikasi: form.judul_publikasi,
+      jenis_arc: form.arc,
+      arc: form.tanggal_arc,
+      user_id: form.bidang
+    }).then(function (res) {
+      dispatch("setTableData");
+      dispatch("showSnackbar", {
+        text: res.data,
+        type: "success"
+      });
+    })["catch"](function (err) {
+      dispatch("showSnackbar", {
+        text: "Ups, Terjadi Kesalahan",
+        type: "error"
+      });
+      console.log(err.message);
+    });
+  },
+  editPublikasi: function editPublikasi(_ref13, form) {
+    var state = _ref13.state,
+        dispatch = _ref13.dispatch;
+    state.publikasiTable.loading = true;
+    axios.put(state.baseUrl + "/", {
+      id: form.id,
+      judul_publikasi: form.judul_publikasi,
+      jenis_arc: form.arc,
+      arc: form.tanggal_arc,
+      user_id: form.bidang
+    }).then(function (res) {
+      dispatch("setTableData");
+      dispatch("showSnackbar", {
+        text: res.data,
+        type: "success"
+      });
+    })["catch"](function (err) {
+      dispatch("showSnackbar", {
+        text: "Ups, Terjadi Kesalahan",
+        type: "error"
+      });
+      console.log(err.message);
+    });
   }
 };
-var mutations = {
-  changeLoading: function changeLoading(state, val) {
-    state.table.loading = val;
-  },
-  changeTableData: function changeTableData(state, res) {
-    state.table.publikasiList = res.data.data;
-    state.table.pageLength = res.data.last_page;
-    state.table.loading = false;
-  },
-  refreshTable: function refreshTable(state, res) {
-    state.table.baseUrl = "/api/v1/publikasi";
-  },
-  searchTable: function searchTable(state, key) {
-    state.table.baseUrl = key;
-  }
-};
+var mutations = {};
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: state,
@@ -91674,6 +92563,7 @@ __webpack_require__.r(__webpack_exports__);
 var state = {
   baseUrl: "api/v1/user",
   user: {},
+  users: [],
   userTable: {
     header: [{
       text: "Bidang",
@@ -91716,9 +92606,18 @@ var actions = {
       console.log(err.message);
     });
   },
-  addUser: function addUser(_ref3, data) {
-    var state = _ref3.state,
-        dispatch = _ref3.dispatch;
+  getBidang: function getBidang(_ref3) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(state.baseUrl + "/bidang").then(function (res) {
+      commit("changeUserBidang", res.data);
+    })["catch"](function (err) {
+      console.log(err.message);
+    });
+  },
+  addUser: function addUser(_ref4, data) {
+    var state = _ref4.state,
+        dispatch = _ref4.dispatch;
     state.userTable.loading = true;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(state.baseUrl + "/", {
       username: data.username,
@@ -91731,9 +92630,9 @@ var actions = {
       console.log(err.message);
     });
   },
-  editUser: function editUser(_ref4, form) {
-    var state = _ref4.state,
-        dispatch = _ref4.dispatch;
+  editUser: function editUser(_ref5, form) {
+    var state = _ref5.state,
+        dispatch = _ref5.dispatch;
     state.userTable.loading = true;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.put(state.baseUrl + "/", {
       id: form.id,
@@ -91746,9 +92645,9 @@ var actions = {
       console.log(err.message);
     });
   },
-  resetUserPassword: function resetUserPassword(_ref5, form) {
-    var state = _ref5.state,
-        dispatch = _ref5.dispatch;
+  resetUserPassword: function resetUserPassword(_ref6, form) {
+    var state = _ref6.state,
+        dispatch = _ref6.dispatch;
     state.userTable.loading = true;
     console.log(form.password);
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.put(state.baseUrl + "/password", {
@@ -91760,9 +92659,9 @@ var actions = {
       console.log(err.message);
     });
   },
-  deleteUser: function deleteUser(_ref6, data) {
-    var state = _ref6.state,
-        dispatch = _ref6.dispatch;
+  deleteUser: function deleteUser(_ref7, data) {
+    var state = _ref7.state,
+        dispatch = _ref7.dispatch;
     state.userTable.loading = true;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](state.baseUrl + "/", {
       data: {
@@ -91782,6 +92681,9 @@ var mutations = {
   changeUserTable: function changeUserTable(state, users) {
     state.userTable.items = users;
     state.userTable.loading = false;
+  },
+  changeUserBidang: function changeUserBidang(state, bidangs) {
+    state.users = bidangs;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

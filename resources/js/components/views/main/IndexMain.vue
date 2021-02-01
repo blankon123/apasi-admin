@@ -60,7 +60,7 @@
         </v-list>
 
         <v-divider></v-divider>
-        <v-list dense>
+        <v-list dense v-if="currentUser.role == 'ADMIN'">
           <v-list-item link to="/pekerjaan">
             <v-list-item-action>
               <v-icon>mdi-briefcase</v-icon>

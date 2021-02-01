@@ -43,7 +43,7 @@ class PetugasController extends Controller
             $newPetugas->save();
             return response("Sukses Menambahkan Petugas", 200);
         } else {
-            return response("Ups, Anda Bukan Admin ", 500);
+            return response("Ups, Anda Bukan Admin ", 401);
         }
     }
 
@@ -85,7 +85,7 @@ class PetugasController extends Controller
             $petugas->save();
             return response("Sukses Menambahkan Petugas", 200);
         } else {
-            return response("Ups, Anda Bukan Admin ", 500);
+            return response("Ups, Anda Bukan Admin ", 401);
         }
     }
 

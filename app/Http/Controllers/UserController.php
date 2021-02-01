@@ -48,7 +48,7 @@ class UserController extends Controller
             $newUser->save();
             return response("Sukses Menambahkan User", 200);
         } else {
-            return response("Ups, Anda Bukan Admin ", 500);
+            return response("Ups, Anda Bukan Admin ", 401);
         }
     }
 
@@ -91,7 +91,7 @@ class UserController extends Controller
             $user->save();
             return response("Sukses Merubah User", 200);
         } else {
-            return response("Ups, Anda Bukan Admin ", 500);
+            return response("Ups, Anda Bukan Admin ", 401);
         }
     }
 
@@ -139,6 +139,21 @@ class UserController extends Controller
      */
     public function all(Request $request)
     {
-        return User::all();
+        if ($request->user()->role == "ADMIN") {
+            return User::all();
+        }
+        return response("Ups, Anda Bukan Admin ", 401);
+
+    }
+
+    /**
+     * Show all bidang .
+     *
+     * @param  String  $keyword
+     * @return \Illuminate\Http\Response
+     */
+    public function bidangAll(Request $request)
+    {
+        return User::select('id', 'nama_bidang')->get();
     }
 }

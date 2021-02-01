@@ -17,8 +17,11 @@ class PublikasiController extends Controller
      */
     public function index(Request $request)
     {
-
-        return Publikasi::with('user')->orderBy('arc', 'ASC')->paginate($request->total);
+        $publikasis = Publikasi::with('user')->orderBy('arc', 'ASC');
+        if ($request->user()->role == "ADMIN") {
+            return $publikasis->paginate($request->total);
+        }
+        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
     }
 
     /**
@@ -39,7 +42,17 @@ class PublikasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $newPublikasi = new Publikasi;
+            $newPublikasi->judul_publikasi = $request->judul_publikasi;
+            $newPublikasi->jenis_arc = $request->jenis_arc;
+            $newPublikasi->arc = $request->arc ? date('Y-m-d', strtotime($request->arc)) : null;
+            $newPublikasi->user_id = $request->user_id;
+            $newPublikasi->save();
+            return response("Sukses Menambahkan Publikasi", 200);
+        } catch (\Throwable $th) {
+            return response("Ups, Terjadi Kesalahan " . $th, 500);
+        }
     }
 
     /**
@@ -71,9 +84,19 @@ class PublikasiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try {
+            $publikasi = Publikasi::find($request->id);
+            $publikasi->judul_publikasi = $request->judul_publikasi;
+            $publikasi->jenis_arc = $request->jenis_arc;
+            $publikasi->arc = $request->arc ? date('Y-m-d', strtotime($request->arc)) : null;
+            $publikasi->user_id = $request->user_id;
+            $publikasi->save();
+            return response("Sukses Mengubah Publikasi", 200);
+        } catch (\Throwable $th) {
+            return response("Ups, Terjadi Kesalahan " . $th, 500);
+        }
     }
 
     /**
@@ -134,9 +157,12 @@ class PublikasiController extends Controller
      */
     public function search(Request $request)
     {
-        return Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
             ->with('user')
-            ->orderBy('arc', 'ASC')
-            ->paginate($request->total);
+            ->orderBy('arc', 'ASC');
+        if ($request->user()->role == "ADMIN") {
+            $publikasis->paginate($request->total);
+        }
+        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
     }
 }
