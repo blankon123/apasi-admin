@@ -1,6 +1,6 @@
 const state = {
-  table: {
-    baseUrl: "/api/v1/publikasi",
+  baseUrl: "/api/v1/publikasi",
+  publikasiTable: {
     searchPublikasi: "",
     searchKey: "",
     totalPublikasi: 0,
@@ -15,9 +15,43 @@ const state = {
         value: "judul"
       },
       { text: "Batas Upload", value: "batas_uploadHuman" },
-      { text: "Status", value: "stage_id" },
       { text: "", value: "actions" }
     ]
+  },
+  keySearchPublikasi: "",
+  currentPage: 1,
+  importDialog: {
+    show: false,
+    loading: false,
+    errorStatus: false,
+    errorText: "",
+    file: null
+  },
+  dialog: {
+    show: false,
+    loading: false,
+    errorStatus: false,
+    errorText: "",
+    publikasi: {
+      judul_publikasi: "",
+      arc: 0,
+      tanggal_arc: "",
+      bidang: 0
+    }
+  },
+  deleteDialog: {
+    show: false,
+    targetUrl: "publikasiStore/deletePublikasi",
+    form: {
+      id: null,
+      name: ""
+    }
+  },
+  snackbar: {
+    show: false,
+    timeout: 3000,
+    color: "success",
+    text: ""
   }
 };
 const getters = {};
@@ -25,32 +59,160 @@ const actions = {
   setLoading({ commit }, val) {
     commit("changeLoading", val);
   },
-  setTableData({ commit }, res) {
-    commit("changeTableData", res);
+  setTableData({ state, commit }, requestedPage = 1) {
+    state.publikasiTable.loading = true;
+    axios
+      .get(state.baseUrl, {
+        params: {
+          page: requestedPage,
+          total: state.publikasiTable.itemsPerPage
+        }
+      })
+      .then(res => {
+        state.publikasiTable.publikasiList = res.data.data;
+        state.publikasiTable.pageLength = res.data.last_page;
+        state.currentPage = requestedPage;
+        state.publikasiTable.loading = false;
+      })
+      .catch(err => {
+        dispatch("showSnackbar", { text: err.response.data, type: "error" });
+      });
   },
-  refreshTable({ commit }) {
-    commit("refreshTable");
+  showSnackbar({ state }, { text, type }) {
+    state.snackbar.show = true;
+    state.snackbar.color = type;
+    state.snackbar.text = text;
   },
-  setSearch({ commit }, key) {
-    commit("searchTable", key);
+  refreshTable({ state, dispatch }) {
+    state.baseUrl = "/api/v1/publikasi";
+    dispatch("setTableData", 1);
+  },
+  importPublikasi({ state, dispatch }) {
+    let formData = new FormData();
+    formData.append("file", state.importDialog.file);
+    state.importDialog.loading = true;
+    axios
+      .post("/api/v1/publikasi/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(() => {
+        state.importDialog.loading = false;
+        state.importDialog.show = false;
+        dispatch("refreshTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Import List",
+          type: "success"
+        });
+      })
+      .catch(err => {
+        state.importDialog.loading = false;
+        state.importDialog.errorStatus = true;
+        state.importDialog.errorText = err.response.data;
+      });
+  },
+  deleteDialogShow({ state }, item) {
+    state.deleteDialog = {
+      show: true,
+      targetUrl: "publikasiStore/deletePublikasi",
+      form: {
+        id: item.id,
+        name: item.judul_publikasi
+      }
+    };
+  },
+  deleteDialogInit({ state }) {
+    state.deleteDialog = {
+      show: false,
+      targetUrl: "publikasiStore/deletePublikasi",
+      form: {
+        id: "",
+        name: ""
+      }
+    };
+  },
+  dialogInit({ state }) {
+    state.dialog = {
+      show: false,
+      loading: false,
+      errorStatus: false,
+      errorText: "",
+      publikasi: {
+        judul_publikasi: "",
+        arc: 0,
+        tanggal_arc: "",
+        bidang: 0
+      }
+    };
+  },
+  deletePublikasi({ state, commit, dispatch }, form) {
+    axios
+      .delete("/api/v1/publikasi/", {
+        data: { id: state.deleteDialog.form.id }
+      })
+      .then(res => {
+        dispatch("setTableData", 1);
+        state.deleteDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Sukses Hapus Publikasi",
+          type: "success"
+        });
+      })
+      .catch(err => {
+        dispatch("showSnackbar", { text: err.response.data, type: "error" });
+      });
+  },
+  setSearch({ state, dispatch }, val) {
+    state.keySearchPublikasi = val;
+    state.baseUrl = "/api/v1/publikasi/search?key=" + state.keySearchPublikasi;
+    dispatch("setTableData", 1);
+  },
+  addPublikasi({ state, dispatch }, form) {
+    state.publikasiTable.loading = true;
+    axios
+      .post(state.baseUrl + "/", {
+        judul_publikasi: form.judul_publikasi,
+        jenis_arc: form.arc,
+        arc: form.tanggal_arc,
+        user_id: form.bidang
+      })
+      .then(res => {
+        dispatch("setTableData");
+        dispatch("showSnackbar", { text: res.data, type: "success" });
+      })
+      .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
+  },
+  editPublikasi({ state, dispatch }, form) {
+    state.publikasiTable.loading = true;
+    axios
+      .put(state.baseUrl + "/", {
+        id: form.id,
+        judul_publikasi: form.judul_publikasi,
+        jenis_arc: form.arc,
+        arc: form.tanggal_arc,
+        user_id: form.bidang
+      })
+      .then(res => {
+        dispatch("setTableData");
+        dispatch("showSnackbar", { text: res.data, type: "success" });
+      })
+      .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
   }
 };
-const mutations = {
-  changeLoading(state, val) {
-    state.table.loading = val;
-  },
-  changeTableData(state, res) {
-    state.table.publikasiList = res.data.data;
-    state.table.pageLength = res.data.last_page;
-    state.table.loading = false;
-  },
-  refreshTable(state, res) {
-    state.table.baseUrl = "/api/v1/publikasi";
-  },
-  searchTable(state, key) {
-    state.table.baseUrl = key;
-  }
-};
+const mutations = {};
 
 export default {
   namespaced: true,

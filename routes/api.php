@@ -27,9 +27,12 @@ Route::prefix('v1')->group(function () {
             Route::put('/password', [UserController::class, 'updatePassword']);
             Route::delete('/', [UserController::class, 'destroy']);
             Route::get('/all', [UserController::class, 'all']);
+            Route::get('/bidang', [UserController::class, 'bidangAll']);
         });
         Route::prefix('publikasi')->group(function () {
             Route::get('/', [PublikasiController::class, 'index']);
+            Route::post('/', [PublikasiController::class, 'store']);
+            Route::put('/', [PublikasiController::class, 'update']);
             Route::get('/search', [PublikasiController::class, 'search']);
             Route::post('/import', [PublikasiController::class, 'import']);
             Route::delete('/', [PublikasiController::class, 'destroy']);
