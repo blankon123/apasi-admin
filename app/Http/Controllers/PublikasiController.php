@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\PublikasiImport;
 use App\Models\Publikasi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,11 +18,39 @@ class PublikasiController extends Controller
      */
     public function index(Request $request)
     {
-        $publikasis = Publikasi::with('user')->orderBy('arc', 'ASC');
+        $publikasis = Publikasi::orderBy('arc', 'DESC')->whereDate('arc', '<=', Carbon::now())->with('user');
         if ($request->user()->role == "ADMIN") {
             return $publikasis->paginate($request->total);
         }
         return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
+    }
+
+    /**
+     * Display a listing of the resource of current year.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexYear(Request $request)
+    {
+        $publikasis = Publikasi::orderBy('arc', 'ASC')->whereDate('arc', '>', Carbon::now())->with('user');
+        if ($request->user()->role == "ADMIN") {
+            return $publikasis->paginate($request->total);
+        }
+        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
+    }
+
+    /**
+     * Display number of the resources of current year.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function countIndexYear(Request $request)
+    {
+        if ($request->user()->role == "ADMIN") {
+            return Publikasi::whereDate('arc', '>', Carbon::now())->count();
+        }
+        return Publikasi::where('user_id', $request->user()->id)->whereDate('arc', '>', Carbon::now())->count();
+
     }
 
     /**
@@ -47,6 +76,7 @@ class PublikasiController extends Controller
             $newPublikasi->judul_publikasi = $request->judul_publikasi;
             $newPublikasi->jenis_arc = $request->jenis_arc;
             $newPublikasi->arc = $request->arc ? date('Y-m-d', strtotime($request->arc)) : null;
+            $newPublikasi->tahun_rilis = $request->arc ? date('Y', strtotime($request->arc)) : null;
             $newPublikasi->user_id = $request->user_id;
             $newPublikasi->save();
             return response("Sukses Menambahkan Publikasi", 200);
@@ -158,10 +188,30 @@ class PublikasiController extends Controller
     public function search(Request $request)
     {
         $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+            ->whereDate('arc', '<=', Carbon::now())
+            ->orderBy('arc', 'DESC')
             ->with('user')
-            ->orderBy('arc', 'ASC');
+        ;
         if ($request->user()->role == "ADMIN") {
-            $publikasis->paginate($request->total);
+            return $publikasis->paginate($request->total);
+        }
+        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
+    }
+
+    /**
+     * Search resource from storage by keyword.
+     *
+     * @param  String  $keyword
+     * @return \Illuminate\Http\Response
+     */
+    public function searchYear(Request $request)
+    {
+        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+            ->whereDate('arc', '>', Carbon::now())
+            ->orderBy('arc', 'ASC')
+            ->with('user');
+        if ($request->user()->role == "ADMIN") {
+            return $publikasis->paginate($request->total);
         }
         return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
     }

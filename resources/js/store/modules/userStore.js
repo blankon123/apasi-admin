@@ -29,11 +29,7 @@ const state = {
     items: []
   }
 };
-const getters = {
-  isSavedUser: state => {
-    return !!Object.keys(state.user).length;
-  }
-};
+const getters = {};
 const actions = {
   setUser({ commit }, user) {
     commit("changeUser", user);
@@ -119,6 +115,18 @@ const actions = {
       .catch(err => {
         console.log(err.message);
       });
+  },
+  getCurrentUser({ state, dispatch }) {
+    if (!Object.keys(state.user).length) {
+      axios
+        .get("/api/v1/user/")
+        .then(response => {
+          dispatch("setUser", response.data);
+        })
+        .catch(errors => {
+          console.log(errors);
+        });
+    }
   }
 };
 const mutations = {

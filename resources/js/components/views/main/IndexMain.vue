@@ -34,10 +34,20 @@
             :to="item.link"
           >
             <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-badge
+                v-if="item.link == '/publikasi'"
+                color="blue"
+                :content="publikasiCount"
+                overlap
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-badge>
+              <v-icon v-else>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -96,7 +106,7 @@
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app dense color="blue">
+      <v-app-bar app dense>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title
           ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
@@ -127,7 +137,7 @@
         </v-container>
       </v-main>
 
-      <v-footer color="blue" app>
+      <v-footer app>
         <v-row align="center" justify="center">
           <v-col class="text-center">
             <span
@@ -185,6 +195,9 @@ export default {
     }
   },
   computed: {
+    publikasiCount() {
+      return this.$store.state.indexMainStore.publikasiCount;
+    },
     currentUser: {
       get() {
         return this.$store.state.userStore.user;
