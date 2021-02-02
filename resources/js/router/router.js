@@ -7,8 +7,10 @@ import AccountData from "./../components/views/main/AccountData.vue";
 import Dashboard from "./../components/views/main/Dashboard.vue";
 import Publikasi from "./../components/views/main/Publikasi.vue";
 import PublikasiAll from "./../components/views/main/PublikasiAll.vue";
+import PublikasiView from "./../components/views/main/PublikasiView.vue";
 import Tabel from "./../components/views/main/Tabel.vue";
 import TabelAll from "./../components/views/main/TabelAll.vue";
+import TabelView from "./../components/views/main/TabelView.vue";
 import Pekerjaan from "./../components/views/main/Pekerjaan.vue";
 import Login from "./../components/views/auth/Login.vue";
 import NotFound from "./../components/views/error/NotFound.vue";
@@ -77,6 +79,24 @@ const routes = [
         }
       },
       {
+        path: "/publikasi/:id",
+        name: "PublikasiView",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: PublikasiView
+        }
+      },
+      {
+        path: "/tabel/:id",
+        name: "TabelView",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: TabelView
+        }
+      },
+      {
         path: "/pekerjaan",
         name: "Pekerjaan",
         meta: { requiresAuth: true },
@@ -110,16 +130,7 @@ function loggedIn() {
     if (localStorage.getItem("apasi_cred") == null) {
       return false;
     }
-    if (!store.getters["userStore/isSavedUser"]) {
-      axios
-        .get("api/v1/user")
-        .then(response => {
-          store.dispatch("userStore/setUser", response.data);
-        })
-        .catch(errors => {
-          console.log(errors);
-        });
-    }
+    store.dispatch("indexMainStore/indexInit");
     return true;
   } catch (error) {
     return false;

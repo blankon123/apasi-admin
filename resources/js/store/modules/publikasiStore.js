@@ -1,5 +1,5 @@
 const state = {
-  baseUrl: "/api/v1/publikasi",
+  baseUrl: "",
   publikasiTable: {
     searchPublikasi: "",
     searchKey: "",
@@ -52,14 +52,15 @@ const state = {
     timeout: 3000,
     color: "success",
     text: ""
-  }
+  },
+  year: null
 };
 const getters = {};
 const actions = {
   setLoading({ commit }, val) {
     commit("changeLoading", val);
   },
-  setTableData({ state, commit }, requestedPage = 1) {
+  setTableData({ state }, requestedPage = 1) {
     state.publikasiTable.loading = true;
     axios
       .get(state.baseUrl, {
@@ -84,7 +85,8 @@ const actions = {
     state.snackbar.text = text;
   },
   refreshTable({ state, dispatch }) {
-    state.baseUrl = "/api/v1/publikasi";
+    state.baseUrl =
+      state.year == null ? "/api/v1/publikasi" : "/api/v1/publikasi/year";
     dispatch("setTableData", 1);
   },
   importPublikasi({ state, dispatch }) {
@@ -163,9 +165,12 @@ const actions = {
         dispatch("showSnackbar", { text: err.response.data, type: "error" });
       });
   },
-  setSearch({ state, dispatch }, val) {
-    state.keySearchPublikasi = val;
-    state.baseUrl = "/api/v1/publikasi/search?key=" + state.keySearchPublikasi;
+  setSearch({ state, dispatch }, keyword = "") {
+    state.baseUrl =
+      state.year == null
+        ? "/api/v1/publikasi/search?key=" + keyword
+        : "/api/v1/publikasi/searchYear?key=" + keyword;
+    state.keySearchPublikasi = keyword;
     dispatch("setTableData", 1);
   },
   addPublikasi({ state, dispatch }, form) {
@@ -210,6 +215,14 @@ const actions = {
         });
         console.log(err.message);
       });
+  },
+  setYear({ state }, year) {
+    state.year = year;
+    state.baseUrl = "/api/v1/publikasi/year";
+  },
+  setYearNull({ state }) {
+    state.year = null;
+    state.baseUrl = "/api/v1/publikasi";
   }
 };
 const mutations = {};

@@ -202,7 +202,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Daftar Publikasi</v-toolbar-title>
+          <v-toolbar-title>Daftar Publikasi {{ thisYear }}</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
@@ -262,9 +262,11 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="viewItem(item)">
-          mdi-eye
-        </v-icon>
+        <v-btn icon :href="viewItem(item)" target="_blank" class="mr-2">
+          <v-icon small>
+            mdi-eye
+          </v-icon>
+        </v-btn>
         <v-icon small class="mr-2" @click="editDialogShow(item)">
           mdi-pencil
         </v-icon>
@@ -332,7 +334,8 @@ export default {
       includeTahun: value =>
         value.toLocaleLowerCase().indexOf("20") != -1 ||
         "Harus Menyertakan Tahun"
-    }
+    },
+    thisYear: new Date().getFullYear()
   }),
 
   computed: {
@@ -372,6 +375,7 @@ export default {
   },
 
   created() {
+    this.$store.dispatch("publikasiStore/setYear", this.thisYear);
     this.$store.dispatch("publikasiStore/setTableData", 1);
     this.$store.dispatch("userStore/getBidang");
   },
@@ -452,6 +456,10 @@ export default {
         this.$store.dispatch(this.publikasi.targetUrl, this.publikasi);
         this.dialogInit();
       }
+    },
+
+    viewItem(item) {
+      return "/publikasi/" + item.id;
     }
   }
 };

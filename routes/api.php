@@ -31,9 +31,12 @@ Route::prefix('v1')->group(function () {
         });
         Route::prefix('publikasi')->group(function () {
             Route::get('/', [PublikasiController::class, 'index']);
+            Route::get('/year', [PublikasiController::class, 'indexYear']);
+            Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
             Route::post('/', [PublikasiController::class, 'store']);
             Route::put('/', [PublikasiController::class, 'update']);
             Route::get('/search', [PublikasiController::class, 'search']);
+            Route::get('/searchYear', [PublikasiController::class, 'searchYear']);
             Route::post('/import', [PublikasiController::class, 'import']);
             Route::delete('/', [PublikasiController::class, 'destroy']);
         });
