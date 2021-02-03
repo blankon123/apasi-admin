@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/searchYear', [PublikasiController::class, 'searchYear']);
             Route::post('/import', [PublikasiController::class, 'import']);
             Route::delete('/', [PublikasiController::class, 'destroy']);
+            Route::get('/{id}', [PublikasiController::class, 'show']);
         });
 
         Route::prefix('stage')->group(function () {

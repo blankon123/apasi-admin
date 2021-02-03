@@ -2,11 +2,10 @@
 
 namespace App\Imports;
 
+use App\Events\PublikasiImported;
 use App\Models\Enums;
 use App\Models\Publikasi;
 use App\Models\User;
-use App\Notifications\PublikasiChange;
-use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
@@ -50,7 +49,6 @@ class PublikasiImport implements OnEachRow, WithHeadingRow
             die;
         }
         $publikasi->save();
-        $publikasi->keterangan = "Telah di-Import";
-        Notification::send(User::find($notify_user_id), new PublikasiChange($publikasi));
+        event(new PublikasiImported($publikasi, $this->importedBy));
     }
 }

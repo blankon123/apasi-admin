@@ -8,7 +8,7 @@
       {{ snackbar.text }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar.show = false">
           Tutup
         </v-btn>
       </template>
