@@ -3,11 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\Publikasi;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PublikasiChange extends Notification
+class PublikasiNotif extends Notification
 {
     use Queueable;
 
@@ -16,9 +17,11 @@ class PublikasiChange extends Notification
      *
      * @return void
      */
-    public function __construct(Publikasi $publikasi)
+    public function __construct(User $user, Publikasi $publikasi, String $msg)
     {
+        $this->user = $user;
         $this->publikasi = $publikasi;
+        $this->msg = $msg;
     }
 
     /**
@@ -52,12 +55,12 @@ class PublikasiChange extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'tipe' => "Publikasi",
-            'id' => $this->publikasi->id,
-            'ket' => $this->publikasi->keterangan,
+            'user' => $this->user->nama_bidang,
+            'publikasi' => $this->publikasi,
+            'message' => $this->msg,
         ];
     }
 }

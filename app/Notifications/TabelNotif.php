@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Models\Pekerjaan;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PublikasiChange extends Notification
+class TabelNotif extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,9 @@ class PublikasiChange extends Notification
      *
      * @return void
      */
-    public function __construct(Pekerjaan $pekerjaan)
+    public function __construct()
     {
-        $this->pekerjaan = $pekerjaan;
+        //
     }
 
     /**
@@ -29,7 +29,7 @@ class PublikasiChange extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -41,9 +41,9 @@ class PublikasiChange extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -52,12 +52,10 @@ class PublikasiChange extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'tipe' => "Pekerjaan",
-            'id' => $this->pekerjaan->id,
-            'ket' => $this->pekerjaan->keterangan,
+            //
         ];
     }
 }

@@ -16,13 +16,12 @@ class CreatePublikasiFilesTable extends Migration
         Schema::create('publikasi_files', function (Blueprint $table) {
             $table->id();
             $table->string('file')->nullable();
-            $table->string('keterangan')->nullable(); //Draft, Cover, File Cetak, Surat Rilis, Erata, Surat Lainnya,
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('publikasi_histori_id')->nullable();
             $table->foreignId('publikasi_id')->nullable();
+            $table->softDeletes();
         });
 
         Schema::table('publikasi_files', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('publikasi_id')->references('id')->on('publikasis')->onDelete('cascade');
         });
     }

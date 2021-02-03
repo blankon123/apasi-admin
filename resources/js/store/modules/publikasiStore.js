@@ -107,6 +107,7 @@ const actions = {
           text: "Sukses Import List",
           type: "success"
         });
+        dispatch("indexMainStore/indexInit", {}, { root: true });
       })
       .catch(err => {
         state.importDialog.loading = false;

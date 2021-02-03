@@ -1,5 +1,4 @@
 import Vue from "vue";
-import axios from "axios";
 import store from "./../store/index.js";
 import VueRouter from "vue-router";
 import IndexMain from "./../components/views/main/IndexMain.vue";

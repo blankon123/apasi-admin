@@ -106,7 +106,7 @@
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app dense>
+      <v-app-bar app dense elevation="2">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title
           ><v-icon>mdi-bookshelf</v-icon>[APASI] Aplikasi Pembantu
@@ -137,7 +137,7 @@
         </v-container>
       </v-main>
 
-      <v-footer app>
+      <v-footer app elevation="2">
         <v-row align="center" justify="center">
           <v-col class="text-center">
             <span

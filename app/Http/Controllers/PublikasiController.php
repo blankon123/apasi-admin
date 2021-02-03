@@ -50,7 +50,6 @@ class PublikasiController extends Controller
             return Publikasi::whereDate('arc', '>', Carbon::now())->count();
         }
         return Publikasi::where('user_id', $request->user()->id)->whereDate('arc', '>', Carbon::now())->count();
-
     }
 
     /**
@@ -58,9 +57,8 @@ class PublikasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
     }
 
     /**
@@ -79,6 +77,7 @@ class PublikasiController extends Controller
             $newPublikasi->tahun_rilis = $request->arc ? date('Y', strtotime($request->arc)) : null;
             $newPublikasi->user_id = $request->user_id;
             $newPublikasi->save();
+            event(new PublikasiChange($newPublikasi, "dibuat"));
             return response("Sukses Menambahkan Publikasi", 200);
         } catch (\Throwable $th) {
             return response("Ups, Terjadi Kesalahan " . $th, 500);
@@ -91,9 +90,18 @@ class PublikasiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        try {
+            $publikasi = Publikasi::where('id', '=', $id)->with('user', 'historis', 'historis.file')->get();
+            if ($request->user()->role == "ADMIN" || $publikasi->user_id == $request->user()->id) {
+                return $publikasi;
+            } else {
+                return response("Ups, Anda Tidak Berhak Mengakses ", 500);
+            }
+        } catch (\Throwable $th) {
+            return response("Ups, Ada yang salah " . $th->getMessage(), 500);
+        }
     }
 
     /**
@@ -123,6 +131,7 @@ class PublikasiController extends Controller
             $publikasi->arc = $request->arc ? date('Y-m-d', strtotime($request->arc)) : null;
             $publikasi->user_id = $request->user_id;
             $publikasi->save();
+            event(new PublikasiChange($newPublikasi, "diubah"));
             return response("Sukses Mengubah Publikasi", 200);
         } catch (\Throwable $th) {
             return response("Ups, Terjadi Kesalahan " . $th, 500);

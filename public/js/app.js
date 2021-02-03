@@ -4058,16 +4058,104 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
-      snackbar: false,
-      text: "Hello, I'm a snackbar"
-    };
+    return {};
+  },
+  created: function created() {
+    this.$store.dispatch("publikasiViewStore/setPublikasiId", this.$route.params.id);
+    this.$store.dispatch("publikasiViewStore/setPublikasiDetails");
   },
   computed: {
     publikasiId: function publikasiId() {
-      return this.$route.params.id;
+      return this.$store.state.publikasiViewStore.publikasiId;
+    },
+    snackbar: function snackbar() {
+      return this.$store.state.publikasiViewStore.snackbar;
     }
   }
 });
@@ -28474,7 +28562,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-app-bar",
-            { attrs: { app: "", dense: "" } },
+            { attrs: { app: "", dense: "", elevation: "2" } },
             [
               _c("v-app-bar-nav-icon", {
                 on: {
@@ -28559,7 +28647,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-footer",
-            { attrs: { app: "" } },
+            { attrs: { app: "", elevation: "2" } },
             [
               _c(
                 "v-row",
@@ -28662,7 +28750,7 @@ var render = function() {
                         attrs: { color: "white", text: "" },
                         on: {
                           click: function($event) {
-                            _vm.snackbar = false
+                            _vm.snackbar.show = false
                           }
                         }
                       },
@@ -30502,42 +30590,253 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._v("\n  PublikasiView " + _vm._s(_vm.publikasiId) + "\n  "),
-    _c(
-      "div",
-      { staticClass: "text-center ma-2" },
-      [
-        _c(
-          "v-btn",
-          {
-            on: {
-              click: function($event) {
-                _vm.snackbar = true
+  return _c(
+    "div",
+    [
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.snackbar.timeout, color: _vm.snackbar.color },
+          scopedSlots: _vm._u([
+            {
+              key: "action",
+              fn: function(ref) {
+                var attrs = ref.attrs
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._b(
+                      {
+                        attrs: { color: "white", text: "" },
+                        on: {
+                          click: function($event) {
+                            _vm.snackbar.show = false
+                          }
+                        }
+                      },
+                      "v-btn",
+                      attrs,
+                      false
+                    ),
+                    [_vm._v("\n        Tutup\n      ")]
+                  )
+                ]
               }
             }
-          },
-          [_vm._v("\n      Open Snackbar\n    ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "v-snackbar",
-          {
-            attrs: { top: "", color: "success" },
-            model: {
-              value: _vm.snackbar,
-              callback: function($$v) {
-                _vm.snackbar = $$v
-              },
-              expression: "snackbar"
-            }
-          },
-          [_vm._v("\n      " + _vm._s(_vm.text) + "\n    ")]
-        )
-      ],
-      1
-    )
-  ])
+          ]),
+          model: {
+            value: _vm.snackbar.show,
+            callback: function($$v) {
+              _vm.$set(_vm.snackbar, "show", $$v)
+            },
+            expression: "snackbar.show"
+          }
+        },
+        [_vm._v("\n    " + _vm._s(_vm.snackbar.text) + "\n\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { dense: "" } },
+        [
+          _c(
+            "v-col",
+            {
+              staticClass: "text-left",
+              attrs: { lg: "4", sm: "12", xs: "12" }
+            },
+            [
+              _c(
+                "v-card",
+                { attrs: { elevation: "6" } },
+                [
+                  _c(
+                    "v-card-text",
+                    { staticClass: "py-0" },
+                    [
+                      _c(
+                        "v-timeline",
+                        { attrs: { "align-top": "", dense: "" } },
+                        [
+                          _c(
+                            "v-timeline-item",
+                            { attrs: { color: "pink", small: "" } },
+                            [
+                              _c(
+                                "v-row",
+                                { staticClass: "pt-1" },
+                                [
+                                  _c("v-col", { attrs: { cols: "3" } }, [
+                                    _c("strong", [_vm._v("5pm")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-col", [
+                                    _c("strong", [_vm._v("New Icon")]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "caption" }, [
+                                      _vm._v(
+                                        "\n                    Mobile App\n                  "
+                                      )
+                                    ])
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-timeline-item",
+                            { attrs: { color: "teal lighten-3", small: "" } },
+                            [
+                              _c(
+                                "v-row",
+                                { staticClass: "pt-1" },
+                                [
+                                  _c("v-col", { attrs: { cols: "3" } }, [
+                                    _c("strong", [_vm._v("3-4pm")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    [
+                                      _c("strong", [_vm._v("Design Stand Up")]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "caption mb-2" },
+                                        [
+                                          _vm._v(
+                                            "\n                    Hangouts\n                  "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-avatar",
+                                        [
+                                          _c("v-img", {
+                                            attrs: {
+                                              src:
+                                                "https://avataaars.io/?avatarStyle=Circle&topType=LongHairFrida&accessoriesType=Kurt&hairColor=Red&facialHairType=BeardLight&facialHairColor=BrownDark&clotheType=GraphicShirt&clotheColor=Gray01&graphicType=Skull&eyeType=Wink&eyebrowType=RaisedExcitedNatural&mouthType=Disbelief&skinColor=Brown"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-avatar",
+                                        [
+                                          _c("v-img", {
+                                            attrs: {
+                                              src:
+                                                "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-avatar",
+                                        [
+                                          _c("v-img", {
+                                            attrs: {
+                                              src:
+                                                "https://avataaars.io/?avatarStyle=Circle&topType=LongHairMiaWallace&accessoriesType=Sunglasses&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-timeline-item",
+                            { attrs: { color: "pink", small: "" } },
+                            [
+                              _c(
+                                "v-row",
+                                { staticClass: "pt-1" },
+                                [
+                                  _c("v-col", { attrs: { cols: "3" } }, [
+                                    _c("strong", [_vm._v("12pm")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-col", [
+                                    _c("strong", [_vm._v("Lunch break")])
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-timeline-item",
+                            { attrs: { color: "teal lighten-3", small: "" } },
+                            [
+                              _c(
+                                "v-row",
+                                { staticClass: "pt-1" },
+                                [
+                                  _c("v-col", { attrs: { cols: "3" } }, [
+                                    _c("strong", [_vm._v("9-11am")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-col", [
+                                    _c("strong", [
+                                      _vm._v("Finish Home Screen")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "caption" }, [
+                                      _vm._v(
+                                        "\n                    Web App\n                  "
+                                      )
+                                    ])
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { lg: "8", sm: "12", xs: "12" } },
+            [_c("v-card", { attrs: { elevation: "6" } })],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -93011,22 +93310,20 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../store/index.js */ "./resources/js/store/index.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/views/main/IndexMain.vue */ "./resources/js/components/views/main/IndexMain.vue");
-/* harmony import */ var _components_views_main_AccountData_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/views/main/AccountData.vue */ "./resources/js/components/views/main/AccountData.vue");
-/* harmony import */ var _components_views_main_Dashboard_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../components/views/main/Dashboard.vue */ "./resources/js/components/views/main/Dashboard.vue");
-/* harmony import */ var _components_views_main_Publikasi_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../components/views/main/Publikasi.vue */ "./resources/js/components/views/main/Publikasi.vue");
-/* harmony import */ var _components_views_main_PublikasiAll_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../components/views/main/PublikasiAll.vue */ "./resources/js/components/views/main/PublikasiAll.vue");
-/* harmony import */ var _components_views_main_PublikasiView_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../components/views/main/PublikasiView.vue */ "./resources/js/components/views/main/PublikasiView.vue");
-/* harmony import */ var _components_views_main_Tabel_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./../components/views/main/Tabel.vue */ "./resources/js/components/views/main/Tabel.vue");
-/* harmony import */ var _components_views_main_TabelAll_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./../components/views/main/TabelAll.vue */ "./resources/js/components/views/main/TabelAll.vue");
-/* harmony import */ var _components_views_main_TabelView_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./../components/views/main/TabelView.vue */ "./resources/js/components/views/main/TabelView.vue");
-/* harmony import */ var _components_views_main_Pekerjaan_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./../components/views/main/Pekerjaan.vue */ "./resources/js/components/views/main/Pekerjaan.vue");
-/* harmony import */ var _components_views_auth_Login_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./../components/views/auth/Login.vue */ "./resources/js/components/views/auth/Login.vue");
-/* harmony import */ var _components_views_error_NotFound_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./../components/views/error/NotFound.vue */ "./resources/js/components/views/error/NotFound.vue");
+/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../store/index.js */ "./resources/js/store/index.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/views/main/IndexMain.vue */ "./resources/js/components/views/main/IndexMain.vue");
+/* harmony import */ var _components_views_main_AccountData_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/views/main/AccountData.vue */ "./resources/js/components/views/main/AccountData.vue");
+/* harmony import */ var _components_views_main_Dashboard_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/views/main/Dashboard.vue */ "./resources/js/components/views/main/Dashboard.vue");
+/* harmony import */ var _components_views_main_Publikasi_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../components/views/main/Publikasi.vue */ "./resources/js/components/views/main/Publikasi.vue");
+/* harmony import */ var _components_views_main_PublikasiAll_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../components/views/main/PublikasiAll.vue */ "./resources/js/components/views/main/PublikasiAll.vue");
+/* harmony import */ var _components_views_main_PublikasiView_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../components/views/main/PublikasiView.vue */ "./resources/js/components/views/main/PublikasiView.vue");
+/* harmony import */ var _components_views_main_Tabel_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../components/views/main/Tabel.vue */ "./resources/js/components/views/main/Tabel.vue");
+/* harmony import */ var _components_views_main_TabelAll_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./../components/views/main/TabelAll.vue */ "./resources/js/components/views/main/TabelAll.vue");
+/* harmony import */ var _components_views_main_TabelView_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./../components/views/main/TabelView.vue */ "./resources/js/components/views/main/TabelView.vue");
+/* harmony import */ var _components_views_main_Pekerjaan_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./../components/views/main/Pekerjaan.vue */ "./resources/js/components/views/main/Pekerjaan.vue");
+/* harmony import */ var _components_views_auth_Login_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./../components/views/auth/Login.vue */ "./resources/js/components/views/auth/Login.vue");
+/* harmony import */ var _components_views_error_NotFound_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./../components/views/error/NotFound.vue */ "./resources/js/components/views/error/NotFound.vue");
 
 
 
@@ -93042,12 +93339,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var routes = [{
   path: "/",
   name: "Main",
-  component: _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  component: _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
   meta: {
     requiresAuth: true
   },
@@ -93058,8 +93354,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_AccountData_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_AccountData_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
     }
   }, {
     path: "/dashboard",
@@ -93068,8 +93364,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_Dashboard_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_Dashboard_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
     }
   }, {
     path: "/publikasi",
@@ -93078,8 +93374,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_Publikasi_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_Publikasi_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
     }
   }, {
     path: "/tabel",
@@ -93088,8 +93384,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_Tabel_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_Tabel_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
     }
   }, {
     path: "/publikasiAll",
@@ -93098,8 +93394,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_PublikasiAll_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_PublikasiAll_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
     }
   }, {
     path: "/tabelAll",
@@ -93108,8 +93404,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_TabelAll_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_TabelAll_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
     }
   }, {
     path: "/publikasi/:id",
@@ -93118,8 +93414,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_PublikasiView_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_PublikasiView_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
     }
   }, {
     path: "/tabel/:id",
@@ -93128,8 +93424,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_TabelView_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_TabelView_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
     }
   }, {
     path: "/pekerjaan",
@@ -93138,8 +93434,8 @@ var routes = [{
       requiresAuth: true
     },
     components: {
-      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-      MainView: _components_views_main_Pekerjaan_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
+      "default": _components_views_main_IndexMain_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      MainView: _components_views_main_Pekerjaan_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
     }
   }]
 }, {
@@ -93148,13 +93444,13 @@ var routes = [{
   meta: {
     guest: true
   },
-  component: _components_views_auth_Login_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+  component: _components_views_auth_Login_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
 }, {
   path: "*",
   name: "NotFound",
-  component: _components_views_error_NotFound_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+  component: _components_views_error_NotFound_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: "history",
   routes: routes
 });
@@ -93165,7 +93461,7 @@ function loggedIn() {
       return false;
     }
 
-    _store_index_js__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch("indexMainStore/indexInit");
+    _store_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch("indexMainStore/indexInit");
     return true;
   } catch (error) {
     return false;
@@ -93221,9 +93517,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_userStore_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/userStore.js */ "./resources/js/store/modules/userStore.js");
 /* harmony import */ var _modules_publikasiStore_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/publikasiStore.js */ "./resources/js/store/modules/publikasiStore.js");
-/* harmony import */ var _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/pekerjaanStore.js */ "./resources/js/store/modules/pekerjaanStore.js");
-/* harmony import */ var _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/petugasStore.js */ "./resources/js/store/modules/petugasStore.js");
-/* harmony import */ var _modules_indexMainStore_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/indexMainStore.js */ "./resources/js/store/modules/indexMainStore.js");
+/* harmony import */ var _modules_publikasiViewStore_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/publikasiViewStore.js */ "./resources/js/store/modules/publikasiViewStore.js");
+/* harmony import */ var _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/pekerjaanStore.js */ "./resources/js/store/modules/pekerjaanStore.js");
+/* harmony import */ var _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/petugasStore.js */ "./resources/js/store/modules/petugasStore.js");
+/* harmony import */ var _modules_indexMainStore_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/indexMainStore.js */ "./resources/js/store/modules/indexMainStore.js");
+
 
 
 
@@ -93236,9 +93534,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   modules: {
     userStore: _modules_userStore_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     publikasiStore: _modules_publikasiStore_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    petugasStore: _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    pekerjaanStore: _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-    indexMainStore: _modules_indexMainStore_js__WEBPACK_IMPORTED_MODULE_6__["default"]
+    petugasStore: _modules_petugasStore_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    pekerjaanStore: _modules_pekerjaanStore_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    indexMainStore: _modules_indexMainStore_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+    publikasiViewStore: _modules_publikasiViewStore_js__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 }));
 
@@ -93605,6 +93904,9 @@ var actions = {
         text: "Sukses Import List",
         type: "success"
       });
+      dispatch("indexMainStore/indexInit", {}, {
+        root: true
+      });
     })["catch"](function (err) {
       state.importDialog.loading = false;
       state.importDialog.errorStatus = true;
@@ -93734,6 +94036,63 @@ var actions = {
     var state = _ref15.state;
     state.year = null;
     state.baseUrl = "/api/v1/publikasi";
+  }
+};
+var mutations = {};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/publikasiViewStore.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/store/modules/publikasiViewStore.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  baseUrl: "/api/v1/publikasi/",
+  snackbar: {
+    show: false,
+    timeout: 3000,
+    color: "success",
+    text: ""
+  },
+  publikasiId: null,
+  publikasi: {}
+};
+var getters = {};
+var actions = {
+  showSnackbar: function showSnackbar(_ref, _ref2) {
+    var state = _ref.state;
+    var text = _ref2.text,
+        type = _ref2.type;
+    state.snackbar.show = true;
+    state.snackbar.color = type;
+    state.snackbar.text = text;
+  },
+  setPublikasiDetails: function setPublikasiDetails(_ref3) {
+    var state = _ref3.state;
+    axios.get(state.baseUrl + state.publikasiId).then(function (res) {
+      state.publikasi = res.data;
+    })["catch"](function (err) {
+      dispatch("showSnackbar", {
+        text: err.response.data,
+        type: "error"
+      });
+    });
+  },
+  setPublikasiId: function setPublikasiId(_ref4, val) {
+    var state = _ref4.state;
+    state.publikasiId = val;
   }
 };
 var mutations = {};
