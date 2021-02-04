@@ -32,7 +32,7 @@ class CreatePublikasisTable extends Migration
 
             $table->foreignId('stage_id')->nullable()->default(Enums::STAGE_PUBLIKASI['PUBLIKASI_BARU']['kode']);
             $table->foreignId('user_id')->nullable();
-            $table->string('uploaded_by')->nullable();
+            $table->foreignId('uploaded_by')->nullable();
             $table->date('uploaded_on')->nullable();
             $table->integer('tahun_rilis')->nullable();
             $table->softDeletes();

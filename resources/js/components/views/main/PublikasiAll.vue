@@ -447,7 +447,7 @@ export default {
             nextWeek: "dddd, D MMMM yyyy",
             sameElse: "dddd, D MMMM yyyy"
           })
-        : "Belum Ditentukan Admin";
+        : "-";
     },
 
     dialogAction() {

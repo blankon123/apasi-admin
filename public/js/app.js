@@ -3025,6 +3025,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3553,7 +3556,7 @@ __webpack_require__.r(__webpack_exports__);
         lastWeek: "dddd [Kemarin]",
         nextWeek: "dddd, D MMMM yyyy",
         sameElse: "dddd, D MMMM yyyy"
-      }) : "Belum Ditentukan Admin";
+      }) : "-";
     },
     dialogAction: function dialogAction() {
       if (this.$refs.formPublikasi.validate()) {
@@ -4019,7 +4022,7 @@ __webpack_require__.r(__webpack_exports__);
         lastWeek: "dddd [Kemarin]",
         nextWeek: "dddd, D MMMM yyyy",
         sameElse: "dddd, D MMMM yyyy"
-      }) : "Belum Ditentukan Admin";
+      }) : "-";
     },
     dialogAction: function dialogAction() {
       if (this.$refs.formPublikasi.validate()) {
@@ -4142,6 +4145,167 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -4154,8 +4318,27 @@ __webpack_require__.r(__webpack_exports__);
     publikasiId: function publikasiId() {
       return this.$store.state.publikasiViewStore.publikasiId;
     },
+    publikasi: function publikasi() {
+      return this.$store.state.publikasiViewStore.publikasi;
+    },
     snackbar: function snackbar() {
       return this.$store.state.publikasiViewStore.snackbar;
+    }
+  },
+  methods: {
+    colorize: function colorize(i) {
+      return i % 2 == 1 ? "pink" : "teal lighten-3";
+    },
+    dateForHuman: function dateForHuman(arcDate) {
+      var dateResult = moment(arcDate);
+      return dateResult.isValid() ? dateResult.locale("id").calendar(null, {
+        lastDay: "[Kemarin, ] D MMMM yyyy",
+        sameDay: "[Hari Ini,] D MMMM yyyy",
+        nextDay: "[Besok,] dddd",
+        lastWeek: "dddd [Kemarin]",
+        nextWeek: "dddd, D MMMM yyyy",
+        sameElse: "dddd, D MMMM yyyy"
+      }) : "-";
     }
   }
 });
@@ -28618,26 +28801,34 @@ var render = function() {
             [
               _c(
                 "v-container",
-                { attrs: { fluid: "" } },
+                {
+                  attrs: { fluid: "", "fill-height": _vm.$route.name == "Main" }
+                },
                 [
-                  _c(
-                    "v-row",
-                    { attrs: { align: "start", justify: "center" } },
-                    [
-                      _c(
-                        "v-col",
-                        { staticClass: "text-center" },
+                  _vm.$route.name != "Main"
+                    ? _c(
+                        "v-row",
+                        { attrs: { align: "start", justify: "center" } },
                         [
-                          _c("router-view", {
-                            staticClass: "main-view",
-                            attrs: { name: "MainView" }
-                          })
+                          _c(
+                            "v-col",
+                            { staticClass: "text-center" },
+                            [
+                              _c("router-view", {
+                                staticClass: "main-view",
+                                attrs: { name: "MainView" }
+                              })
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
+                    : _c(
+                        "v-row",
+                        { attrs: { align: "center", justify: "center" } },
+                        [_vm._v("\n          Cangcimeng\n        ")]
+                      )
                 ],
                 1
               )
@@ -30641,183 +30832,271 @@ var render = function() {
         [
           _c(
             "v-col",
-            {
-              staticClass: "text-left",
-              attrs: { lg: "4", sm: "12", xs: "12" }
-            },
+            { attrs: { lg: "9", sm: "12", xs: "12" } },
             [
               _c(
                 "v-card",
                 { attrs: { elevation: "6" } },
                 [
                   _c(
-                    "v-card-text",
-                    { staticClass: "py-0" },
+                    "v-list-item",
+                    { staticClass: "text-left", attrs: { "two-line": "" } },
                     [
                       _c(
-                        "v-timeline",
-                        { attrs: { "align-top": "", dense: "" } },
+                        "v-list-item-content",
+                        [
+                          _c("v-list-item-title", { staticClass: "headline" }, [
+                            _vm._v(
+                              "\n              Detail Publikasi\n            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("v-list-item-subtitle", [
+                            _vm._v("Detail Publikasi yang telah tersimpan")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _vm.publikasi.judul_publikasi && true
+                    ? _c(
+                        "v-card-text",
+                        { staticClass: "text-left" },
                         [
                           _c(
-                            "v-timeline-item",
-                            { attrs: { color: "pink", small: "" } },
+                            "v-row",
                             [
                               _c(
-                                "v-row",
-                                { staticClass: "pt-1" },
+                                "v-col",
+                                { attrs: { cols: "12" } },
                                 [
-                                  _c("v-col", { attrs: { cols: "3" } }, [
-                                    _c("strong", [_vm._v("5pm")])
-                                  ]),
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      value: _vm.publikasi.judul_publikasi,
+                                      label: "Judul Publikasi",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-book",
+                                      "hide-details": ""
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass: "py-0 my-0",
+                                  attrs: { cols: "12", sm: "12", md: "4" }
+                                },
+                                [
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value: _vm.publikasi.user.name,
+                                      label: "Bidang Terkait",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-book-account",
+                                      "hide-details": ""
+                                    }
+                                  }),
                                   _vm._v(" "),
-                                  _c("v-col", [
-                                    _c("strong", [_vm._v("New Icon")]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "caption" }, [
-                                      _vm._v(
-                                        "\n                    Mobile App\n                  "
-                                      )
-                                    ])
-                                  ])
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.jenis_arc == 1
+                                          ? "ARC"
+                                          : "NON-ARC",
+                                      label: "Jenis Publikasi",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-calendar",
+                                      "hide-details": ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value: _vm.dateForHuman(
+                                        _vm.publikasi.arc
+                                      ),
+                                      label: "Tanggal Terbit",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon":
+                                        "mdi-clock-time-three",
+                                      "hide-details": ""
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass: "py-0 my-0",
+                                  attrs: { cols: "12", sm: "12", md: "4" }
+                                },
+                                [
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.ukuran == null
+                                          ? "-"
+                                          : _vm.publikasi.ukuran,
+                                      label: "Ukuran Publikasi",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon":
+                                        "mdi-stretch-to-page",
+                                      "hide-details": ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.bahasa == null
+                                          ? "-"
+                                          : _vm.publikasi.bahasa,
+                                      label: "Bahasa Publikasi",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon":
+                                        "mdi-text-to-speech",
+                                      "hide-details": ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.orientasi == null
+                                          ? "-"
+                                          : _vm.publikasi.orientasi,
+                                      label: "Orientasi Publikasi",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-crop-rotate",
+                                      "hide-details": ""
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                {
+                                  staticClass: "py-0 my-0",
+                                  attrs: { cols: "12", sm: "12", md: "4" }
+                                },
+                                [
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.diterbitkan_untuk == null
+                                          ? "-"
+                                          : _vm.publikasi.diterbitkan_untuk,
+                                      label: "Diterbitkan Untuk",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon":
+                                        "mdi-account-supervisor",
+                                      "hide-details": ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.numbering == null
+                                          ? "-"
+                                          : _vm.publikasi.numbering,
+                                      label: "ISSN/ISBN",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-barcode",
+                                      "hide-details": ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    staticClass: "mb-3",
+                                    attrs: {
+                                      value:
+                                        _vm.publikasi.cover_oleh == null
+                                          ? "-"
+                                          : _vm.publikasi.cover_oleh,
+                                      label: "Pembuat COver",
+                                      filled: "",
+                                      readonly: "",
+                                      "prepend-inner-icon": "mdi-format-paint",
+                                      "hide-details": ""
+                                    }
+                                  })
                                 ],
                                 1
                               )
                             ],
                             1
                           ),
-                          _vm._v(" "),
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(_vm.publikasi) +
+                              "\n        "
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.publikasi.judul_publikasi && true
+                    ? _c(
+                        "v-card-actions",
+                        [
                           _c(
-                            "v-timeline-item",
-                            { attrs: { color: "teal lighten-3", small: "" } },
+                            "v-btn",
+                            {
+                              staticClass: "ma-1",
+                              attrs: {
+                                color: "red",
+                                loading: true,
+                                disabled: true
+                              }
+                            },
                             [
-                              _c(
-                                "v-row",
-                                { staticClass: "pt-1" },
-                                [
-                                  _c("v-col", { attrs: { cols: "3" } }, [
-                                    _c("strong", [_vm._v("3-4pm")])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-col",
-                                    [
-                                      _c("strong", [_vm._v("Design Stand Up")]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "caption mb-2" },
-                                        [
-                                          _vm._v(
-                                            "\n                    Hangouts\n                  "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-avatar",
-                                        [
-                                          _c("v-img", {
-                                            attrs: {
-                                              src:
-                                                "https://avataaars.io/?avatarStyle=Circle&topType=LongHairFrida&accessoriesType=Kurt&hairColor=Red&facialHairType=BeardLight&facialHairColor=BrownDark&clotheType=GraphicShirt&clotheColor=Gray01&graphicType=Skull&eyeType=Wink&eyebrowType=RaisedExcitedNatural&mouthType=Disbelief&skinColor=Brown"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-avatar",
-                                        [
-                                          _c("v-img", {
-                                            attrs: {
-                                              src:
-                                                "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-avatar",
-                                        [
-                                          _c("v-img", {
-                                            attrs: {
-                                              src:
-                                                "https://avataaars.io/?avatarStyle=Circle&topType=LongHairMiaWallace&accessoriesType=Sunglasses&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-timeline-item",
-                            { attrs: { color: "pink", small: "" } },
-                            [
-                              _c(
-                                "v-row",
-                                { staticClass: "pt-1" },
-                                [
-                                  _c("v-col", { attrs: { cols: "3" } }, [
-                                    _c("strong", [_vm._v("12pm")])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("v-col", [
-                                    _c("strong", [_vm._v("Lunch break")])
-                                  ])
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-timeline-item",
-                            { attrs: { color: "teal lighten-3", small: "" } },
-                            [
-                              _c(
-                                "v-row",
-                                { staticClass: "pt-1" },
-                                [
-                                  _c("v-col", { attrs: { cols: "3" } }, [
-                                    _c("strong", [_vm._v("9-11am")])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("v-col", [
-                                    _c("strong", [
-                                      _vm._v("Finish Home Screen")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "caption" }, [
-                                      _vm._v(
-                                        "\n                    Web App\n                  "
-                                      )
-                                    ])
-                                  ])
-                                ],
-                                1
-                              )
+                              _c("v-icon", { attrs: { left: "" } }, [
+                                _vm._v(
+                                  "\n              mdi-cloud-upload\n            "
+                                )
+                              ]),
+                              _vm._v("\n            Action\n          ")
                             ],
                             1
                           )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
+                    : _c("v-progress-linear", {
+                        staticClass: "mt-12",
+                        attrs: { indeterminate: "", color: "cyan", rounded: "" }
+                      })
                 ],
                 1
               )
@@ -30827,8 +31106,122 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-col",
-            { attrs: { lg: "8", sm: "12", xs: "12" } },
-            [_c("v-card", { attrs: { elevation: "6" } })],
+            {
+              staticClass: "text-left",
+              attrs: { lg: "3", sm: "12", xs: "12" }
+            },
+            [
+              _c(
+                "v-card",
+                { attrs: { elevation: "6" } },
+                [
+                  _c(
+                    "v-list-item",
+                    { staticClass: "text-left", attrs: { "two-line": "" } },
+                    [
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c("v-list-item-title", { staticClass: "headline" }, [
+                            _vm._v(
+                              "\n              Histori Publikasi\n            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("v-list-item-subtitle", [
+                            _vm._v("Daftar Perubahan pada Publikasi")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _vm.publikasi.historis && true
+                    ? _c(
+                        "v-card-text",
+                        { staticClass: "pa-0 ma-0" },
+                        [
+                          _c(
+                            "v-timeline",
+                            { attrs: { "align-top": "", dense: "" } },
+                            _vm._l(_vm.publikasi.historis, function(
+                              item,
+                              index
+                            ) {
+                              return _c(
+                                "div",
+                                { key: index },
+                                [
+                                  _c(
+                                    "v-timeline-item",
+                                    {
+                                      attrs: {
+                                        color: _vm.colorize(index),
+                                        dense: ""
+                                      }
+                                    },
+                                    [
+                                      _c("strong", [
+                                        _vm._v(
+                                          " Publikasi " +
+                                            _vm._s(item.Keterangan) +
+                                            " "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _c("strong", [
+                                          _vm._v(
+                                            "\n                    Oleh\n                    "
+                                          ),
+                                          _c(
+                                            "span",
+                                            {
+                                              class: item.user.color + "--text"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                      " +
+                                                  _vm._s(
+                                                    item.user.nama_bidang
+                                                  ) +
+                                                  "\n                    "
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.dateForHuman(item.created_at)
+                                          )
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            }),
+                            0
+                          )
+                        ],
+                        1
+                      )
+                    : _c("v-progress-linear", {
+                        staticClass: "mt-12",
+                        attrs: { indeterminate: "", color: "cyan", rounded: "" }
+                      })
+                ],
+                1
+              )
+            ],
             1
           )
         ],
@@ -93866,8 +94259,10 @@ var actions = {
       state.currentPage = requestedPage;
       state.publikasiTable.loading = false;
     })["catch"](function (err) {
+      console.log(err.response.data);
+      state.publikasiTable.loading = false;
       dispatch("showSnackbar", {
-        text: err.response.data,
+        text: "Ups, Terdapat Kesalahan",
         type: "error"
       });
     });
@@ -93952,7 +94347,6 @@ var actions = {
   },
   deletePublikasi: function deletePublikasi(_ref10, form) {
     var state = _ref10.state,
-        commit = _ref10.commit,
         dispatch = _ref10.dispatch;
     axios["delete"]("/api/v1/publikasi/", {
       data: {
@@ -93966,10 +94360,12 @@ var actions = {
         type: "success"
       });
     })["catch"](function (err) {
+      state.publikasiTable.loading = false;
       dispatch("showSnackbar", {
-        text: err.response.data,
+        text: "Ups,Terdapat Kesalahan",
         type: "error"
       });
+      console.log(err.response.data);
     });
   },
   setSearch: function setSearch(_ref11) {
@@ -93984,7 +94380,7 @@ var actions = {
     var state = _ref12.state,
         dispatch = _ref12.dispatch;
     state.publikasiTable.loading = true;
-    axios.post(state.baseUrl + "/", {
+    axios.post("/api/v1/publikasi/", {
       judul_publikasi: form.judul_publikasi,
       jenis_arc: form.arc,
       arc: form.tanggal_arc,
@@ -93996,6 +94392,7 @@ var actions = {
         type: "success"
       });
     })["catch"](function (err) {
+      state.publikasiTable.loading = false;
       dispatch("showSnackbar", {
         text: "Ups, Terjadi Kesalahan",
         type: "error"
@@ -94007,8 +94404,7 @@ var actions = {
     var state = _ref13.state,
         dispatch = _ref13.dispatch;
     state.publikasiTable.loading = true;
-    axios.put(state.baseUrl + "/", {
-      id: form.id,
+    axios.put("/api/v1/publikasi/" + form.id, {
       judul_publikasi: form.judul_publikasi,
       jenis_arc: form.arc,
       arc: form.tanggal_arc,
@@ -94020,6 +94416,7 @@ var actions = {
         type: "success"
       });
     })["catch"](function (err) {
+      state.publikasiTable.loading = false;
       dispatch("showSnackbar", {
         text: "Ups, Terjadi Kesalahan",
         type: "error"
@@ -94082,7 +94479,7 @@ var actions = {
   setPublikasiDetails: function setPublikasiDetails(_ref3) {
     var state = _ref3.state;
     axios.get(state.baseUrl + state.publikasiId).then(function (res) {
-      state.publikasi = res.data;
+      state.publikasi = res.data[0];
     })["catch"](function (err) {
       dispatch("showSnackbar", {
         text: err.response.data,

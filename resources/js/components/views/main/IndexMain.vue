@@ -128,11 +128,14 @@
       </v-app-bar>
 
       <v-main>
-        <v-container fluid>
-          <v-row align="start" justify="center">
+        <v-container fluid :fill-height="$route.name == 'Main'">
+          <v-row align="start" justify="center" v-if="$route.name != 'Main'">
             <v-col class="text-center">
               <router-view class="main-view" name="MainView"></router-view>
             </v-col>
+          </v-row>
+          <v-row v-else align="center" justify="center">
+            Cangcimeng
           </v-row>
         </v-container>
       </v-main>

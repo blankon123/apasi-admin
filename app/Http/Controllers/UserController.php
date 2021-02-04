@@ -16,7 +16,6 @@ class UserController extends Controller
     public function index(Request $request)
     {
         return $request->user();
-
     }
 
     /**
@@ -37,19 +36,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            $newUser = new User;
-            $color = ['red', 'purple', 'blue', 'amber', 'brown'];
-            $newUser->username = $request->username;
-            $newUser->nama_bidang = $request->nama_bidang;
-            $newUser->name = $request->name;
-            $newUser->password = Hash::make($request->password);
-            $newUser->color = $color[array_rand($color, 1)];
-            $newUser->save();
-            return response("Sukses Menambahkan User", 200);
-        } else {
-            return response("Ups, Anda Bukan Admin ", 401);
-        }
+        $newUser = new User;
+        $color = ['red', 'purple', 'blue', 'amber', 'brown'];
+        $newUser->username = $request->username;
+        $newUser->nama_bidang = $request->nama_bidang;
+        $newUser->name = $request->name;
+        $newUser->password = Hash::make($request->password);
+        $newUser->color = $color[array_rand($color, 1)];
+        $newUser->save();
+        return response("Sukses Menambahkan User", 200);
     }
 
     /**
@@ -83,16 +78,12 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            $user = User::find($request->id);
-            $user->username = $request->username;
-            $user->nama_bidang = $request->nama_bidang;
-            $user->name = $request->name;
-            $user->save();
-            return response("Sukses Merubah User", 200);
-        } else {
-            return response("Ups, Anda Bukan Admin ", 401);
-        }
+        $user = User::find($request->id);
+        $user->username = $request->username;
+        $user->nama_bidang = $request->nama_bidang;
+        $user->name = $request->name;
+        $user->save();
+        return response("Sukses Merubah User", 200);
     }
 
     /**
@@ -104,14 +95,10 @@ class UserController extends Controller
      */
     public function updatePassword(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            $user = User::find($request->id);
-            $user->password = Hash::make($request->password);
-            $user->save();
-            return response("Sukses Merubah User", 200);
-        } else {
-            return response("Ups, Anda Bukan Admin ", 500);
-        }
+        $user = User::find($request->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response("Sukses Merubah User", 200);
     }
 
     /**
@@ -139,11 +126,7 @@ class UserController extends Controller
      */
     public function all(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            return User::all();
-        }
-        return response("Ups, Anda Bukan Admin ", 401);
-
+        return User::all();
     }
 
     /**
