@@ -36,15 +36,11 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            $newPetugas = new Petugas;
-            $newPetugas->nama = $request->nama;
-            $newPetugas->nama_singkat = $request->nama_singkat;
-            $newPetugas->save();
-            return response("Sukses Menambahkan Petugas", 200);
-        } else {
-            return response("Ups, Anda Bukan Admin ", 401);
-        }
+        $newPetugas = new Petugas;
+        $newPetugas->nama = $request->nama;
+        $newPetugas->nama_singkat = $request->nama_singkat;
+        $newPetugas->save();
+        return response("Sukses Menambahkan Petugas", 200);
     }
 
     /**
@@ -78,15 +74,11 @@ class PetugasController extends Controller
      */
     public function update(Request $request)
     {
-        if ($request->user()->role == "ADMIN") {
-            $petugas = Petugas::find($request->id);
-            $petugas->nama = $request->nama;
-            $petugas->nama_singkat = $request->nama_singkat;
-            $petugas->save();
-            return response("Sukses Menambahkan Petugas", 200);
-        } else {
-            return response("Ups, Anda Bukan Admin ", 401);
-        }
+        $petugas = Petugas::find($request->id);
+        $petugas->nama = $request->nama;
+        $petugas->nama_singkat = $request->nama_singkat;
+        $petugas->save();
+        return response("Sukses Menambahkan Petugas", 200);
     }
 
     /**

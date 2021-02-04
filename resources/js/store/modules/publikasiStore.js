@@ -76,7 +76,12 @@ const actions = {
         state.publikasiTable.loading = false;
       })
       .catch(err => {
-        dispatch("showSnackbar", { text: err.response.data, type: "error" });
+        console.log(err.response.data);
+        state.publikasiTable.loading = false;
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
       });
   },
   showSnackbar({ state }, { text, type }) {
@@ -149,7 +154,7 @@ const actions = {
       }
     };
   },
-  deletePublikasi({ state, commit, dispatch }, form) {
+  deletePublikasi({ state, dispatch }, form) {
     axios
       .delete("/api/v1/publikasi/", {
         data: { id: state.deleteDialog.form.id }
@@ -163,7 +168,12 @@ const actions = {
         });
       })
       .catch(err => {
-        dispatch("showSnackbar", { text: err.response.data, type: "error" });
+        state.publikasiTable.loading = false;
+        dispatch("showSnackbar", {
+          text: "Ups,Terdapat Kesalahan",
+          type: "error"
+        });
+        console.log(err.response.data);
       });
   },
   setSearch({ state, dispatch }, keyword = "") {
@@ -177,7 +187,7 @@ const actions = {
   addPublikasi({ state, dispatch }, form) {
     state.publikasiTable.loading = true;
     axios
-      .post(state.baseUrl + "/", {
+      .post("/api/v1/publikasi/", {
         judul_publikasi: form.judul_publikasi,
         jenis_arc: form.arc,
         arc: form.tanggal_arc,
@@ -188,6 +198,7 @@ const actions = {
         dispatch("showSnackbar", { text: res.data, type: "success" });
       })
       .catch(err => {
+        state.publikasiTable.loading = false;
         dispatch("showSnackbar", {
           text: "Ups, Terjadi Kesalahan",
           type: "error"
@@ -198,8 +209,7 @@ const actions = {
   editPublikasi({ state, dispatch }, form) {
     state.publikasiTable.loading = true;
     axios
-      .put(state.baseUrl + "/", {
-        id: form.id,
+      .put("/api/v1/publikasi/" + form.id, {
         judul_publikasi: form.judul_publikasi,
         jenis_arc: form.arc,
         arc: form.tanggal_arc,
@@ -210,6 +220,7 @@ const actions = {
         dispatch("showSnackbar", { text: res.data, type: "success" });
       })
       .catch(err => {
+        state.publikasiTable.loading = false;
         dispatch("showSnackbar", {
           text: "Ups, Terjadi Kesalahan",
           type: "error"

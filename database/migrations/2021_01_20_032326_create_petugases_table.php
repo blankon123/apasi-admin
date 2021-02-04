@@ -24,6 +24,9 @@ class CreatePetugasesTable extends Migration
         Schema::table('pekerjaans', function (Blueprint $table) {
             $table->foreign('petugas_id')->references('id')->on('petugases')->onDelete('cascade');
         });
+        Schema::table('publikasis', function (Blueprint $table) {
+            $table->foreign('uploaded_by')->references('id')->on('petugases')->onDelete('cascade');
+        });
     }
 
     /**

@@ -20,7 +20,7 @@ const actions = {
     axios
       .get(state.baseUrl + state.publikasiId)
       .then(res => {
-        state.publikasi = res.data;
+        state.publikasi = res.data[0];
       })
       .catch(err => {
         dispatch("showSnackbar", { text: err.response.data, type: "error" });

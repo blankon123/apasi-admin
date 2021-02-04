@@ -261,7 +261,7 @@
           </v-tooltip>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:[`item.actions`]="{ item }" class="text-left">
         <v-btn icon :href="viewItem(item)" target="_blank" class="mr-2">
           <v-icon small>
             mdi-eye
@@ -277,7 +277,7 @@
       <template class="text-left" v-slot:no-data>
         Ups, Tidak ada daftar publikasi
       </template>
-      <template v-slot:[`item.judul`]="{ item }">
+      <template v-slot:[`item.judul`]="{ item }" class="text-left">
         <span>
           <div
             style="width: 7px;height:35px;float:left;margin:4px;border-radius:3px"
@@ -294,7 +294,7 @@
           </div>
         </span>
       </template>
-      <template v-slot:[`item.batas_uploadHuman`]="{ item }">
+      <template v-slot:[`item.batas_uploadHuman`]="{ item }" class="text-left">
         <div class="font-weight-medium">
           {{ dateForHuman(item.batas_upload) }}
         </div>
@@ -448,7 +448,7 @@ export default {
             nextWeek: "dddd, D MMMM yyyy",
             sameElse: "dddd, D MMMM yyyy"
           })
-        : "Belum Ditentukan Admin";
+        : "-";
     },
 
     dialogAction() {

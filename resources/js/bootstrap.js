@@ -37,6 +37,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 axios.interceptors.request.use(
   function(config) {
     // assume your access token is stored in local storage

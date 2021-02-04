@@ -22,11 +22,11 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('user')->group(function () {
             Route::get('/', [UserController::class, 'index']);
-            Route::post('/', [UserController::class, 'store']);
-            Route::put('/', [UserController::class, 'update']);
-            Route::put('/password', [UserController::class, 'updatePassword']);
-            Route::delete('/', [UserController::class, 'destroy']);
-            Route::get('/all', [UserController::class, 'all']);
+            Route::post('/', [UserController::class, 'store'])->middleware('can:isAdmin');
+            Route::put('/', [UserController::class, 'update'])->middleware('can:isAdmin');
+            Route::put('/password', [UserController::class, 'updatePassword'])->middleware('can:isAdmin');
+            Route::delete('/', [UserController::class, 'destroy'])->middleware('can:isAdmin');
+            Route::get('/all', [UserController::class, 'all'])->middleware('can:isAdmin');
             Route::get('/bidang', [UserController::class, 'bidangAll']);
         });
         Route::prefix('publikasi')->group(function () {
@@ -34,7 +34,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/year', [PublikasiController::class, 'indexYear']);
             Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
             Route::post('/', [PublikasiController::class, 'store']);
-            Route::put('/', [PublikasiController::class, 'update']);
+            Route::put('/{id}', [PublikasiController::class, 'update']);
             Route::get('/search', [PublikasiController::class, 'search']);
             Route::get('/searchYear', [PublikasiController::class, 'searchYear']);
             Route::post('/import', [PublikasiController::class, 'import']);
@@ -42,21 +42,21 @@ Route::prefix('v1')->group(function () {
             Route::get('/{id}', [PublikasiController::class, 'show']);
         });
 
-        Route::prefix('stage')->group(function () {
+        Route::prefix('stage')->middleware('can:isAdmin')->group(function () {
             Route::get('/stage_publikasi', [EnumsController::class, 'getStagePublikasi']);
             Route::get('/kode_publikasi', [EnumsController::class, 'getKodePublikasi']);
             Route::get('/kode_tabel', [EnumsController::class, 'destroy']);
         });
 
         Route::prefix('petugas')->group(function () {
-            Route::get('/', [PetugasController::class, 'index']);
+            Route::get('/', [PetugasController::class, 'index'])->middleware('can:isAdmin');
+            Route::post('/', [PetugasController::class, 'store'])->middleware('can:isAdmin');
+            Route::put('/', [PetugasController::class, 'update'])->middleware('can:isAdmin');
+            Route::delete('/', [PetugasController::class, 'destroy'])->middleware('can:isAdmin');
             Route::get('/all', [PetugasController::class, 'all']);
-            Route::post('/', [PetugasController::class, 'store']);
-            Route::put('/', [PetugasController::class, 'update']);
-            Route::delete('/', [PetugasController::class, 'destroy']);
         });
 
-        Route::prefix('pekerjaan')->group(function () {
+        Route::prefix('pekerjaan')->middleware('can:isAdmin')->group(function () {
             Route::get('/', [PekerjaanController::class, 'index']);
             Route::get('/all', [PekerjaanController::class, 'all']);
             Route::post('/', [PekerjaanController::class, 'store']);
