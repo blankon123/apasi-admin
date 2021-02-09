@@ -8,7 +8,6 @@ require("./bootstrap");
 import router from "./router/router.js";
 import Vuetify from "vuetify";
 import store from "./store/index.js";
-import "@mdi/font/css/materialdesignicons.css";
 
 window.Vue = require("vue");
 Vue.use(Vuetify);

@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('nama_bidang');
+            $table->string('email');
             $table->string('name');
             $table->string('color');
             $table->string('role')->default('SM');

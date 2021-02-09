@@ -41,6 +41,5 @@ class PublikasiImportedListener
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);
-
     }
 }
