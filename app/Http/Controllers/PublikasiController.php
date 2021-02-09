@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Events\PublikasiAdded;
 use App\Events\PublikasiEdited;
+use App\Events\PublikasiSPRPCommited;
 use App\Imports\PublikasiImport;
 use App\Models\Publikasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -92,9 +94,9 @@ class PublikasiController extends Controller
     public function show($id, Request $request)
     {
         try {
-            $publikasi = Publikasi::where('id', '=', $id)->with('user', 'historis', 'historis.file', 'historis.user', 'uploadedBy')->get();
+            $publikasi = Publikasi::findOrFail($id);
             if (Gate::allows('isAdmin') || ($publikasi->user_id == $request->user()->id)) {
-                return $publikasi;
+                return Publikasi::where('id', '=', $id)->with('user', 'historis', 'historis.file', 'historis.user', 'uploadedBy')->get();
             } else {
                 return response("Ups, Anda Tidak Berhak Mengakses ", 403);
             }
@@ -126,7 +128,7 @@ class PublikasiController extends Controller
         try {
             $request->arc = $request->arc ? date('Y-m-d', strtotime($request->arc)) : null;
             $publikasi = Publikasi::where('id', $id)->update($request->all());
-            event(new PublikasiEdited($publikasi, $request->user()));
+            event(new PublikasiEdited(Publikasi::find($id), $request->user()));
             return response("Sukses Mengubah Publikasi", 200);
         } catch (\Throwable $th) {
             return response("Ups, Terjadi Kesalahan " . $th, 500);
@@ -145,14 +147,17 @@ class PublikasiController extends Controller
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx',
         ]);
-        $file = $request->file('file');
-        $nama_file = rand() . " " . $file->getClientOriginalName();
-        $file->move('publikasi_folder', $nama_file);
+        DB::beginTransaction();
         try {
+            $file = $request->file('file');
+            $nama_file = rand() . " " . $file->getClientOriginalName();
+            $file->move('publikasi_folder', $nama_file);
             Excel::import(new PublikasiImport(Auth::user()), public_path('/publikasi_folder/' . $nama_file));
+            DB::commit();
             return response('Sukses Import', 200);
         } catch (\Throwable $th) {
-            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th->getMessage(), 500);
+            DB::rollBack();
+            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th, 500);
         }
     }
 
@@ -165,8 +170,7 @@ class PublikasiController extends Controller
     public function destroy(Request $req)
     {
         try {
-            $publikasi = Publikasi::find($req->id);
-            $publikasi->delete();
+            Publikasi::find($req->id)->delete();
             response('Sukses Delete', 200);
         } catch (\Throwable $th) {
             response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
@@ -208,5 +212,22 @@ class PublikasiController extends Controller
             return $publikasis->paginate($request->total);
         }
         return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
+    }
+
+    /**
+     * Update SPRP Publikasi.
+     *
+     * @param  String  $keyword
+     * @return \Illuminate\Http\Response
+     */
+    public function sprp($id, Request $request)
+    {
+        try {
+            $publikasi = Publikasi::where('id', $id)->update($request->all());
+            event(new PublikasiSPRPCommited(Publikasi::find($id), $request->user()));
+            return response("Sukses Melengkapi Detail Rancangan Publikasi", 200);
+        } catch (\Throwable $th) {
+            return response("Ups, Terjadi Kesalahan " . $th, 500);
+        }
     }
 }

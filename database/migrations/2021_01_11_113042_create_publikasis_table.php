@@ -18,11 +18,11 @@ class CreatePublikasisTable extends Migration
             $table->id();
             $table->string('judul_publikasi');
             $table->string('ukuran')->nullable();
-            $table->integer('bahasa')->nullable();
-            $table->integer('orientasi')->nullable();
-            $table->integer('cover_oleh')->nullable();
-            $table->integer('diterbitkan_untuk')->nullable();
-            $table->integer('jenis_arc');
+            $table->string('bahasa')->nullable();
+            $table->string('orientasi')->nullable();
+            $table->string('cover_oleh')->nullable();
+            $table->string('diterbitkan_untuk')->nullable();
+            $table->string('jenis_arc');
             $table->string('numbering')->nullable();
             $table->date('arc')->nullable();
             $table->date('batas_upload')->nullable();

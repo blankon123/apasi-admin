@@ -13,7 +13,30 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-row dense>
+    <v-container class="fill-height" v-if="error.status">
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="8" md="4">
+          <v-card class="elevation-20">
+            <v-toolbar color="red">
+              <v-toolbar-title>Error</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon large target="_blank" v-on="on">
+                    <v-icon>mdi-bookshelf</v-icon>
+                  </v-btn>
+                </template>
+                <span>[APASI]</span>
+              </v-tooltip>
+            </v-toolbar>
+            <v-card-text>
+              {{ error.text }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-row dense v-else>
       <v-col lg="9" sm="12" xs="12">
         <v-card elevation="6">
           <v-list-item two-line class="text-left">
@@ -22,9 +45,35 @@
                 Detail Publikasi
               </v-list-item-title>
               <v-list-item-subtitle
-                >Detail Publikasi yang telah tersimpan</v-list-item-subtitle
-              >
+                >Detail Publikasi yang telah tersimpan
+              </v-list-item-subtitle>
             </v-list-item-content>
+            <v-list-item-action>
+              <isi-sprp
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 11"
+              ></isi-sprp>
+              <import-draft
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 12"
+              ></import-draft>
+              <import-rilis
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 13"
+              ></import-rilis>
+              <confirm-upload
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 14"
+              ></confirm-upload>
+              <revisi
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 15"
+              ></revisi>
+              <revisi-progress
+                :publikasi="publikasi"
+                v-if="publikasi.stage_id == 16"
+              ></revisi-progress>
+            </v-list-item-action>
           </v-list-item>
           <v-divider></v-divider>
           <v-card-text
@@ -36,7 +85,7 @@
                 <v-text-field
                   :value="publikasi.judul_publikasi"
                   label="Judul Publikasi"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-book"
                   hide-details
@@ -46,7 +95,7 @@
                 <v-text-field
                   :value="publikasi.user.name"
                   label="Bidang Terkait"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-book-account"
                   hide-details
@@ -55,7 +104,7 @@
                 <v-text-field
                   :value="publikasi.jenis_arc == 1 ? 'ARC' : 'NON-ARC'"
                   label="Jenis Publikasi"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-calendar"
                   hide-details
@@ -64,7 +113,7 @@
                 <v-text-field
                   :value="dateForHuman(publikasi.arc)"
                   label="Tanggal Terbit"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-clock-time-three"
                   class="mb-3"
@@ -73,18 +122,26 @@
               </v-col>
               <v-col cols="12" sm="12" md="4" class="py-0 my-0">
                 <v-text-field
-                  :value="publikasi.ukuran == null ? '-' : publikasi.ukuran"
+                  :value="
+                    publikasi.ukuran == null
+                      ? '-'
+                      : getName(ukuran, publikasi.ukuran)
+                  "
                   label="Ukuran Publikasi"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-stretch-to-page"
                   class="mb-3"
                   hide-details
                 ></v-text-field>
                 <v-text-field
-                  :value="publikasi.bahasa == null ? '-' : publikasi.bahasa"
+                  :value="
+                    publikasi.bahasa == null
+                      ? '-'
+                      : getName(bahasa, publikasi.bahasa)
+                  "
                   label="Bahasa Publikasi"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-text-to-speech"
                   class="mb-3"
@@ -92,10 +149,12 @@
                 ></v-text-field>
                 <v-text-field
                   :value="
-                    publikasi.orientasi == null ? '-' : publikasi.orientasi
+                    publikasi.orientasi == null
+                      ? '-'
+                      : getName(orientasi, publikasi.orientasi)
                   "
                   label="Orientasi Publikasi"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-crop-rotate"
                   class="mb-3"
@@ -107,10 +166,10 @@
                   :value="
                     publikasi.diterbitkan_untuk == null
                       ? '-'
-                      : publikasi.diterbitkan_untuk
+                      : getName(diterbitkan_untuk, publikasi.diterbitkan_untuk)
                   "
                   label="Diterbitkan Untuk"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-account-supervisor"
                   class="mb-3"
@@ -121,7 +180,7 @@
                     publikasi.numbering == null ? '-' : publikasi.numbering
                   "
                   label="ISSN/ISBN"
-                  filled
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-barcode"
                   class="mb-3"
@@ -129,33 +188,37 @@
                 ></v-text-field>
                 <v-text-field
                   :value="
-                    publikasi.cover_oleh == null ? '-' : publikasi.cover_oleh
+                    publikasi.cover_oleh == null
+                      ? '-'
+                      : getName(cover_oleh, publikasi.cover_oleh)
                   "
-                  label="Pembuat COver"
-                  filled
+                  label="Pembuat Cover"
+                  outlined
                   readonly
                   prepend-inner-icon="mdi-format-paint"
                   class="mb-3"
                   hide-details
                 ></v-text-field>
               </v-col>
+              <v-col cols="12">
+                <v-textarea
+                  outlined
+                  readonly
+                  auto-grow
+                  hide-details
+                  label="Abstraksi"
+                  :value="
+                    publikasi.abstraksi == null ? '-' : publikasi.abstraksi
+                  "
+                ></v-textarea>
+              </v-col>
             </v-row>
-            {{ publikasi }}
           </v-card-text>
-          <v-card-actions v-if="publikasi.judul_publikasi && true">
-            <v-btn color="red" class="ma-1" :loading="true" :disabled="true">
-              <v-icon left>
-                mdi-cloud-upload
-              </v-icon>
-              Action
-            </v-btn>
-          </v-card-actions>
           <v-progress-linear
             indeterminate
             color="cyan"
             rounded
-            v-else
-            class="mt-12"
+            v-if="loading"
           ></v-progress-linear>
         </v-card>
       </v-col>
@@ -248,8 +311,7 @@
             indeterminate
             color="cyan"
             rounded
-            v-else
-            class="mt-12"
+            v-if="loading"
           ></v-progress-linear>
         </v-card>
       </v-col>
@@ -258,8 +320,48 @@
 </template>
 
 <script>
+import ConfirmUpload from "./../components/publikasi/ConfirmUpload";
+import ImportDraft from "./../components/publikasi/ImportDraft";
+import ImportRilis from "./../components/publikasi/ImportRilis";
+import IsiSprp from "./../components/publikasi/IsiSprp";
+import Revisi from "./../components/publikasi/Revisi";
+import RevisiProgress from "./../components/publikasi/RevisiProgress";
+
 export default {
-  data: () => ({}),
+  components: {
+    ConfirmUpload,
+    ImportDraft,
+    ImportRilis,
+    IsiSprp,
+    Revisi,
+    RevisiProgress
+  },
+  data: () => ({
+    ukuran: [
+      { kode: "1", show: "A5" },
+      { kode: "2", show: "A4" },
+      { kode: "3", show: "B5 JIS" },
+      { kode: "4", show: "B5 ISO" },
+      { kode: "5", show: "Lainnya" }
+    ],
+    bahasa: [
+      { kode: "1", show: "Indonesia" },
+      { kode: "2", show: "Inggris" },
+      { kode: "3", show: "Indonesia & Inggris" }
+    ],
+    orientasi: [
+      { kode: "1", show: "Portrait" },
+      { kode: "2", show: "Landscape" }
+    ],
+    diterbitkan_untuk: [
+      { kode: "1", show: "Eksternal" },
+      { kode: "2", show: "Internal" }
+    ],
+    cover_oleh: [
+      { kode: "1", show: "IPDS" },
+      { kode: "2", show: "SM" }
+    ]
+  }),
   created() {
     this.$store.dispatch(
       "publikasiViewStore/setPublikasiId",
@@ -271,16 +373,27 @@ export default {
     publikasiId() {
       return this.$store.state.publikasiViewStore.publikasiId;
     },
+    error() {
+      return this.$store.state.publikasiViewStore.error;
+    },
     publikasi() {
       return this.$store.state.publikasiViewStore.publikasi;
     },
     snackbar() {
       return this.$store.state.publikasiViewStore.snackbar;
+    },
+    loading() {
+      return this.$store.state.publikasiViewStore.loading;
     }
   },
   methods: {
     colorize(i) {
       return i % 2 == 1 ? "pink" : "teal lighten-3";
+    },
+    getName(arr, id) {
+      return arr.find(function(item, index) {
+        if (item.kode == id) return true;
+      }).show;
     },
     dateForHuman(arcDate) {
       let dateResult = moment(arcDate);

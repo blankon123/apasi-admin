@@ -34,6 +34,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/year', [PublikasiController::class, 'indexYear']);
             Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
             Route::post('/', [PublikasiController::class, 'store']);
+            Route::put('/sprp/{id}', [PublikasiController::class, 'sprp']);
             Route::put('/{id}', [PublikasiController::class, 'update']);
             Route::get('/search', [PublikasiController::class, 'search']);
             Route::get('/searchYear', [PublikasiController::class, 'searchYear']);

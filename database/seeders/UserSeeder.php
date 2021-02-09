@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
                 'role' => 'ADMIN',
                 'color' => 'pink',
                 'password' => Hash::make('rahasia'),
+                'email' => 'kabidipds6200@bps.go.id',
             ),
             array(
                 'username' => 'tatausaha6200',
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
                 'role' => 'SM',
                 'color' => 'indigo',
                 'password' => Hash::make('tatausaha6200'),
+                'email' => 'kabagtu6200@bps.go.id',
             ),
             array(
                 'username' => 'sosial6200',
@@ -39,6 +41,7 @@ class UserSeeder extends Seeder
                 'role' => 'SM',
                 'color' => 'light-blue',
                 'password' => Hash::make('sosial6200'),
+                'email' => 'kabidsos6200@bps.go.id',
             ),
             array(
                 'username' => 'distribusi6200',
@@ -47,6 +50,7 @@ class UserSeeder extends Seeder
                 'role' => 'SM',
                 'color' => 'yellow',
                 'password' => Hash::make('distribusi6200'),
+                'email' => 'kabiddist6200@bps.go.id',
             ),
             array(
                 'username' => 'produksi6200',
@@ -55,6 +59,7 @@ class UserSeeder extends Seeder
                 'role' => 'SM',
                 'color' => 'green',
                 'password' => Hash::make('produksi6200'),
+                'email' => 'kabidprod6200@bps.go.id',
             ),
             array(
                 'username' => 'nerwilis6200',
@@ -63,6 +68,7 @@ class UserSeeder extends Seeder
                 'color' => 'deep-orange',
                 'role' => 'SM',
                 'password' => Hash::make('nerwilis6200'),
+                'email' => 'kabidnerwilis6200@bps.go.id',
             )];
         foreach ($data_bidang as $bidang) {
             DB::table('users')->insert($bidang);

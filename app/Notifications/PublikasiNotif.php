@@ -5,13 +5,17 @@ namespace App\Notifications;
 use App\Models\Publikasi;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PublikasiNotif extends Notification
+class PublikasiNotif extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $user;
+    public $publikasi;
+    public $msg;
     /**
      * Create a new notification instance.
      *
