@@ -127,7 +127,7 @@
         </v-btn>
       </v-app-bar>
 
-      <v-main>
+      <v-main id="mainApp">
         <v-container fluid :fill-height="$route.name == 'Main'">
           <v-row align="start" justify="center" v-if="$route.name != 'Main'">
             <v-col class="text-center">
@@ -219,3 +219,29 @@ export default {
   created() {}
 };
 </script>
+
+<style lang="scss">
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.01);
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgb(122, 153, 217)),
+    color-stop(0.72, rgb(73, 125, 189)),
+    color-stop(0.86, rgb(28, 58, 148))
+  );
+}
+</style>

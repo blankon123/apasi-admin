@@ -41,7 +41,7 @@ class Publikasi extends Model
      */
     public function historis()
     {
-        return $this->hasMany(PublikasiHistori::class);
+        return $this->hasMany(PublikasiHistori::class)->latest();
     }
 
     /**

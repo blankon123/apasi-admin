@@ -14,6 +14,13 @@ class PublikasiFile extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['publikasi_id', 'file', 'publikasi_histori_id', 'icon', 'keterangan'];
+
+    /**
      * Get publikasi.
      */
     public function publikasi()
