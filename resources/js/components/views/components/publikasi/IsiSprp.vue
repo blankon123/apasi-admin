@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <v-btn color="blue darken-2" @click="showDialog = !showDialog">
+  <span>
+    <v-btn :color="color" @click="showDialog = !showDialog">
       <v-icon left>
-        mdi-pencil
+        {{ icon }}
       </v-icon>
-      ISI SPRP
+      {{ label }}
     </v-btn>
     <v-dialog v-model="showDialog" persistent max-width="600px">
       <v-card>
@@ -134,20 +134,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </span>
 </template>
 
 <script>
 export default {
   name: "IsiSPRP",
-  props: ["publikasi"],
+  props: ["publikasi", "label", "icon", "color", "revisi"],
   data() {
     return {
       rules: {
         required: value => !!value || "Harus Terisi.",
         required_text: value => value != "-" || "Harus Terisi."
       },
-      showDialog: true,
+      showDialog: false,
       ukuran: [
         { kode: "1", show: "A5" },
         { kode: "2", show: "A4" },
@@ -177,7 +177,11 @@ export default {
   methods: {
     action() {
       if (this.$refs.formSPRP.validate()) {
-        this.$store.dispatch("publikasiViewStore/sendSPRP", this.publikasi);
+        this.$store.dispatch(
+          "publikasiViewStore/sendSPRP",
+          this.publikasi,
+          this.revisi
+        );
         this.showDialog = false;
       }
     },

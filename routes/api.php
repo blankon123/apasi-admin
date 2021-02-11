@@ -29,10 +29,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/all', [UserController::class, 'all'])->middleware('can:isAdmin');
             Route::get('/bidang', [UserController::class, 'bidangAll']);
         });
+
         Route::prefix('publikasi')->group(function () {
             Route::get('/', [PublikasiController::class, 'index']);
             Route::get('/year', [PublikasiController::class, 'indexYear']);
             Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
+            Route::post('/draft/{id}', [PublikasiController::class, 'draft']);
             Route::post('/', [PublikasiController::class, 'store']);
             Route::put('/sprp/{id}', [PublikasiController::class, 'sprp']);
             Route::put('/{id}', [PublikasiController::class, 'update']);

@@ -10,6 +10,11 @@ const state = {
     status: false,
     text: ""
   },
+  draft: {
+    draft: null,
+    desain: null,
+    rilis: null
+  },
   loading: true,
   publikasiId: null,
   publikasi: {}
@@ -40,21 +45,61 @@ const actions = {
   setPublikasiId({ state }, val) {
     state.publikasiId = val;
   },
-  sendSPRP({ state, dispatch }, pub) {
+  sendSPRP({ state, dispatch }, pub, revisi) {
     state.loading = true;
+    let pload = {
+      ukuran: pub.ukuran,
+      bahasa: pub.bahasa,
+      orientasi: pub.orientasi,
+      diterbitkan_untuk: pub.diterbitkan_untuk,
+      numbering: pub.numbering,
+      cover_oleh: pub.cover_oleh,
+      abstraksi: pub.abstraksi
+    };
+    if (revisi == 0) {
+      pload.stage_id = 12;
+    }
     axios
-      .put(state.baseUrl + "/sprp/" + pub.id, {
-        ukuran: pub.ukuran,
-        bahasa: pub.bahasa,
-        orientasi: pub.orientasi,
-        diterbitkan_untuk: pub.diterbitkan_untuk,
-        numbering: pub.numbering,
-        cover_oleh: pub.cover_oleh,
-        abstraksi: pub.abstraksi
+      .put(state.baseUrl + "/sprp/" + pub.id, pload)
+      .then(res => {
+        if (res.data.length != 0) {
+          dispatch("setPublikasiDetails");
+          dispatch("showSnackbar", {
+            text: "Sukses Input Detail Rancangan",
+            type: "success"
+          });
+        } else {
+          state.error.status = true;
+          state.error.text = "Ups, Terdapat Kesalahan";
+        }
+      })
+      .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
+      });
+  },
+  sendDraft({ state, dispatch }, revisi) {
+    state.loading = true;
+    let formData = new FormData();
+    formData.append("draft", state.draft.draft);
+    formData.append("desain", state.draft.desain);
+    formData.append("rilis", state.draft.rilis);
+    formData.append("revisi", revisi);
+    axios
+      .post(state.baseUrl + "/draft/" + state.publikasi.id, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       })
       .then(res => {
         if (res.data.length != 0) {
-          state.loading = false;
+          dispatch("setPublikasiDetails");
+          dispatch("showSnackbar", {
+            text: "Sukses Upload Draft",
+            type: "success"
+          });
         } else {
           state.error.status = true;
           state.error.text = "Ups, Terdapat Kesalahan";

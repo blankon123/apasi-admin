@@ -16,9 +16,12 @@ class CreatePublikasiFilesTable extends Migration
         Schema::create('publikasi_files', function (Blueprint $table) {
             $table->id();
             $table->string('file')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('keterangan')->nullable();
             $table->foreignId('publikasi_histori_id')->nullable();
             $table->foreignId('publikasi_id')->nullable();
             $table->softDeletes();
+            $table->timestamps();
         });
 
         Schema::table('publikasi_files', function (Blueprint $table) {

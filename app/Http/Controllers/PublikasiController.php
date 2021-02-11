@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PublikasiAdded;
+use App\Events\PublikasiDraftCommited;
 use App\Events\PublikasiEdited;
 use App\Events\PublikasiSPRPCommited;
 use App\Imports\PublikasiImport;
@@ -228,6 +229,45 @@ class PublikasiController extends Controller
             return response("Sukses Melengkapi Detail Rancangan Publikasi", 200);
         } catch (\Throwable $th) {
             return response("Ups, Terjadi Kesalahan " . $th, 500);
+        }
+    }
+
+    /**
+     * Import Draft Publikasi to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function draft($id, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $publikasi = Publikasi::find($id);
+            $rand = rand();
+            $fileName = [];
+
+            $file_draft = $request->file('draft');
+            $file_desain = $request->file('desain');
+            $file_rilis = $request->file('rilis');
+
+            $fileName['draft'] = "Draft " . $publikasi->judul_publikasi . " " . $rand . "." . $file_draft->extension();
+            $fileName['desain'] = "Desain " . $publikasi->judul_publikasi . " " . $rand . "." . $file_desain->extension();
+            $fileName['rilis'] = "Rilis " . $publikasi->judul_publikasi . " " . $rand . "." . $file_rilis->extension();
+
+            $file_draft->move('publikasi_draft', $fileName['draft']);
+            $file_desain->move('publikasi_desain', $fileName['desain']);
+            $file_rilis->move('publikasi_rilis', $fileName['rilis']);
+
+            if (!$request->revisi) {$publikasi->stage_id = 13;}
+            $publikasi->save();
+
+            event(new PublikasiDraftCommited($publikasi, $request->user(), $fileName));
+            DB::commit();
+            return response('Sukses Upload Draft', 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response('Terdapat Kesalahan saat Import File Draft. Pesan: ' . $th, 500);
         }
     }
 }

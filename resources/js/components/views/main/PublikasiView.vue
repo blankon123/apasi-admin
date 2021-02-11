@@ -49,30 +49,48 @@
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
-              <isi-sprp
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 11"
-              ></isi-sprp>
-              <import-draft
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 12"
-              ></import-draft>
-              <import-rilis
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 13"
-              ></import-rilis>
-              <confirm-upload
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 14"
-              ></confirm-upload>
-              <revisi
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 15"
-              ></revisi>
-              <revisi-progress
-                :publikasi="publikasi"
-                v-if="publikasi.stage_id == 16"
-              ></revisi-progress>
+              <span>
+                <isi-sprp
+                  label="Revisi SPRP"
+                  color="orange lighten-1"
+                  icon="mdi-notebook-edit"
+                  revisi="1"
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id > 12"
+                ></isi-sprp>
+                <import-draft
+                  label="Revisi Draft"
+                  color="orange darken-1"
+                  icon="mdi-database-edit"
+                  revisi="1"
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id > 12"
+                ></import-draft>
+                <isi-sprp
+                  color="blue darken-2"
+                  label="ISI SPRP"
+                  icon="mdi-pencil-plus"
+                  revisi="0"
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id == 11"
+                ></isi-sprp>
+                <import-draft
+                  label="Unggah Draft"
+                  color="blue"
+                  icon="mdi-cloud-upload"
+                  revisi="0"
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id == 12"
+                ></import-draft>
+                <confirm-upload
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id == 13 && currentUser.role == 'ADMIN'"
+                ></confirm-upload>
+                <revisi-progress
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id == 15"
+                ></revisi-progress>
+              </span>
             </v-list-item-action>
           </v-list-item>
           <v-divider></v-divider>
@@ -236,10 +254,15 @@
           </v-list-item>
           <v-divider></v-divider>
           <v-card-text class="pa-0 ma-0" v-if="publikasi.historis && true">
-            <v-timeline align-top dense>
+            <v-timeline
+              align-top
+              dense
+              style="max-height: 68vh"
+              class="overflow-y-auto"
+            >
               <div v-for="(item, index) in publikasi.historis" :key="index">
                 <v-timeline-item :color="colorize(index)" dense>
-                  <strong> Publikasi {{ item.Keterangan }} </strong>
+                  <strong>{{ item.Keterangan }} </strong>
                   <div>
                     <strong>
                       Oleh
@@ -248,63 +271,25 @@
                       </span>
                     </strong>
                   </div>
+                  <span v-if="item.file.length">
+                    <span v-for="(f, i) in item.file" :key="i">
+                      <v-btn
+                        x-small
+                        class="ma-1"
+                        :color="colorize(index)"
+                        link
+                        :href="f.file"
+                      >
+                        <v-icon>
+                          {{ f.icon }}
+                        </v-icon>
+                        {{ f.keterangan }}
+                      </v-btn>
+                    </span>
+                  </span>
                   <div>{{ dateForHuman(item.created_at) }}</div>
                 </v-timeline-item>
               </div>
-              <!-- 
-              <v-timeline-item color="teal lighten-3" small>
-                <v-row class="pt-1">
-                  <v-col cols="3">
-                    <strong>3-4pm</strong>
-                  </v-col>
-                  <v-col>
-                    <strong>Design Stand Up</strong>
-                    <div class="caption mb-2">
-                      Hangouts
-                    </div>
-                    <v-avatar>
-                      <v-img
-                        src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairFrida&accessoriesType=Kurt&hairColor=Red&facialHairType=BeardLight&facialHairColor=BrownDark&clotheType=GraphicShirt&clotheColor=Gray01&graphicType=Skull&eyeType=Wink&eyebrowType=RaisedExcitedNatural&mouthType=Disbelief&skinColor=Brown"
-                      ></v-img>
-                    </v-avatar>
-                    <v-avatar>
-                      <v-img
-                        src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"
-                      ></v-img>
-                    </v-avatar>
-                    <v-avatar>
-                      <v-img
-                        src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairMiaWallace&accessoriesType=Sunglasses&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
-                      ></v-img>
-                    </v-avatar>
-                  </v-col>
-                </v-row>
-              </v-timeline-item>
-
-              <v-timeline-item color="pink" small>
-                <v-row class="pt-1">
-                  <v-col cols="3">
-                    <strong>12pm</strong>
-                  </v-col>
-                  <v-col>
-                    <strong>Lunch break</strong>
-                  </v-col>
-                </v-row>
-              </v-timeline-item>
-
-              <v-timeline-item color="teal lighten-3" small>
-                <v-row class="pt-1">
-                  <v-col cols="3">
-                    <strong>9-11am</strong>
-                  </v-col>
-                  <v-col>
-                    <strong>Finish Home Screen</strong>
-                    <div class="caption">
-                      Web App
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-timeline-item> -->
             </v-timeline>
           </v-card-text>
           <v-progress-linear
@@ -322,7 +307,6 @@
 <script>
 import ConfirmUpload from "./../components/publikasi/ConfirmUpload";
 import ImportDraft from "./../components/publikasi/ImportDraft";
-import ImportRilis from "./../components/publikasi/ImportRilis";
 import IsiSprp from "./../components/publikasi/IsiSprp";
 import Revisi from "./../components/publikasi/Revisi";
 import RevisiProgress from "./../components/publikasi/RevisiProgress";
@@ -331,7 +315,6 @@ export default {
   components: {
     ConfirmUpload,
     ImportDraft,
-    ImportRilis,
     IsiSprp,
     Revisi,
     RevisiProgress
@@ -384,11 +367,16 @@ export default {
     },
     loading() {
       return this.$store.state.publikasiViewStore.loading;
+    },
+    currentUser: {
+      get() {
+        return this.$store.state.userStore.user;
+      }
     }
   },
   methods: {
     colorize(i) {
-      return i % 2 == 1 ? "pink" : "teal lighten-3";
+      return i % 2 == 1 ? "pink" : "teal";
     },
     getName(arr, id) {
       return arr.find(function(item, index) {
