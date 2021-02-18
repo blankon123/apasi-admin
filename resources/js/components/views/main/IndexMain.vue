@@ -208,11 +208,13 @@ export default {
     },
     linkFoto: {
       get() {
-        return (
-          "https://ui-avatars.com/api/?name=" +
-          this.currentUser.nama_bidang +
-          "&rounded=true"
-        );
+        if (this.currentUser.nama_bidang) {
+          return (
+            "https://ui-avatars.com/api/?name=" +
+            this.currentUser.nama_bidang +
+            "&rounded=true"
+          );
+        }
       }
     }
   },

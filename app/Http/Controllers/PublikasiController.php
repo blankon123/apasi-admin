@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\PublikasiAdded;
+use App\Events\PublikasiDesainRevised;
 use App\Events\PublikasiDraftCommited;
+use App\Events\PublikasiDraftRevised;
 use App\Events\PublikasiEdited;
+use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
 use App\Imports\PublikasiImport;
 use App\Models\Publikasi;
@@ -259,10 +262,52 @@ class PublikasiController extends Controller
             $file_desain->move('publikasi_desain', $fileName['desain']);
             $file_rilis->move('publikasi_rilis', $fileName['rilis']);
 
-            if (!$request->revisi) {$publikasi->stage_id = 13;}
+            $publikasi->stage_id = 13;
             $publikasi->save();
 
             event(new PublikasiDraftCommited($publikasi, $request->user(), $fileName));
+            DB::commit();
+            return response('Sukses Upload Draft', 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response('Terdapat Kesalahan saat Import File Draft. Pesan: ' . $th, 500);
+        }
+    }
+
+    /**
+     * Import Revisi Publikasi to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function revisi($id, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $publikasi = Publikasi::find($id);
+            $rand = rand();
+            $fileName = [];
+
+            if ($request->file('draft')) {
+                $file_draft = $request->file('draft');
+                $fileName['draft'] = "Draft " . $publikasi->judul_publikasi . " " . $rand . "." . $file_draft->extension();
+                $file_draft->move('publikasi_draft', $fileName['draft']);
+                event(new PublikasiDraftRevised($publikasi, $request->user(), $fileName));
+            }
+            if ($request->file('desain')) {
+                $file_desain = $request->file('desain');
+                $fileName['desain'] = "Desain " . $publikasi->judul_publikasi . " " . $rand . "." . $file_desain->extension();
+                $file_desain->move('publikasi_desain', $fileName['desain']);
+                event(new PublikasiDesainRevised($publikasi, $request->user(), $fileName));
+            }
+            if ($request->file('rilis')) {
+                $file_rilis = $request->file('rilis');
+                $fileName['rilis'] = "Rilis " . $publikasi->judul_publikasi . " " . $rand . "." . $file_rilis->extension();
+                $file_rilis->move('publikasi_rilis', $fileName['rilis']);
+                event(new PublikasiRilisRevised($publikasi, $request->user(), $fileName));
+            }
+
             DB::commit();
             return response('Sukses Upload Draft', 200);
         } catch (\Throwable $th) {

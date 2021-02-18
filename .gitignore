@@ -2,6 +2,9 @@
 /public/hot
 /public/storage
 /public/publikasi_folder
+/public/publikasi_draft
+/public/publikasi_desain
+/public/publikasi_rilis
 /storage/*.key
 /vendor
 .env

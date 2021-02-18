@@ -177,11 +177,10 @@ export default {
   methods: {
     action() {
       if (this.$refs.formSPRP.validate()) {
-        this.$store.dispatch(
-          "publikasiViewStore/sendSPRP",
+        this.$store.dispatch("publikasiViewStore/sendSPRP", [
           this.publikasi,
           this.revisi
-        );
+        ]);
         this.showDialog = false;
       }
     },

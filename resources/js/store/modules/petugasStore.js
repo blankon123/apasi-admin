@@ -1,5 +1,11 @@
 const state = {
   baseUrl: "/api/v1/petugas",
+  snackbar: {
+    show: false,
+    timeout: 3000,
+    color: "success",
+    text: ""
+  },
   petugasTable: {
     loading: true,
     headers: [
@@ -27,7 +33,12 @@ const state = {
 };
 const getters = {};
 const actions = {
-  getPetugasTable({ commit, state }) {
+  showSnackbar({ state }, { text, type }) {
+    state.snackbar.show = true;
+    state.snackbar.color = type;
+    state.snackbar.text = text;
+  },
+  getPetugasTable({ commit, state, dispatch }) {
     axios
       .get(state.baseUrl + "/all")
       .then(res => {
@@ -35,6 +46,10 @@ const actions = {
         commit("changeTableLoading", false);
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -47,8 +62,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getPetugasTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Input Petugas",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -62,8 +85,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getPetugasTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Edit Petugas",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -75,8 +106,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getPetugasTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Hapus Petugas",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   }

@@ -45,7 +45,7 @@ const actions = {
   setPublikasiId({ state }, val) {
     state.publikasiId = val;
   },
-  sendSPRP({ state, dispatch }, pub, revisi) {
+  sendSPRP({ state, dispatch }, [pub, revisi]) {
     state.loading = true;
     let pload = {
       ukuran: pub.ukuran,
@@ -56,7 +56,7 @@ const actions = {
       cover_oleh: pub.cover_oleh,
       abstraksi: pub.abstraksi
     };
-    if (revisi == 0) {
+    if (!parseInt(revisi)) {
       pload.stage_id = 12;
     }
     axios
@@ -78,17 +78,19 @@ const actions = {
           text: "Ups, Terdapat Kesalahan",
           type: "error"
         });
+        state.loading = false;
       });
   },
   sendDraft({ state, dispatch }, revisi) {
     state.loading = true;
+    let route = parseInt(revisi) ? "revisi/" : "draft/";
+    let url = state.baseUrl + route + state.publikasi.id;
     let formData = new FormData();
     formData.append("draft", state.draft.draft);
     formData.append("desain", state.draft.desain);
     formData.append("rilis", state.draft.rilis);
-    formData.append("revisi", revisi);
     axios
-      .post(state.baseUrl + "/draft/" + state.publikasi.id, formData, {
+      .post(url, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -110,6 +112,7 @@ const actions = {
           text: "Ups, Terdapat Kesalahan",
           type: "error"
         });
+        state.loading = false;
       });
   }
 };

@@ -40,6 +40,7 @@ class UserController extends Controller
         $color = ['red', 'purple', 'blue', 'amber', 'brown'];
         $newUser->username = $request->username;
         $newUser->nama_bidang = $request->nama_bidang;
+        $newUser->email = $request->email;
         $newUser->name = $request->name;
         $newUser->password = Hash::make($request->password);
         $newUser->color = $color[array_rand($color, 1)];
@@ -82,6 +83,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->nama_bidang = $request->nama_bidang;
         $user->name = $request->name;
+        $user->email = $request->email;
         $user->save();
         return response("Sukses Merubah User", 200);
     }
