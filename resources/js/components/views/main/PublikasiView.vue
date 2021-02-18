@@ -55,6 +55,7 @@
                   color="orange lighten-1"
                   icon="mdi-notebook-edit"
                   revisi="1"
+                  :user="currentUser"
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id > 12"
                 ></isi-sprp>
@@ -63,6 +64,7 @@
                   color="orange darken-1"
                   icon="mdi-database-edit"
                   revisi="1"
+                  :user="currentUser"
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id > 12"
                 ></import-draft>
@@ -71,6 +73,7 @@
                   label="ISI SPRP"
                   icon="mdi-pencil-plus"
                   revisi="0"
+                  :user="currentUser"
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id == 11"
                 ></isi-sprp>
@@ -79,6 +82,7 @@
                   color="blue"
                   icon="mdi-cloud-upload"
                   revisi="0"
+                  :user="currentUser"
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id == 12"
                 ></import-draft>

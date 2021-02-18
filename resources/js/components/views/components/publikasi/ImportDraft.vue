@@ -89,12 +89,19 @@ export default {
   data() {
     return {
       rules: {
-        required: value => !!value || "Harus Terisi"
+        required: value => true || ""
       },
       setujuDraft: false,
       showDialog: false,
-      kalimatPersetujuan: "Dengan Mengupl"
+      kalimatPersetujuan: `Dengan Mengunggah dokumen-dokumen terkait, ${this.user.name} menyatakan bahwa softcopy publikasi merupakan softcopy final dan dapat dirilis di website .`
     };
+  },
+  created() {
+    if (!parseInt(this.revisi)) {
+      this.rules = {
+        required: value => !!value || "Harus Terisi"
+      };
+    }
   },
   computed: {
     error() {

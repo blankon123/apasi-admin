@@ -3,6 +3,12 @@ import axios from "axios";
 const state = {
   baseUrl: "api/v1/user",
   user: {},
+  snackbar: {
+    show: false,
+    timeout: 3000,
+    color: "success",
+    text: ""
+  },
   users: [],
   userTable: {
     header: [
@@ -31,6 +37,11 @@ const state = {
 };
 const getters = {};
 const actions = {
+  showSnackbar({ state }, { text, type }) {
+    state.snackbar.show = true;
+    state.snackbar.color = type;
+    state.snackbar.text = text;
+  },
   setUser({ commit }, user) {
     commit("changeUser", user);
   },
@@ -43,6 +54,10 @@ const actions = {
         state.userTable.loading = false;
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -67,8 +82,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getUserTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Tambah User",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -79,12 +102,21 @@ const actions = {
         id: form.id,
         username: form.username,
         nama_bidang: form.nama_bidang,
-        name: form.name
+        name: form.name,
+        email: form.email
       })
       .then(res => {
         dispatch("getUserTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Edit User",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -98,8 +130,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getUserTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Reset Password User",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -111,8 +151,16 @@ const actions = {
       })
       .then(res => {
         dispatch("getUserTable");
+        dispatch("showSnackbar", {
+          text: "Sukses Delete User",
+          type: "success"
+        });
       })
       .catch(err => {
+        dispatch("showSnackbar", {
+          text: "Ups, Terdapat Kesalahan",
+          type: "error"
+        });
         console.log(err.message);
       });
   },
@@ -123,8 +171,12 @@ const actions = {
         .then(response => {
           dispatch("setUser", response.data);
         })
-        .catch(errors => {
-          console.log(errors);
+        .catch(err => {
+          dispatch("showSnackbar", {
+            text: "Ups, Terdapat Kesalahan",
+            type: "error"
+          });
+          console.log(err.message);
         });
     }
   }

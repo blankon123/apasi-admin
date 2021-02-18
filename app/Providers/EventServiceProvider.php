@@ -4,19 +4,23 @@ namespace App\Providers;
 
 use App\Events\PublikasiAdded;
 use App\Events\PublikasiDeleted;
+use App\Events\PublikasiDesainRevised;
 use App\Events\PublikasiDraftCommited;
+use App\Events\PublikasiDraftRevised;
 use App\Events\PublikasiEdited;
 use App\Events\PublikasiImported;
-use App\Events\PublikasiRevisiCommited;
+use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
 use App\Events\PublikasiSRCommited;
 use App\Events\PublikasiUploaded;
 use App\Listeners\PublikasiAddedListener;
 use App\Listeners\PublikasiDeletedListener;
+use App\Listeners\PublikasiDesainRevisedListener;
 use App\Listeners\PublikasiDraftCommitedListener;
+use App\Listeners\PublikasiDraftRevisedListener;
 use App\Listeners\PublikasiEditedListener;
 use App\Listeners\PublikasiImportedListener;
-use App\Listeners\PublikasiRevisiCommitedListener;
+use App\Listeners\PublikasiRilisRevisedListener;
 use App\Listeners\PublikasiSPRPCommitedListener;
 use App\Listeners\PublikasiSRCommitedListener;
 use App\Listeners\PublikasiUploadedListener;
@@ -51,8 +55,14 @@ class EventServiceProvider extends ServiceProvider
         PublikasiImported::class => [
             PublikasiImportedListener::class,
         ],
-        PublikasiRevisiCommited::class => [
-            PublikasiRevisiCommitedListener::class,
+        PublikasiDraftRevised::class => [
+            PublikasiDraftRevisedListener::class,
+        ],
+        PublikasiDesainRevised::class => [
+            PublikasiDesainRevisedListener::class,
+        ],
+        PublikasiRilisRevised::class => [
+            PublikasiRilisRevisedListener::class,
         ],
         PublikasiSPRPCommited::class => [
             PublikasiSPRPCommitedListener::class,

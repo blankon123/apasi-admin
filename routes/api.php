@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('user')->group(function () {
             Route::get('/', [UserController::class, 'index']);
@@ -35,6 +37,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/year', [PublikasiController::class, 'indexYear']);
             Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
             Route::post('/draft/{id}', [PublikasiController::class, 'draft']);
+            Route::post('/revisi/{id}', [PublikasiController::class, 'revisi']);
             Route::post('/', [PublikasiController::class, 'store']);
             Route::put('/sprp/{id}', [PublikasiController::class, 'sprp']);
             Route::put('/{id}', [PublikasiController::class, 'update']);
@@ -67,6 +70,5 @@ Route::prefix('v1')->group(function () {
             Route::delete('/', [PekerjaanController::class, 'destroy']);
         });
     });
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/login', [AuthController::class, 'login']);
+
 });

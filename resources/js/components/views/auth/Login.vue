@@ -75,7 +75,7 @@ export default {
     doLogin() {
       this.isLoading = "white";
       axios
-        .post("api/v1//login", this.form)
+        .post("api/v1/login", this.form)
         .then(response => {
           localStorage.setItem("apasi_cred", response.data.token);
           this.$store.dispatch("userStore/setUser", response.data.user);

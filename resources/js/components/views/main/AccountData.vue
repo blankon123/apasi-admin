@@ -1,5 +1,41 @@
 <template>
   <div>
+    <v-snackbar
+      v-model="snackbarUser.show"
+      :timeout="snackbarUser.timeout"
+      :color="snackbarUser.color"
+    >
+      {{ snackbarUser.text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbarUser.show = false"
+        >
+          Tutup
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      v-model="snackbarPetugas.show"
+      :timeout="snackbarPetugas.timeout"
+      :color="snackbarPetugas.color"
+    >
+      {{ snackbarPetugas.text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbarPetugas.show = false"
+        >
+          Tutup
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-dialog v-model="petugasDialog.show" persistent max-width="400px">
       <v-card>
         <v-card-title>
@@ -42,7 +78,6 @@
       <v-card>
         <v-card-title>
           <p class="headline mb-0">{{ userDialog.title }}</p>
-          <br />
           <p class="subtitle-2 my-0">{{ userDialog.subtitle }}</p>
         </v-card-title>
         <v-card-text>
@@ -70,6 +105,14 @@
                   label="Singkatan Bidang*"
                   placeholder="Misal: IPDS"
                   :rules="[rules.required]"
+                ></v-text-field>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  v-model="userDialog.form.email"
+                  label="Email Bidang*"
+                  placeholder="Misal: kabidipds6200@bps.go.id"
+                  :rules="[rules.required, rules.email]"
                 ></v-text-field>
               </v-row>
               <v-row v-if="userDialog.showPassword">
@@ -358,6 +401,7 @@ export default {
         user: ""
       },
       rules: {
+        email: v => /.+@.+/.test(v) || "Harus sesuai format E-Mail",
         required: value => !!value || "Harus Terisi.",
         minimal: value => value.length >= 6 || "Min 6 Karakter",
         confirmPassword: value =>
@@ -378,6 +422,12 @@ export default {
     },
     petugases() {
       return this.$store.state.petugasStore.all;
+    },
+    snackbarUser() {
+      return this.$store.state.userStore.snackbar;
+    },
+    snackbarPetugas() {
+      return this.$store.state.petugasStore.snackbar;
     },
     petugasTable() {
       return this.$store.state.petugasStore.petugasTable;
@@ -514,7 +564,7 @@ export default {
     },
     userDialogEditShow(item) {
       this.userDialog = {
-        title: "Edit User",
+        title: "Perubahan User",
         subtitle: "Perubahan User atau Bidang Terkait",
         show: true,
         showPassword: false,
@@ -522,6 +572,7 @@ export default {
           id: item.id,
           username: item.username,
           nama_bidang: item.nama_bidang,
+          email: item.email,
           name: item.name,
           password: item.password
         },
