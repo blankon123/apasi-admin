@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Publikasi;
+use App\Models\Pekerjaan;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,7 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PublikasiDeleted
+class PekerjaanDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +19,9 @@ class PublikasiDeleted
      *
      * @return void
      */
-    public function __construct(Publikasi $pub, User $user, $fileName)
+    public function __construct(Pekerjaan $pekerjaan, User $user)
     {
-        $this->publikasi = $pub;
+        $this->pekerjaan = $pekerjaan;
         $this->user = $user;
     }
 

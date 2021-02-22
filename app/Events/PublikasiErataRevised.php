@@ -10,7 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PublikasiDeleted
+class PublikasiErataRevised
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,6 +23,7 @@ class PublikasiDeleted
     {
         $this->publikasi = $pub;
         $this->user = $user;
+        $this->fileName = $fileName;
     }
 
     /**

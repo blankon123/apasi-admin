@@ -13,7 +13,8 @@ const state = {
   draft: {
     draft: null,
     desain: null,
-    rilis: null
+    rilis: null,
+    erata: null
   },
   loading: true,
   publikasiId: null,
@@ -60,7 +61,7 @@ const actions = {
       pload.stage_id = 12;
     }
     axios
-      .put(state.baseUrl + "/sprp/" + pub.id, pload)
+      .put(state.baseUrl + "sprp/" + pub.id, pload)
       .then(res => {
         if (res.data.length != 0) {
           dispatch("setPublikasiDetails");
@@ -89,6 +90,7 @@ const actions = {
     formData.append("draft", state.draft.draft);
     formData.append("desain", state.draft.desain);
     formData.append("rilis", state.draft.rilis);
+    formData.append("erata", state.draft.erata);
     axios
       .post(url, formData, {
         headers: {

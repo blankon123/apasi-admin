@@ -64,7 +64,7 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('pekerjaan')->middleware('can:isAdmin')->group(function () {
             Route::get('/', [PekerjaanController::class, 'index']);
-            Route::get('/all', [PekerjaanController::class, 'all']);
+            Route::get('/search', [PekerjaanController::class, 'search']);
             Route::post('/', [PekerjaanController::class, 'store']);
             Route::put('/', [PekerjaanController::class, 'update']);
             Route::delete('/', [PekerjaanController::class, 'destroy']);

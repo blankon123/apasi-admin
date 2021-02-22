@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\PublikasiDesainRevised;
+use App\Events\PublikasiErataRevised;
 use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
@@ -10,7 +10,7 @@ use App\Notifications\PublikasiNotif;
 use App\Notifications\TelegramNotification;
 use Illuminate\Support\Facades\Notification;
 
-class PublikasiDesainRevisedListener
+class PublikasiErataRevisedListener
 {
     /**
      * Create the event listener.
@@ -25,14 +25,14 @@ class PublikasiDesainRevisedListener
     /**
      * Handle the event.
      *
-     * @param  PublikasiDesainRevised  $event
+     * @param  PublikasiErataRevised  $event
      * @return void
      */
-    public function handle(PublikasiDesainRevised $event)
+    public function handle(PublikasiErataRevised $event)
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->publikasi->user->id);
-        $msg = "Revisi Desain Cover";
+        $msg = "Dokumen Erata";
 
         Notification::send($admin, new PublikasiNotif($event->user, $event->publikasi, $msg));
         if ($user->role != "ADMIN") {
@@ -46,11 +46,11 @@ class PublikasiDesainRevisedListener
         ]);
 
         $pubFile = PublikasiFile::create([
-            'file' => '/publikasi_desain/' . $event->fileName['desain'],
+            'file' => '/publikasi_erata/' . $event->fileName['erata'],
             'publikasi_histori_id' => $pubHis->id,
             'publikasi_id' => $event->publikasi->id,
-            'keterangan' => "Desain",
-            "icon" => "mdi-format-paint",
+            'keterangan' => "Erata",
+            'icon' => "mdi-book-cog",
         ]);
 
         if ($event->publikasi->is_revisi == 0) {
@@ -64,8 +64,7 @@ class PublikasiDesainRevisedListener
             $event->publikasi->save();
         }
 
-        $link_desain = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_desain/' . $event->fileName['desain']);
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_desain));
-
+        $link_erata = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_erata/' . $event->fileName['erata']);
+        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_erata));
     }
 }

@@ -10,4 +10,19 @@ class Pekerjaan extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
+    protected $fillable = [
+        'nama',
+        'status',
+        'tipe_pekerjaan',
+        'color'
+    ];
+
+    /**
+     * Get the parent object model (post or video).
+     */
+    public function pekerjaanable()
+    {
+        return $this->morphTo();
+    }
 }

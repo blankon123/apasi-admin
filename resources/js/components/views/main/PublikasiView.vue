@@ -64,9 +64,20 @@
                   color="orange darken-1"
                   icon="mdi-database-edit"
                   revisi="1"
+                  disable="0"
                   :user="currentUser"
                   :publikasi="publikasi"
-                  v-if="publikasi.stage_id > 12"
+                  v-if="publikasi.stage_id > 12 && !publikasi.is_revisi"
+                ></import-draft>
+                <import-draft
+                  label="Sedang Revisi"
+                  color="orange darken-1"
+                  icon="mdi-account-hard-hat"
+                  revisi="1"
+                  disable="1"
+                  :user="currentUser"
+                  :publikasi="publikasi"
+                  v-if="publikasi.stage_id > 12 && publikasi.is_revisi"
                 ></import-draft>
                 <isi-sprp
                   color="blue darken-2"
@@ -82,14 +93,11 @@
                   color="blue"
                   icon="mdi-cloud-upload"
                   revisi="0"
+                  disable="0"
                   :user="currentUser"
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id == 12"
                 ></import-draft>
-                <confirm-upload
-                  :publikasi="publikasi"
-                  v-if="publikasi.stage_id == 13 && currentUser.role == 'ADMIN'"
-                ></confirm-upload>
                 <revisi-progress
                   :publikasi="publikasi"
                   v-if="publikasi.stage_id == 15"
@@ -309,19 +317,15 @@
 </template>
 
 <script>
-import ConfirmUpload from "./../components/publikasi/ConfirmUpload";
 import ImportDraft from "./../components/publikasi/ImportDraft";
 import IsiSprp from "./../components/publikasi/IsiSprp";
 import Revisi from "./../components/publikasi/Revisi";
-import RevisiProgress from "./../components/publikasi/RevisiProgress";
 
 export default {
   components: {
-    ConfirmUpload,
     ImportDraft,
     IsiSprp,
-    Revisi,
-    RevisiProgress
+    Revisi
   },
   data: () => ({
     ukuran: [
