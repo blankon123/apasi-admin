@@ -2,23 +2,31 @@
 
 namespace App\Providers;
 
+use App\Events\PekerjaanDeleted;
+use App\Events\PekerjaanDone;
+use App\Events\PekerjaanProgress;
 use App\Events\PublikasiAdded;
 use App\Events\PublikasiDeleted;
 use App\Events\PublikasiDesainRevised;
 use App\Events\PublikasiDraftCommited;
 use App\Events\PublikasiDraftRevised;
 use App\Events\PublikasiEdited;
+use App\Events\PublikasiErataRevised;
 use App\Events\PublikasiImported;
 use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
 use App\Events\PublikasiSRCommited;
 use App\Events\PublikasiUploaded;
+use App\Listeners\PekerjaanDeletedListener;
+use App\Listeners\PekerjaanDoneListener;
+use App\Listeners\PekerjaanProgressListener;
 use App\Listeners\PublikasiAddedListener;
 use App\Listeners\PublikasiDeletedListener;
 use App\Listeners\PublikasiDesainRevisedListener;
 use App\Listeners\PublikasiDraftCommitedListener;
 use App\Listeners\PublikasiDraftRevisedListener;
 use App\Listeners\PublikasiEditedListener;
+use App\Listeners\PublikasiErataRevisedListener;
 use App\Listeners\PublikasiImportedListener;
 use App\Listeners\PublikasiRilisRevisedListener;
 use App\Listeners\PublikasiSPRPCommitedListener;
@@ -64,6 +72,9 @@ class EventServiceProvider extends ServiceProvider
         PublikasiRilisRevised::class => [
             PublikasiRilisRevisedListener::class,
         ],
+        PublikasiErataRevised::class => [
+            PublikasiErataRevisedListener::class,
+        ],
         PublikasiSPRPCommited::class => [
             PublikasiSPRPCommitedListener::class,
         ],
@@ -72,6 +83,16 @@ class EventServiceProvider extends ServiceProvider
         ],
         PublikasiUploaded::class => [
             PublikasiUploadedListener::class,
+        ],
+
+        PekerjaanProgress::class => [
+            PekerjaanProgressListener::class,
+        ],
+        PekerjaanDone::class => [
+            PekerjaanDoneListener::class,
+        ],
+        PekerjaanDeleted::class => [
+            PekerjaanDeletedListener::class,
         ],
     ];
 

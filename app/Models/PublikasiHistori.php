@@ -42,4 +42,12 @@ class PublikasiHistori extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get all of the publikasis's pekerjaans.
+     */
+    public function pekerjaan()
+    {
+        return $this->morphOne(Pekerjaan::class, 'pekerjaanable');
+    }
 }

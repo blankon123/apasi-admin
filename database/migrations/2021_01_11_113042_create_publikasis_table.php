@@ -35,6 +35,7 @@ class CreatePublikasisTable extends Migration
             $table->foreignId('uploaded_by')->nullable();
             $table->date('uploaded_on')->nullable();
             $table->integer('tahun_rilis')->nullable();
+            $table->integer('is_revisi')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

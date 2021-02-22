@@ -41,5 +41,7 @@ class PublikasiAddedListener
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);
+
+        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
     }
 }

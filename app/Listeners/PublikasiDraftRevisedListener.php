@@ -53,6 +53,17 @@ class PublikasiDraftRevisedListener
             'icon' => "mdi-book-alphabet",
         ]);
 
+        if ($event->publikasi->is_revisi == 0) {
+            $pubHis->pekerjaan()->create([
+                'nama' => 'Revisi Publikasi ' . $event->publikasi->judul_publikasi,
+                'status' => 0,
+                'tipe_pekerjaan' => 'revisi',
+                'color' => 'orange darken-1',
+            ]);
+            $event->publikasi->is_revisi = 1;
+            $event->publikasi->save();
+        }
+
         $link_draft = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_draft/' . $event->fileName['draft']);
         Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_draft));
     }

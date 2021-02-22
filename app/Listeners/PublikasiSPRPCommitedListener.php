@@ -6,6 +6,7 @@ use App\Events\PublikasiSPRPCommited;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
+use App\Notifications\TelegramNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiSPRPCommitedListener
@@ -30,7 +31,7 @@ class PublikasiSPRPCommitedListener
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->publikasi->user->id);
-        $msg = " Lengkap SPRP";
+        $msg = "Lengkap SPRP";
 
         Notification::send($admin, new PublikasiNotif($event->user, $event->publikasi, $msg));
         if ($user->role != "ADMIN") {
@@ -42,6 +43,8 @@ class PublikasiSPRPCommitedListener
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);
+
+        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
 
         // $maildata = [
         //     'konten' =>

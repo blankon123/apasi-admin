@@ -8,6 +8,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
+use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -71,6 +72,13 @@ class PublikasiDraftCommitedListener
             "icon" => "mdi-book-check",
         ]);
 
+        $pubHis->pekerjaan()->create([
+            'nama' => 'Layout Publikasi ' . $event->publikasi->judul_publikasi,
+            'status' => 0,
+            'tipe_pekerjaan' => 'layout',
+            'color' => 'blue darken-1',
+        ]);
+
         $link_draft = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_draft/' . $event->fileName['draft']);
         $link_desain = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_desain/' . $event->fileName['desain']);
 
@@ -93,6 +101,7 @@ class PublikasiDraftCommitedListener
             - \
             Terima Kasih 😊',
         ];
+        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
         Mail::to($user->email)->locale('id')->queue(new KabidMail($maildata));
     }
 }

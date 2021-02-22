@@ -7,6 +7,7 @@ use App\Events\PublikasiDesainRevised;
 use App\Events\PublikasiDraftCommited;
 use App\Events\PublikasiDraftRevised;
 use App\Events\PublikasiEdited;
+use App\Events\PublikasiErataRevised;
 use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
 use App\Imports\PublikasiImport;
@@ -100,7 +101,7 @@ class PublikasiController extends Controller
         try {
             $publikasi = Publikasi::findOrFail($id);
             if (Gate::allows('isAdmin') || ($publikasi->user_id == $request->user()->id)) {
-                return Publikasi::where('id', '=', $id)->with('user', 'historis', 'historis.file', 'historis.user', 'uploadedBy')->get();
+                return Publikasi::where('id', '=', $id)->with('user', 'historis', 'historis.file', 'historis.user', 'historis.pekerjaan', 'uploadedBy')->get();
             } else {
                 return response("Ups, Anda Tidak Berhak Mengakses ", 403);
             }
@@ -161,7 +162,7 @@ class PublikasiController extends Controller
             return response('Sukses Import', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th, 500);
+            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th->getMessage(), 500);
         }
     }
 
@@ -174,7 +175,9 @@ class PublikasiController extends Controller
     public function destroy(Request $req)
     {
         try {
-            Publikasi::find($req->id)->delete();
+            $publikasi = Publikasi::find($req->id);
+            event(new PublikasiDeleted($publikasi, $request->user()));
+            $publikasi->delete();
             response('Sukses Delete', 200);
         } catch (\Throwable $th) {
             response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
@@ -283,33 +286,32 @@ class PublikasiController extends Controller
      */
     public function revisi($id, Request $request)
     {
-        DB::beginTransaction();
         try {
             $publikasi = Publikasi::find($id);
             $rand = rand();
             $fileName = [];
+            $file_types = ['draft', 'desain', 'rilis', 'erata'];
 
+            foreach ($file_types as $file_type) {
+                if ($request->file($file_type)) {
+                    $file = $request->file($file_type);
+                    $fileName[$file_type] = lcfirst($file_type) . " " . $publikasi->judul_publikasi . " " . $rand . "." . $file->extension();
+                    $file->move('publikasi_' . $file_type, $fileName[$file_type]);
+                }
+            }
             if ($request->file('draft')) {
-                $file_draft = $request->file('draft');
-                $fileName['draft'] = "Draft " . $publikasi->judul_publikasi . " " . $rand . "." . $file_draft->extension();
-                $file_draft->move('publikasi_draft', $fileName['draft']);
                 event(new PublikasiDraftRevised($publikasi, $request->user(), $fileName));
             }
             if ($request->file('desain')) {
-                $file_desain = $request->file('desain');
-                $fileName['desain'] = "Desain " . $publikasi->judul_publikasi . " " . $rand . "." . $file_desain->extension();
-                $file_desain->move('publikasi_desain', $fileName['desain']);
                 event(new PublikasiDesainRevised($publikasi, $request->user(), $fileName));
             }
             if ($request->file('rilis')) {
-                $file_rilis = $request->file('rilis');
-                $fileName['rilis'] = "Rilis " . $publikasi->judul_publikasi . " " . $rand . "." . $file_rilis->extension();
-                $file_rilis->move('publikasi_rilis', $fileName['rilis']);
                 event(new PublikasiRilisRevised($publikasi, $request->user(), $fileName));
             }
-
-            DB::commit();
-            return response('Sukses Upload Draft', 200);
+            if ($request->file('erata')) {
+                event(new PublikasiErataRevised($publikasi, $request->user(), $fileName));
+            }
+            return response('Sukses Upload File Draft', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response('Terdapat Kesalahan saat Import File Draft. Pesan: ' . $th, 500);

@@ -2,15 +2,15 @@
 
 namespace App\Events;
 
-use App\Models\Publikasi;
-use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PublikasiDeleted
+class PekerjaanProgress
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,10 +19,9 @@ class PublikasiDeleted
      *
      * @return void
      */
-    public function __construct(Publikasi $pub, User $user, $fileName)
+    public function __construct()
     {
-        $this->publikasi = $pub;
-        $this->user = $user;
+        //
     }
 
     /**

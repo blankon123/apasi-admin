@@ -26,6 +26,7 @@ class Publikasi extends Model
         'tahun_rilis',
         'jenis_arc',
         'user_id',
+        'is_revisi',
     ];
 
     /**

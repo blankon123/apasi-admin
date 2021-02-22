@@ -1,6 +1,10 @@
 <template>
   <span>
-    <v-btn :color="color" @click="showDialog = true">
+    <v-btn
+      :color="color"
+      @click="showDialog = true"
+      :disabled="!!parseInt(this.disable)"
+    >
       <v-icon left>
         {{ icon }}
       </v-icon>
@@ -44,9 +48,20 @@
                     show-size
                     :rules="[rules.required]"
                   ></v-file-input>
+                  <v-file-input
+                    label="File Erata"
+                    v-model="draft.erata"
+                    outlined
+                    prepend-icon="mdi-book-cog"
+                    dense
+                    show-size
+                    v-if="parseInt(this.revisi)"
+                    :rules="[rules.required]"
+                  ></v-file-input>
                   <v-checkbox
                     v-model="setujuDraft"
                     :label="kalimatPersetujuan"
+                    v-if="!parseInt(this.revisi)"
                   ></v-checkbox>
                 </v-form>
               </v-col>
@@ -85,22 +100,20 @@
 <script>
 export default {
   name: "ImportDraft",
-  props: ["publikasi", "user", "label", "color", "icon", "revisi"],
+  props: ["publikasi", "user", "label", "color", "icon", "revisi", "disable"],
   data() {
     return {
       rules: {
-        required: value => true || ""
+        required: value => !!value || "Harus Terisi"
       },
-      setujuDraft: false,
+      setujuDraft: true,
       showDialog: false,
       kalimatPersetujuan: `Dengan Mengunggah dokumen-dokumen terkait, ${this.user.name} menyatakan bahwa softcopy publikasi merupakan softcopy final dan dapat dirilis di website .`
     };
   },
   created() {
     if (!parseInt(this.revisi)) {
-      this.rules = {
-        required: value => !!value || "Harus Terisi"
-      };
+      this.setujuDraft = false;
     }
   },
   computed: {
@@ -118,7 +131,10 @@ export default {
   },
   methods: {
     action() {
-      if (this.$refs.formDraft.validate()) {
+      if (parseInt(this.revisi)) {
+        this.$store.dispatch("publikasiViewStore/sendDraft", this.revisi);
+        this.showDialog = false;
+      } else if (this.$refs.formDraft.validate()) {
         this.$store.dispatch("publikasiViewStore/sendDraft", this.revisi);
         this.showDialog = false;
       }
