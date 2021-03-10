@@ -1,5 +1,32 @@
 <template>
   <div>
+    <v-dialog v-model="batalDialog.show" max-width="500px">
+      <v-card>
+        <v-card-title>
+          Konfirmasi Batal
+        </v-card-title>
+        <v-card-text>
+          Apakah anda Yakin akan Membatalkan Pekerjaan
+          {{ batalDialog.form.nama }} ?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="batalDialogInit"
+            >Tidak</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="batal(batalDialog.form.id)"
+            >Ya</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+        <v-progress-linear
+          indeterminate
+          color="white"
+          class="mb-0"
+          v-if="batalDialog.loading"
+        ></v-progress-linear>
+      </v-card>
+    </v-dialog>
     <v-card-title>
       {{ this.title }}
       <v-spacer></v-spacer>
@@ -18,41 +45,37 @@
               </v-card-title>
               <div>
                 <v-btn
-                  v-if="
-                    nonDelete.some(f => {
-                      return f !== item.tipe_pekerjaan;
-                    })
-                  "
                   rounded
                   x-small
                   elevation="2"
                   color="red"
-                  @click="cangs"
+                  @click="batalDialogShow(item)"
                 >
                   <v-icon left>
                     mdi-trash-can
                   </v-icon>
                   Batalkan
                 </v-btn>
-                <v-btn
-                  rounded
-                  x-small
-                  elevation="2"
-                  color="indigo"
-                  @click="cangs"
+                <layout-pekerjaan
+                  v-if="item.tipe_pekerjaan == 'layout'"
+                  :petugases="petugases"
+                  :item="item"
+                ></layout-pekerjaan>
+                <revisi-publikasi-pekerjaan
+                  v-if="item.tipe_pekerjaan == 'revisi'"
+                  :petugases="petugases"
+                  :item="item"
                 >
-                  <v-icon left>
-                    mdi-hammer
-                  </v-icon>
-                  Kerjakan
-                </v-btn>
+                </revisi-publikasi-pekerjaan>
               </div>
             </div>
 
-            <v-card-subtitle
-              v-text="item.nama"
-              class="text-start py-0 my-0"
-            ></v-card-subtitle>
+            <v-card-subtitle class="text-start py-0 my-0">
+              {{ item.nama }} oleh
+              <span class="font-weight-bold">
+                {{ findPetugas(item.petugas_id) }}</span
+              >
+            </v-card-subtitle>
           </div>
         </v-card>
       </div>
@@ -66,17 +89,38 @@
 </template>
 
 <script>
+import LayoutPekerjaan from "./tipe/LayoutPekerjaan.vue";
+import RevisiPublikasiPekerjaan from "./tipe/RevisiPublikasiPekerjaan.vue";
+
 export default {
+  components: { LayoutPekerjaan, RevisiPublikasiPekerjaan },
   name: "SedangPekerjaan",
   props: ["pekerjaan", "loading", "title", "color", "icon"],
   data() {
-    return {
-      nonDelete: ["layout"]
-    };
+    return {};
+  },
+  computed: {
+    batalDialog() {
+      return this.$store.state.pekerjaanStore.batalDialog;
+    },
+    petugases() {
+      return this.$store.state.petugasStore.all;
+    }
   },
   methods: {
-    cangs() {
-      console.log("Cangs");
+    findPetugas(petugas_id) {
+      return this.petugases.filter(item => item.id == petugas_id)[0]
+        ?.nama_singkat;
+    },
+    batalDialogInit() {
+      this.$store.dispatch("pekerjaanStore/batalDialogInit");
+    },
+    batalDialogShow(item) {
+      this.$store.dispatch("pekerjaanStore/batalDialogShow", item);
+    },
+    batal(item) {
+      this.batalDialog.loading = true;
+      this.$store.dispatch("pekerjaanStore/batal", item);
     }
   }
 };

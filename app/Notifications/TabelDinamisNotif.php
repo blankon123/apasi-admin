@@ -2,23 +2,30 @@
 
 namespace App\Notifications;
 
+use app\Models\TabelDinamis;
+use app\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TabelNotif extends Notification
+class TabelDinamisNotif extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $user;
+    public $tabel;
+    public $msg;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, TabelDinamis $tabel, String $msg)
     {
-        //
+        $this->user = $user;
+        $this->tabel = $tabel;
+        $this->msg = $msg;
     }
 
     /**
@@ -29,7 +36,7 @@ class TabelNotif extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -41,9 +48,9 @@ class TabelNotif extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -55,7 +62,9 @@ class TabelNotif extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'user' => $this->user->nama_bidang,
+            'tabel' => $this->tabel,
+            'message' => $this->msg,
         ];
     }
 }

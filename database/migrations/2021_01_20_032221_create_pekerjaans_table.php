@@ -20,6 +20,7 @@ class CreatePekerjaansTable extends Migration
             $table->foreignId('petugas_id')->nullable();
             $table->integer('status')->nullable();
             $table->string('tipe_pekerjaan')->nullable();
+            $table->string('keterangan')->nullable();
             $table->string('color')->nullable();
             $table->timestamps();
             $table->softDeletes();

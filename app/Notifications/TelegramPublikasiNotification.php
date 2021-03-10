@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramFile;
 
-class TelegramNotification extends Notification implements ShouldQueue
+class TelegramPublikasiNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

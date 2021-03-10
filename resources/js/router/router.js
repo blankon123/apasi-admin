@@ -7,8 +7,8 @@ import Dashboard from "./../components/views/main/Dashboard.vue";
 import Publikasi from "./../components/views/main/Publikasi.vue";
 import PublikasiAll from "./../components/views/main/PublikasiAll.vue";
 import PublikasiView from "./../components/views/main/PublikasiView.vue";
-import Tabel from "./../components/views/main/Tabel.vue";
-import TabelAll from "./../components/views/main/TabelAll.vue";
+import TabelStatis from "./../components/views/main/TabelStatis.vue";
+import TabelDinamis from "./../components/views/main/TabelDinamis.vue";
 import TabelView from "./../components/views/main/TabelView.vue";
 import Pekerjaan from "./../components/views/main/Pekerjaan.vue";
 import Login from "./../components/views/auth/Login.vue";
@@ -52,11 +52,11 @@ const routes = [
       },
       {
         path: "/tabel",
-        name: "Tabel",
+        name: "TabelStatis",
         meta: { requiresAuth: true },
         components: {
           default: IndexMain,
-          MainView: Tabel
+          MainView: TabelStatis
         }
       },
       {
@@ -69,12 +69,12 @@ const routes = [
         }
       },
       {
-        path: "/tabelAll",
-        name: "TabelAll",
+        path: "/tabelDinamis",
+        name: "TabelDinamis",
         meta: { requiresAuth: true },
         components: {
           default: IndexMain,
-          MainView: TabelAll
+          MainView: TabelDinamis
         }
       },
       {

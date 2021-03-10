@@ -17,6 +17,10 @@ use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
 use App\Events\PublikasiSRCommited;
 use App\Events\PublikasiUploaded;
+use App\Events\TabelDinamisDataEdited;
+use App\Events\TabelDinamisRequestAdded;
+use App\Events\TabelDinamisRequestDeleted;
+use App\Events\TabelDinamisRequestEdited;
 use App\Listeners\PekerjaanDeletedListener;
 use App\Listeners\PekerjaanDoneListener;
 use App\Listeners\PekerjaanProgressListener;
@@ -32,6 +36,10 @@ use App\Listeners\PublikasiRilisRevisedListener;
 use App\Listeners\PublikasiSPRPCommitedListener;
 use App\Listeners\PublikasiSRCommitedListener;
 use App\Listeners\PublikasiUploadedListener;
+use App\Listeners\TabelDinamisDataEditedListener;
+use App\Listeners\TabelDinamisRequestAddedListener;
+use App\Listeners\TabelDinamisRequestDeletedListener;
+use App\Listeners\TabelDinamisRequestEditedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -93,6 +101,19 @@ class EventServiceProvider extends ServiceProvider
         ],
         PekerjaanDeleted::class => [
             PekerjaanDeletedListener::class,
+        ],
+
+        TabelDinamisRequestAdded::class => [
+            TabelDinamisRequestAddedListener::class,
+        ],
+        TabelDinamisRequestEdited::class => [
+            TabelDinamisRequestEditedListener::class,
+        ],
+        TabelDinamisRequestDeleted::class => [
+            TabelDinamisRequestDeletedListener::class,
+        ],
+        TabelDinamisDataEdited::class => [
+            TabelDinamisDataEditedListener::class,
         ],
     ];
 

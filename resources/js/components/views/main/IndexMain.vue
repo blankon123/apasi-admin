@@ -61,7 +61,15 @@
             :to="item.link"
           >
             <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-badge
+                v-if="item.link == '/tabelDinamis'"
+                color="blue"
+                :content="tabelDinamisCount"
+                overlap
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-badge>
+              <v-icon v-else>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -105,7 +113,9 @@
           </div>
         </template>
       </v-navigation-drawer>
-
+      <v-navigation-drawer v-model="showNotif" app right>
+        <notifikasi></notifikasi>
+      </v-navigation-drawer>
       <v-app-bar app dense elevation="2">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title
@@ -123,6 +133,11 @@
             {{
               $vuetify.theme.dark ? "mdi-weather-night" : "mdi-weather-sunny"
             }}
+          </v-icon>
+        </v-btn>
+        <v-btn icon @click="showNotif = !showNotif">
+          <v-icon>
+            {{ !showNotif ? "mdi-bell-ring-outline" : "mdi-bell-outline" }}
           </v-icon>
         </v-btn>
       </v-app-bar>
@@ -161,7 +176,9 @@
 </template>
 
 <script>
+import Notifikasi from "../components/index/Notifikasi.vue";
 export default {
+  components: { Notifikasi },
   data: () => ({
     menuPublikasiItems: [
       {
@@ -177,13 +194,14 @@ export default {
     ],
     menuTabelItems: [
       {
-        title: `Tabel ${new Date().getFullYear()}`,
+        title: `Tabel Statis`,
         icon: "mdi-table",
-        link: "/tabel"
+        link: "/tabelStatis"
       },
-      { title: "Daftar Tabel", icon: "mdi-table-large", link: "/tabelAll" }
+      { title: "Tabel Dinamis", icon: "mdi-table-large", link: "/tabelDinamis" }
     ],
     drawer: true,
+    showNotif: false,
     thisYear: new Date().getFullYear()
   }),
   methods: {
@@ -200,6 +218,9 @@ export default {
   computed: {
     publikasiCount() {
       return this.$store.state.indexMainStore.publikasiCount;
+    },
+    tabelDinamisCount() {
+      return this.$store.state.indexMainStore.tabelDinamisCount;
     },
     currentUser: {
       get() {

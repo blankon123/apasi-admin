@@ -312,8 +312,8 @@
 export default {
   data: () => ({
     jenis_arcs: [
-      { jenis_arc: "ARC", id: 1 },
-      { jenis_arc: "Non-ARC", id: 2 }
+      { jenis_arc: "ARC", id: "1" },
+      { jenis_arc: "Non-ARC", id: "2" }
     ],
     currentPage: 1,
     keySearchPublikasi: "",
@@ -373,8 +373,11 @@ export default {
       this.publikasi.bidang = this.user.id;
     }
   },
-
+  mounted() {
+    this.$store.dispatch("publikasiStore/initSearch");
+  },
   created() {
+    this.$store.dispatch("publikasiStore/initSearch");
     this.$store.dispatch("publikasiStore/setYear", this.thisYear);
     this.$store.dispatch("publikasiStore/setTableData", 1);
     this.$store.dispatch("userStore/getBidang");

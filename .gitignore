@@ -5,6 +5,7 @@
 /public/publikasi_draft
 /public/publikasi_desain
 /public/publikasi_rilis
+/public/publikasi_erata
 /storage/*.key
 /vendor
 .env

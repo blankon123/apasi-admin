@@ -1,5 +1,45 @@
 <template>
   <div>
+    <v-dialog v-model="kerjakanDialog.show" max-width="400px">
+      <v-card>
+        <v-card-title>
+          Konfirmasi Pekerjaan
+        </v-card-title>
+        <v-card-text>
+          <div class="mb-1">
+            {{ this.kerjakanDialog.form.nama }}
+          </div>
+          <v-form ref="formPetugas">
+            <v-select
+              prepend-inner-icon="mdi-account-hard-hat"
+              v-model="kerjakanDialog.form.petugas_id"
+              :items="petugases"
+              item-text="nama_singkat"
+              item-value="id"
+              label="Petugas Pelaksana"
+              outlined
+              hide-details
+              class="mb-3"
+              :rules="[rules.required]"
+            ></v-select>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="kerjakanDialogInit"
+            >Batal</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="kerjakan">Lanjutkan</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+        <v-progress-linear
+          indeterminate
+          color="white"
+          class="mb-0"
+          v-if="kerjakanDialog.loading"
+        ></v-progress-linear>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="deleteDialog.show" max-width="500px">
       <v-card>
         <v-card-title>
@@ -15,7 +55,7 @@
             >Batal</v-btn
           >
           <v-btn color="blue darken-1" text @click="hapus(deleteDialog.form.id)"
-            >Hapus</v-btn
+            >Batal</v-btn
           >
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -59,14 +99,14 @@
                   <v-icon left>
                     mdi-trash-can
                   </v-icon>
-                  Batalkan
+                  Hapus
                 </v-btn>
                 <v-btn
                   rounded
                   x-small
                   elevation="2"
                   color="indigo"
-                  @click="cangs"
+                  @click="kerjakanDialogShow(item)"
                 >
                   <v-icon left>
                     mdi-hammer
@@ -98,27 +138,47 @@ export default {
   props: ["pekerjaan", "loading", "title", "color", "icon"],
   data() {
     return {
-      nonDelete: ["layout"]
+      nonDelete: ["layout"],
+      rules: {
+        required: value => !!value || "Harus Terisi."
+      }
     };
   },
   computed: {
     deleteDialog() {
       return this.$store.state.pekerjaanStore.deleteDialog;
+    },
+    kerjakanDialog() {
+      return this.$store.state.pekerjaanStore.kerjakanDialog;
+    },
+    petugases() {
+      return this.$store.state.petugasStore.all;
     }
   },
   methods: {
-    cangs() {
-      console.log("Cangs");
-    },
     deleteDialogInit() {
       this.$store.dispatch("pekerjaanStore/deleteDialogInit");
     },
+    kerjakanDialogInit() {
+      this.$store.dispatch("pekerjaanStore/kerjakanDialogInit");
+    },
+
     deleteDialogShow(item) {
       this.$store.dispatch("pekerjaanStore/deleteDialogShow", item);
     },
+    kerjakanDialogShow(item) {
+      this.$store.dispatch("pekerjaanStore/kerjakanDialogShow", item);
+    },
+
     hapus(item) {
       this.deleteDialog.loading = true;
       this.$store.dispatch("pekerjaanStore/hapus", item);
+    },
+    kerjakan() {
+      if (this.$refs.formPetugas.validate()) {
+        this.kerjakanDialog.loading = true;
+        this.$store.dispatch("pekerjaanStore/kerjakan");
+      }
     }
   }
 };

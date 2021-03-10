@@ -40,7 +40,7 @@ class PublikasiHistori extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->select(['id', 'color', 'nama_bidang', 'name']);
     }
 
     /**

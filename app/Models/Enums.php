@@ -10,7 +10,7 @@ class Enums
     |--------------------------------------------------------------------------
     |
     | Digunakan untuk menyeragamkan dan menyamarkan kode tahapan tiap publikasi.
-    | Disamarkan agar mudah disimpan di database dan dibaca di code.
+    | Disamarkan agar mudah disimpan di database dan dibaca di kode.
      */
     public const STAGE_PUBLIKASI = [
         'PUBLIKASI_BARU' => [
@@ -46,7 +46,7 @@ class Enums
         'PUBLIKASI_JENIS_ARC' => ['arc' => 1, 'nonarc' => 2],
         'PUBLIKASI_BAHASA' => ['indo' => 1, 'eng' => 2, 'indo_eng' => 3],
     ];
-    public const KODE_TABEL = [
+    public const STAGE_TABEL = [
         'TABEL_BARU' => 31,
         'TABEL_TAMBAH' => 32,
         'TABEL_KURANG' => 33,

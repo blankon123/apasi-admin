@@ -14,13 +14,32 @@ const state = {
     show: false,
     loading: false
   },
+  kerjakanDialog: {
+    form: {
+      nama: null,
+      id: null
+    },
+    show: false,
+    loading: false,
+    petugas_id: null
+  },
+  batalDialog: {
+    form: {
+      nama: null,
+      id: null
+    },
+    show: false,
+    loading: false,
+    petugas_id: null
+  },
   pekerjaan: {
     all: null,
     belum: null,
     sedang: null,
     sudah: null
   },
-  isLoading: true
+  isLoading: true,
+  petugas: []
 };
 const getters = {};
 const actions = {
@@ -52,6 +71,7 @@ const actions = {
         state.isLoading = false;
       });
   },
+
   deleteDialogInit({ state }) {
     state.deleteDialog = {
       form: {
@@ -88,6 +108,98 @@ const actions = {
       .catch(err => {
         state.deleteDialog.loading = false;
         state.deleteDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Ups,Terdapat Kesalahan",
+          type: "error"
+        });
+        console.log(err.response.data);
+      });
+  },
+
+  kerjakanDialogInit({ state }) {
+    state.kerjakanDialog = {
+      form: {
+        nama: null,
+        id: null
+      },
+      show: false,
+      loading: false,
+      petugas_id: null
+    };
+  },
+  kerjakanDialogShow({ state }, item) {
+    state.kerjakanDialog = {
+      form: {
+        nama: item.nama,
+        id: item.id
+      },
+      show: true,
+      loading: false,
+      petugas_id: null
+    };
+  },
+  kerjakan({ state, dispatch }) {
+    axios
+      .put(state.baseUrl + "/kerjakan/" + state.kerjakanDialog.form.id, {
+        petugas_id: state.kerjakanDialog.form.petugas_id
+      })
+      .then(res => {
+        dispatch("init");
+        state.kerjakanDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Sukses Konfirmasi Pekerjaan",
+          type: "success"
+        });
+      })
+      .catch(err => {
+        state.kerjakanDialog.loading = false;
+        state.kerjakanDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Ups,Terdapat Kesalahan",
+          type: "error"
+        });
+        console.log(err.response.data);
+      });
+  },
+
+  batalDialogInit({ state }) {
+    state.batalDialog = {
+      form: {
+        nama: null,
+        id: null
+      },
+      show: false,
+      loading: false,
+      petugas_id: null
+    };
+  },
+  batalDialogShow({ state }, item) {
+    state.batalDialog = {
+      form: {
+        nama: item.nama,
+        id: item.id
+      },
+      show: true,
+      loading: false,
+      petugas_id: null
+    };
+  },
+  batal({ state, dispatch }) {
+    axios
+      .put(state.baseUrl + "/batal/" + state.batalDialog.form.id, {
+        petugas_id: state.batalDialog.form.petugas_id
+      })
+      .then(res => {
+        dispatch("init");
+        state.batalDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Sukses Konfirmasi Pekerjaan",
+          type: "success"
+        });
+      })
+      .catch(err => {
+        state.batalDialog.loading = false;
+        state.batalDialog.show = false;
         dispatch("showSnackbar", {
           text: "Ups,Terdapat Kesalahan",
           type: "error"

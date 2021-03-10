@@ -7,7 +7,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiErataRevisedListener
@@ -65,6 +65,6 @@ class PublikasiErataRevisedListener
         }
 
         $link_erata = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_erata/' . $event->fileName['erata']);
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_erata));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, $link_erata));
     }
 }

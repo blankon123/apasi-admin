@@ -9,7 +9,7 @@ const state = {
     color: "success",
     text: ""
   },
-  users: [],
+  users: null,
   userTable: {
     header: [
       {
@@ -62,14 +62,16 @@ const actions = {
       });
   },
   getBidang({ commit, state }) {
-    axios
-      .get(state.baseUrl + "/bidang")
-      .then(res => {
-        commit("changeUserBidang", res.data);
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    if (state.users == null) {
+      axios
+        .get(state.baseUrl + "/bidang")
+        .then(res => {
+          commit("changeUserBidang", res.data);
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
+    }
   },
   addUser({ state, dispatch }, data) {
     state.userTable.loading = true;
