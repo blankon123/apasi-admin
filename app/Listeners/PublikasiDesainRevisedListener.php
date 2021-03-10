@@ -7,7 +7,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiDesainRevisedListener
@@ -65,7 +65,7 @@ class PublikasiDesainRevisedListener
         }
 
         $link_desain = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_desain/' . $event->fileName['desain']);
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_desain));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, $link_desain));
 
     }
 }

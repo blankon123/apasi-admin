@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PublikasiController;
+use App\Http\Controllers\TabelDinamisController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,17 +43,9 @@ Route::prefix('v1')->group(function () {
             Route::post('/', [PublikasiController::class, 'store']);
             Route::put('/sprp/{id}', [PublikasiController::class, 'sprp']);
             Route::put('/{id}', [PublikasiController::class, 'update']);
-            Route::get('/search', [PublikasiController::class, 'search']);
-            Route::get('/searchYear', [PublikasiController::class, 'searchYear']);
             Route::post('/import', [PublikasiController::class, 'import']);
             Route::delete('/', [PublikasiController::class, 'destroy']);
             Route::get('/{id}', [PublikasiController::class, 'show']);
-        });
-
-        Route::prefix('stage')->middleware('can:isAdmin')->group(function () {
-            Route::get('/stage_publikasi', [EnumsController::class, 'getStagePublikasi']);
-            Route::get('/kode_publikasi', [EnumsController::class, 'getKodePublikasi']);
-            Route::get('/kode_tabel', [EnumsController::class, 'destroy']);
         });
 
         Route::prefix('petugas')->group(function () {
@@ -66,8 +60,26 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [PekerjaanController::class, 'index']);
             Route::get('/search', [PekerjaanController::class, 'search']);
             Route::post('/', [PekerjaanController::class, 'store']);
+            Route::put('/kerjakan/{id}', [PekerjaanController::class, 'kerjakan']);
+            Route::put('/batal/{id}', [PekerjaanController::class, 'batal']);
             Route::put('/', [PekerjaanController::class, 'update']);
             Route::delete('/', [PekerjaanController::class, 'destroy']);
+        });
+
+        Route::prefix('tabelDinamis')->group(function () {
+            Route::get('/', [TabelDinamisController::class, 'index'])->middleware('can:isAdmin');
+            Route::post('/', [TabelDinamisController::class, 'store']);
+            Route::put('/requestDelete', [TabelDinamisController::class, 'requestDestroy']);
+            Route::put('/{id}', [TabelDinamisController::class, 'update']);
+            Route::delete('/', [TabelDinamisController::class, 'destroy'])->middleware('can:isAdmin');
+            Route::get('/all', [TabelDinamisController::class, 'all']);
+            Route::post('/sync', [TabelDinamisController::class, 'sync'])->middleware('can:isAdmin');
+            Route::get('/countDinamis', [TabelDinamisController::class, 'countDinamis']);
+        });
+
+        Route::prefix('notifikasi')->group(function () {
+            Route::get('/', [NotifikasiController::class, 'index']);
+            Route::post('/{id}', [NotifikasiController::class, 'update']);
         });
     });
 

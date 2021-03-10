@@ -38,7 +38,7 @@ class Publikasi extends Model
     }
 
     /**
-     * Get all of the files for the publikasis.
+     * Get all of the historis for the PublikasiHistori.
      */
     public function historis()
     {
@@ -50,7 +50,7 @@ class Publikasi extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->select(['id', 'color', 'nama_bidang', 'name']);
     }
 
     /**

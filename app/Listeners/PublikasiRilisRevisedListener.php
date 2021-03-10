@@ -7,7 +7,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiRilisRevisedListener
@@ -64,7 +64,7 @@ class PublikasiRilisRevisedListener
             $event->publikasi->save();
         }
 
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, ""));
 
     }
 }

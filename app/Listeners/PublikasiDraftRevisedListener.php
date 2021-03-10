@@ -7,7 +7,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiDraftRevisedListener
@@ -65,6 +65,6 @@ class PublikasiDraftRevisedListener
         }
 
         $link_draft = urlencode(env('APP_URL', "http://localhost:8000") . '/publikasi_draft/' . $event->fileName['draft']);
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, $link_draft));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, $link_draft));
     }
 }

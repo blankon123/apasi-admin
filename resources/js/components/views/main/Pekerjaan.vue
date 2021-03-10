@@ -35,6 +35,7 @@
             :pekerjaan="this.pekerjaan.sedang"
           >
           </sedang-pekerjaan>
+          <v-divider></v-divider>
         </v-card>
       </v-col>
 
@@ -44,9 +45,10 @@
             title="Sudah Dikerjakan"
             icon="mdi-progress-check"
             color="green darken-2"
-            :pekerjaan="this.pekerjaan.sedang"
+            :pekerjaan="this.pekerjaan.sudah"
           >
           </sudah-pekerjaan>
+          <v-divider></v-divider>
         </v-card>
       </v-col>
     </v-row>
@@ -74,6 +76,7 @@ export default {
   },
   created() {
     this.$store.dispatch("pekerjaanStore/init");
+    this.$store.dispatch("petugasStore/getPetugasTable");
   },
   methods: {}
 };

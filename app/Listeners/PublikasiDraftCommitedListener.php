@@ -8,7 +8,7 @@ use App\Models\PublikasiFile;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -101,7 +101,7 @@ class PublikasiDraftCommitedListener
             - \
             Terima Kasih 😊',
         ];
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, ""));
         Mail::to($user->email)->locale('id')->queue(new KabidMail($maildata));
     }
 }

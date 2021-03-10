@@ -66,7 +66,8 @@ const actions = {
       .get(state.baseUrl, {
         params: {
           page: requestedPage,
-          total: state.publikasiTable.itemsPerPage
+          total: state.publikasiTable.itemsPerPage,
+          key: state.keySearchPublikasi
         }
       })
       .then(res => {
@@ -177,12 +178,11 @@ const actions = {
       });
   },
   setSearch({ state, dispatch }, keyword = "") {
-    state.baseUrl =
-      state.year == null
-        ? "/api/v1/publikasi/search?key=" + keyword
-        : "/api/v1/publikasi/searchYear?key=" + keyword;
     state.keySearchPublikasi = keyword;
     dispatch("setTableData", 1);
+  },
+  initSearch({ state }) {
+    state.keySearchPublikasi = "";
   },
   addPublikasi({ state, dispatch }, form) {
     state.publikasiTable.loading = true;

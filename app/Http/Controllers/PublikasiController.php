@@ -28,7 +28,10 @@ class PublikasiController extends Controller
      */
     public function index(Request $request)
     {
-        $publikasis = Publikasi::orderBy('arc', 'DESC')->whereDate('arc', '<=', Carbon::now())->with('user');
+        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+            ->orderBy('arc', 'DESC')
+            ->whereDate('arc', '<=', Carbon::now())
+            ->with('user');
         if (Gate::allows('isAdmin')) {
             return $publikasis->paginate($request->total);
         }
@@ -42,7 +45,10 @@ class PublikasiController extends Controller
      */
     public function indexYear(Request $request)
     {
-        $publikasis = Publikasi::orderBy('arc', 'ASC')->whereDate('arc', '>', Carbon::now())->with('user');
+        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
+            ->whereDate('arc', '>', Carbon::now())
+            ->orderBy('arc', 'ASC')
+            ->with('user');
         if (Gate::allows('isAdmin')) {
             return $publikasis->paginate($request->total);
         }
@@ -86,7 +92,7 @@ class PublikasiController extends Controller
             event(new PublikasiAdded($newPublikasi, $request->user()));
             return response("Sukses Menambahkan Publikasi", 200);
         } catch (\Throwable $th) {
-            return response("Ups, Terjadi Kesalahan " . $th, 500);
+            return response("Ups, Terjadi Kesalahan " . $th->getMessage(), 500);
         }
     }
 
@@ -180,45 +186,8 @@ class PublikasiController extends Controller
             $publikasi->delete();
             response('Sukses Delete', 200);
         } catch (\Throwable $th) {
-            response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
         }
-    }
-
-    /**
-     * Search resource from storage by keyword.
-     *
-     * @param  String  $keyword
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
-            ->whereDate('arc', '<=', Carbon::now())
-            ->orderBy('arc', 'DESC')
-            ->with('user')
-        ;
-        if (Gate::allows('isAdmin')) {
-            return $publikasis->paginate($request->total);
-        }
-        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
-    }
-
-    /**
-     * Search resource from storage by keyword.
-     *
-     * @param  String  $keyword
-     * @return \Illuminate\Http\Response
-     */
-    public function searchYear(Request $request)
-    {
-        $publikasis = Publikasi::where('judul_publikasi', 'LIKE', "%{$request->key}%")
-            ->whereDate('arc', '>', Carbon::now())
-            ->orderBy('arc', 'ASC')
-            ->with('user');
-        if (Gate::allows('isAdmin')) {
-            return $publikasis->paginate($request->total);
-        }
-        return $publikasis->where('user_id', $request->user()->id)->paginate($request->total);
     }
 
     /**

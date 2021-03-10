@@ -15,7 +15,9 @@ class Pekerjaan extends Model
         'nama',
         'status',
         'tipe_pekerjaan',
-        'color'
+        'color',
+        'keterangan',
+        'petugas_id',
     ];
 
     /**

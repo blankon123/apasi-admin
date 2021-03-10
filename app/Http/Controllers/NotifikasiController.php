@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Petugas;
 use Illuminate\Http\Request;
 
-class PetugasController extends Controller
+class NotifikasiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class PetugasController extends Controller
      */
     public function index(Request $request)
     {
-        return Publikasi::with('user')->orderBy('arc', 'ASC')->paginate($request->total);
+        return $request->user()->unreadNotifications->take(10);
     }
 
     /**
@@ -35,11 +34,7 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
-        $newPetugas = new Petugas;
-        $newPetugas->nama = $request->nama;
-        $newPetugas->nama_singkat = $request->nama_singkat;
-        $newPetugas->save();
-        return response("Sukses Menambahkan Petugas", 200);
+        //
     }
 
     /**
@@ -71,13 +66,9 @@ class PetugasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $petugas = Petugas::find($request->id);
-        $petugas->nama = $request->nama;
-        $petugas->nama_singkat = $request->nama_singkat;
-        $petugas->save();
-        return response("Sukses Menambahkan Petugas", 200);
+        //
     }
 
     /**
@@ -86,25 +77,8 @@ class PetugasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $req)
+    public function destroy($id)
     {
-        $petugas = Petugas::find($req->id);
-        try {
-            $petugas->delete();
-            response('Sukses Delete', 200);
-        } catch (\Throwable $th) {
-            response('Terdapat Kesalahan saat Delete Petugas' . $th, 500);
-        }
-    }
-
-    /**
-     * Show all resource.
-     *
-     * @param  String  $keyword
-     * @return \Illuminate\Http\Response
-     */
-    public function all(Request $request)
-    {
-        return Petugas::all();
+        //
     }
 }

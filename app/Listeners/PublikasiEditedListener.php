@@ -6,7 +6,7 @@ use App\Events\PublikasiEdited;
 use App\Models\PublikasiHistori;
 use App\Models\User;
 use App\Notifications\PublikasiNotif;
-use App\Notifications\TelegramNotification;
+use App\Notifications\TelegramPublikasiNotification;
 use Illuminate\Support\Facades\Notification;
 
 class PublikasiEditedListener
@@ -42,7 +42,7 @@ class PublikasiEditedListener
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);
-        Notification::send($user, new TelegramNotification($event->user, $event->publikasi, $msg, ""));
+        Notification::send($user, new TelegramPublikasiNotification($event->user, $event->publikasi, $msg, ""));
 
     }
 }

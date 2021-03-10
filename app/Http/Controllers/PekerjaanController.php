@@ -16,7 +16,7 @@ class PekerjaanController extends Controller
     public function index(Request $request)
     {
 
-        return Pekerjaan::all();
+        return Pekerjaan::latest('updated_at')->get();
     }
 
     /**
@@ -71,7 +71,44 @@ class PekerjaanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    }
+
+    /**
+     * Do the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function kerjakan(Request $request, $id)
+    {
+        try {
+            return Pekerjaan::find($request->id)->update([
+                "petugas_id" => $request->petugas_id,
+                "status" => 1,
+            ]);
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Update Pekerjaan' . $th->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Cancel the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function batal(Request $request, $id)
+    {
+        try {
+            return Pekerjaan::find($request->id)->update([
+                "petugas_id" => null,
+                "status" => 0,
+            ]);
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Update Pekerjaan' . $th->getMessage(), 500);
+        }
     }
 
     /**
@@ -88,7 +125,7 @@ class PekerjaanController extends Controller
             $pekerjaan->delete();
             response('Sukses Delete', 200);
         } catch (\Throwable $th) {
-            response('Terdapat Kesalahan saat Delete Publikasi' . $th, 500);
+            response('Terdapat Kesalahan saat Delete Pekerjaan' . $th->getMessage(), 500);
         }
     }
 }
