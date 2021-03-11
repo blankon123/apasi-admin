@@ -30,7 +30,7 @@ class TabelDinamisRequestDeletedListener
     public function handle(TabelDinamisRequestDeleted $event)
     {
         $admin = User::where('role', "=", "admin")->first();
-        $msg = "Request Hapus Tabel";
+        $msg = "Request Hapus";
         if ($event->tabel->user) {
             $user = User::find($event->tabel->user->id);
             if ($user->role != "ADMIN") {
@@ -43,7 +43,7 @@ class TabelDinamisRequestDeletedListener
         $event->tabel->save();
 
         $tabelHis = TabelDinamisHistori::create([
-            'tabel_id' => $event->tabel->id,
+            'tabel_dinamis_id' => $event->tabel->id,
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);

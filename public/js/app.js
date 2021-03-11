@@ -2174,12 +2174,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2200,6 +2194,11 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     refresh: function refresh() {
       this.$store.dispatch("indexMainStore/getNotifikasi");
+    },
+    colorize: function colorize(item) {
+      var _item$data$tabel$user, _item$data$publikasi, _item$data$publikasi$;
+
+      return item.data.tabel ? (_item$data$tabel$user = item.data.tabel.user) === null || _item$data$tabel$user === void 0 ? void 0 : _item$data$tabel$user.color : (_item$data$publikasi = item.data.publikasi) === null || _item$data$publikasi === void 0 ? void 0 : (_item$data$publikasi$ = _item$data$publikasi.user) === null || _item$data$publikasi$ === void 0 ? void 0 : _item$data$publikasi$.color;
     },
     dateForHuman: function dateForHuman(arcDate) {
       var dateResult = moment(arcDate);
@@ -3809,6 +3808,90 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.dispatch("tabelDinamisStore/editTabel", this.tabel);
         this.show = false;
       }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["loading", "tabelData"],
+  data: function data() {
+    return {
+      handsontableReady: false,
+      checkingInterval: null
+    };
+  },
+  created: function created() {
+    var localThis = this;
+    this.checkingInterval = setInterval(function () {
+      if (window.Handsontable) {
+        localThis.handsontableReady = true;
+      }
+    }, 100);
+  },
+  watch: {
+    handsontableReady: function handsontableReady(data) {
+      if (data) {
+        clearInterval(this.checkingInterval);
+        this.init();
+      }
+    },
+    tabelData: function tabelData() {
+      this.init();
+    }
+  },
+  mounted: function mounted() {
+    this.loadJSLibrary("https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js");
+    this.loadCSSLibrary("https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css");
+  },
+  methods: {
+    init: function init() {
+      var container = document.getElementById("example");
+      var hot = new window.Handsontable(container, {
+        licenseKey: "non-commercial-and-evaluation",
+        rowHeaders: true,
+        colHeaders: true,
+        width: "100%",
+        height: "60vh",
+        data: [["", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford", "Tesla", "Volvo", "Toyota", "Ford"], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2019", 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13, 10, 11, 12, 13], ["2020", 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13, 20, 11, 14, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13], ["2021", 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13, 30, 15, 12, 13]]
+      }); //urutan Data -> vervar.var.turvar.tahun.turtahun
+    },
+    loadJSLibrary: function loadJSLibrary(url) {
+      var scriptTag = document.createElement("script");
+      scriptTag.setAttribute("src", url);
+      document.head.appendChild(scriptTag);
+    },
+    loadCSSLibrary: function loadCSSLibrary(url) {
+      var styleTag = document.createElement("link");
+      styleTag.setAttribute("rel", "stylesheet");
+      styleTag.setAttribute("href", url);
+      document.head.appendChild(styleTag);
     }
   }
 });
@@ -6648,7 +6731,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _computed),
   methods: {
     viewItem: function viewItem(item) {
-      return "/tabel/" + item.id;
+      return "/tabel/" + item.id + "/" + item.tabel_web_id;
     },
     colorize: function colorize(val) {
       var color = ["gray", "blue", "orange", "green"];
@@ -6719,6 +6802,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_tabelDinamis_TabelData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../components/tabelDinamis/TabelData */ "./resources/js/components/views/components/tabelDinamis/TabelData.vue");
 //
 //
 //
@@ -6733,13 +6817,134 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    TabelData: _components_tabelDinamis_TabelData__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
-    return {
-      snackbar: false,
-      text: "Hello, I'm a snackbar",
-      tabelId: $route.params.id
-    };
+    return {};
+  },
+  created: function created() {
+    this.$store.dispatch("userStore/getBidang");
+    this.$store.dispatch("tabelDinamisStore/setCategories");
+    this.$store.dispatch("tabelDinamisStore/setSubjects");
+    this.$store.dispatch("tabelDinamisStore/setTableData");
+    this.$store.dispatch("tabelDinamisStore/getTabel", this.$route.params.id);
+    this.$store.dispatch("tabelDinamisStore/getTabelWeb", this.$route.params.web_id);
+  },
+  computed: {
+    tabelDataWeb: function tabelDataWeb() {
+      return this.$store.state.tabelDinamisStore.tabelDetail.tabelDataWeb;
+    },
+    loading: function loading() {
+      return this.$store.state.tabelDinamisStore.tabelDetail.loading;
+    },
+    webLoading: function webLoading() {
+      return this.$store.state.tabelDinamisStore.tabelDetail.webLoading;
+    },
+    username: function username() {
+      var _this$tabel$user;
+
+      return (_this$tabel$user = this.tabel.user) === null || _this$tabel$user === void 0 ? void 0 : _this$tabel$user.name;
+    },
+    userColor: function userColor() {
+      var _this$tabel$user2;
+
+      return ((_this$tabel$user2 = this.tabel.user) === null || _this$tabel$user2 === void 0 ? void 0 : _this$tabel$user2.color) + " darken-2";
+    },
+    tabel: function tabel() {
+      return this.$store.state.tabelDinamisStore.tabelDetail.tabel;
+    },
+    subjects: function subjects() {
+      return this.$store.state.tabelDinamisStore.subjects;
+    },
+    categories: function categories() {
+      return this.$store.state.tabelDinamisStore.categories;
+    },
+    bidangs: function bidangs() {
+      return this.$store.state.userStore.users;
+    },
+    snackbar: function snackbar() {
+      return this.$store.state.tabelDinamisStore.snackbar;
+    }
+  },
+  mounted: function mounted() {},
+  methods: {
+    colorize: function colorize(val) {
+      var color = ["gray", "blue", "orange", "green"];
+      return color[val];
+    },
+    refresh: function refresh() {
+      this.$store.dispatch("tabelDinamisStore/getTabel", this.$route.params.id);
+    },
+    subjectName: function subjectName(val) {
+      var _this$subjects$find;
+
+      return (_this$subjects$find = this.subjects.find(function (obj) {
+        return obj.sub_id == val;
+      })) === null || _this$subjects$find === void 0 ? void 0 : _this$subjects$find.title;
+    },
+    categoryName: function categoryName(val) {
+      var _this$categories$find;
+
+      return (_this$categories$find = this.categories.find(function (obj) {
+        return obj.subcat_id == val;
+      })) === null || _this$categories$find === void 0 ? void 0 : _this$categories$find.title;
+    }
   }
 });
 
@@ -29777,17 +29982,12 @@ var render = function() {
             ? _c(
                 "v-row",
                 { staticClass: "py-0 my-1" },
-                _vm._l(_vm.notifikasi, function(item, index, i) {
+                _vm._l(_vm.notifikasi, function(item, index) {
                   return _c(
                     "v-card",
                     {
                       key: index,
-                      class:
-                        "ma-1 pa-1 " +
-                        (item.data.tabel
-                          ? item.data.tabel.user.color
-                          : item.data.publikasi.user.color) +
-                        " darken-2"
+                      class: "ma-1 pa-1 " + _vm.colorize(item) + " darken-2"
                     },
                     [
                       _c(
@@ -32597,6 +32797,46 @@ var render = function() {
         ],
         1
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    [
+      _vm._v("\n  Web Tabel\n  "),
+      _c("v-card-text", { staticClass: "ma-0 pa-0" }, [
+        _c("div", { staticClass: "black--text ", attrs: { id: "example" } })
+      ]),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("v-progress-linear", {
+            attrs: { indeterminate: "", color: "cyan", rounded: "" }
+          })
+        : _vm._e(),
+      _vm._v("\n  " + _vm._s(_vm.tabelData) + "\n")
     ],
     1
   )
@@ -37868,42 +38108,171 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._v("\n  TabelView " + _vm._s(_vm.tabelId) + "\n  "),
-    _c(
-      "div",
-      { staticClass: "text-center ma-2" },
-      [
-        _c(
-          "v-btn",
-          {
-            on: {
-              click: function($event) {
-                _vm.snackbar = true
+  return _c(
+    "div",
+    [
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.snackbar.timeout, color: _vm.snackbar.color },
+          scopedSlots: _vm._u([
+            {
+              key: "action",
+              fn: function(ref) {
+                var attrs = ref.attrs
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._b(
+                      {
+                        attrs: { color: "white", text: "" },
+                        on: {
+                          click: function($event) {
+                            _vm.snackbar.show = false
+                          }
+                        }
+                      },
+                      "v-btn",
+                      attrs,
+                      false
+                    ),
+                    [_vm._v("\n        Tutup\n      ")]
+                  )
+                ]
               }
             }
-          },
-          [_vm._v("\n      Open Snackbar\n    ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "v-snackbar",
-          {
-            attrs: { top: "", color: "success" },
-            model: {
-              value: _vm.snackbar,
-              callback: function($$v) {
-                _vm.snackbar = $$v
-              },
-              expression: "snackbar"
-            }
-          },
-          [_vm._v("\n      " + _vm._s(_vm.text) + "\n    ")]
-        )
-      ],
-      1
-    )
-  ])
+          ]),
+          model: {
+            value: _vm.snackbar.show,
+            callback: function($$v) {
+              _vm.$set(_vm.snackbar, "show", $$v)
+            },
+            expression: "snackbar.show"
+          }
+        },
+        [_vm._v("\n    " + _vm._s(_vm.snackbar.text) + "\n\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        { staticClass: "mb-2", attrs: { fluid: "", elevation: "2" } },
+        [
+          _c(
+            "v-card-title",
+            { staticClass: "text-left mb-0 pb-0" },
+            [
+              _vm._v(
+                "\n      " +
+                  _vm._s(_vm.tabel.judul_tabel ? _vm.tabel.judul_tabel : "") +
+                  "\n      "
+              ),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { small: "", icon: "", loading: _vm.loading },
+                  on: { click: _vm.refresh }
+                },
+                [_c("v-icon", [_vm._v("mdi-refresh")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-card-text", { staticClass: "text-left" }, [
+            _c(
+              "span",
+              [
+                _c(
+                  "v-chip",
+                  {
+                    attrs: {
+                      small: "",
+                      outlined: "",
+                      color: _vm.colorize(_vm.tabel.category_id)
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.categoryName(_vm.tabel.category_id)))]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              [
+                _c(
+                  "v-chip",
+                  {
+                    attrs: {
+                      small: "",
+                      outlined: "",
+                      color: _vm.colorize(_vm.tabel.category_id)
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.subjectName(_vm.tabel.subject_id)))]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              [
+                _c("v-chip", { attrs: { small: "", color: _vm.userColor } }, [
+                  _vm._v(_vm._s(_vm.username))
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "text--primary" })
+          ]),
+          _vm._v(" "),
+          _vm.loading
+            ? _c("v-progress-linear", {
+                attrs: { indeterminate: "", color: "cyan", rounded: "" }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            { attrs: { md: "5" } },
+            [
+              _c("tabel-data", {
+                attrs: { loading: _vm.webLoading, tabelData: _vm.tabelDataWeb }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { md: "5" } },
+            [_c("v-card", [_vm._v("\n        This is Second Card\n      ")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { md: "2" } },
+            [_c("v-card", [_vm._v("\n        This is Third Card\n      ")])],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99129,6 +99498,7 @@ var map = {
 	"./components/views/components/tabelDinamis/AddTabel.vue": "./resources/js/components/views/components/tabelDinamis/AddTabel.vue",
 	"./components/views/components/tabelDinamis/DeleteTabel.vue": "./resources/js/components/views/components/tabelDinamis/DeleteTabel.vue",
 	"./components/views/components/tabelDinamis/EditTabel.vue": "./resources/js/components/views/components/tabelDinamis/EditTabel.vue",
+	"./components/views/components/tabelDinamis/TabelData.vue": "./resources/js/components/views/components/tabelDinamis/TabelData.vue",
 	"./components/views/error/NotFound.vue": "./resources/js/components/views/error/NotFound.vue",
 	"./components/views/main/AccountData.vue": "./resources/js/components/views/main/AccountData.vue",
 	"./components/views/main/Dashboard.vue": "./resources/js/components/views/main/Dashboard.vue",
@@ -100407,6 +100777,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/views/components/tabelDinamis/TabelData.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/views/components/tabelDinamis/TabelData.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TabelData.vue?vue&type=template&id=46bb6997& */ "./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997&");
+/* harmony import */ var _TabelData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TabelData.vue?vue&type=script&lang=js& */ "./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TabelData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/views/components/tabelDinamis/TabelData.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./TabelData.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./TabelData.vue?vue&type=template&id=46bb6997& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/views/components/tabelDinamis/TabelData.vue?vue&type=template&id=46bb6997&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelData_vue_vue_type_template_id_46bb6997___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/views/error/NotFound.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/views/error/NotFound.vue ***!
@@ -101303,7 +101742,7 @@ var routes = [{
       MainView: _components_views_main_PublikasiView_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
     }
   }, {
-    path: "/tabel/:id",
+    path: "/tabel/:id/:web_id",
     name: "TabelView",
     meta: {
       requiresAuth: true
@@ -102395,6 +102834,12 @@ var state = {
     loading: false,
     progress: 0
   },
+  tabelDetail: {
+    loading: true,
+    webLoading: true,
+    tabel: {},
+    tabelDataWeb: {}
+  },
   subjects: [],
   categories: []
 };
@@ -102622,9 +103067,24 @@ var actions = {
     state.tabelTable.bidang_id = val;
     dispatch("setTableData");
   },
-  addTabel: function addTabel(_ref11, form) {
+  getTabel: function getTabel(_ref11, id) {
     var state = _ref11.state,
         dispatch = _ref11.dispatch;
+    axios.get(state.baseUrl + id).then(function (res) {
+      state.tabelDetail.tabel = res.data;
+      state.tabelDetail.loading = false;
+    })["catch"](function (err) {
+      state.tabelDetail.loading = false;
+      dispatch("showSnackbar", {
+        text: "Ups, Terjadi Kesalahan",
+        type: "error"
+      });
+      console.log(err.message);
+    });
+  },
+  addTabel: function addTabel(_ref12, form) {
+    var state = _ref12.state,
+        dispatch = _ref12.dispatch;
     state.tabelTable.loading = true;
     axios.post(state.baseUrl, {
       judul_tabel: form.judul_tabel,
@@ -102646,9 +103106,9 @@ var actions = {
       });
     });
   },
-  editTabel: function editTabel(_ref12, form) {
-    var state = _ref12.state,
-        dispatch = _ref12.dispatch;
+  editTabel: function editTabel(_ref13, form) {
+    var state = _ref13.state,
+        dispatch = _ref13.dispatch;
     state.tabelTable.loading = true;
     axios.put(state.baseUrl + form.id, {
       judul_tabel: form.judul_tabel,
@@ -102670,9 +103130,9 @@ var actions = {
       console.log(err.message);
     });
   },
-  deleteTabel: function deleteTabel(_ref13, form) {
-    var state = _ref13.state,
-        dispatch = _ref13.dispatch;
+  deleteTabel: function deleteTabel(_ref14, form) {
+    var state = _ref14.state,
+        dispatch = _ref14.dispatch;
     state.tabelTable.loading = true;
     axios.put(state.baseUrl + "requestDelete", {
       id: form.id
@@ -102692,9 +103152,9 @@ var actions = {
       console.log(err.message);
     });
   },
-  editTabelUser: function editTabelUser(_ref14, form) {
-    var state = _ref14.state,
-        dispatch = _ref14.dispatch;
+  editTabelUser: function editTabelUser(_ref15, form) {
+    var state = _ref15.state,
+        dispatch = _ref15.dispatch;
     state.tabelTable.loading = true;
     axios.put(state.baseUrl + form.id, {
       user_id: form.user_id
@@ -102706,6 +103166,29 @@ var actions = {
       });
     })["catch"](function (err) {
       state.tabelTable.loading = false;
+      dispatch("showSnackbar", {
+        text: "Ups, Terjadi Kesalahan",
+        type: "error"
+      });
+      console.log(err.message);
+    });
+  },
+  getTabelWeb: function getTabelWeb(_ref16, id) {
+    var state = _ref16.state,
+        dispatch = _ref16.dispatch;
+    state.tabelDetail.webLoading = true;
+    bpsApiAxios.get(state.bpsApiUrl + "list/", {
+      params: {
+        model: "data",
+        domain: "6200",
+        key: "84cdc81b2171fc8d132c7984a682605a",
+        "var": id
+      }
+    }).then(function (res) {
+      state.tabelDetail.tabelDataWeb = res.data;
+      state.tabelDetail.webLoading = false;
+    })["catch"](function (err) {
+      state.tabelDetail.webLoading = false;
       dispatch("showSnackbar", {
         text: "Ups, Terjadi Kesalahan",
         type: "error"

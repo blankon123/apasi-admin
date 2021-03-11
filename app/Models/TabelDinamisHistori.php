@@ -34,7 +34,7 @@ class TabelDinamisHistori extends Model
      * @var array
      */
     protected $fillable = [
-        'tabel_id',
+        'tabel_dinamis_id',
         'keterangan',
         'perubahan',
         'data',

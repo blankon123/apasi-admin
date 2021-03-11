@@ -67,14 +67,15 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('tabelDinamis')->group(function () {
-            Route::get('/', [TabelDinamisController::class, 'index'])->middleware('can:isAdmin');
+            Route::get('/', [TabelDinamisController::class, 'index']);
+            Route::get('/countDinamis', [TabelDinamisController::class, 'countDinamis']);
+            Route::get('/{id}', [TabelDinamisController::class, 'show']);
             Route::post('/', [TabelDinamisController::class, 'store']);
             Route::put('/requestDelete', [TabelDinamisController::class, 'requestDestroy']);
             Route::put('/{id}', [TabelDinamisController::class, 'update']);
             Route::delete('/', [TabelDinamisController::class, 'destroy'])->middleware('can:isAdmin');
             Route::get('/all', [TabelDinamisController::class, 'all']);
             Route::post('/sync', [TabelDinamisController::class, 'sync'])->middleware('can:isAdmin');
-            Route::get('/countDinamis', [TabelDinamisController::class, 'countDinamis']);
         });
 
         Route::prefix('notifikasi')->group(function () {

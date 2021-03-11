@@ -87,7 +87,7 @@ const routes = [
         }
       },
       {
-        path: "/tabel/:id",
+        path: "/tabel/:id/:web_id",
         name: "TabelView",
         meta: { requiresAuth: true },
         components: {

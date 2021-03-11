@@ -31,14 +31,14 @@ class TabelDinamisRequestAddedListener
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->tabel->user->id);
-        $msg = "Request Tambah Tabel";
+        $msg = "Request Tambah";
         Notification::send($admin, new TabelDinamisNotif($event->user, $event->tabel, $msg));
         if ($user->role != "ADMIN") {
             Notification::send($user, new TabelDinamisNotif($event->user, $event->tabel, $msg));
         }
 
         $tabelHis = TabelDinamisHistori::create([
-            'tabel_id' => $event->tabel->id,
+            'tabel_dinamis_id' => $event->tabel->id,
             'keterangan' => $msg,
             'user_id' => $event->user->id,
         ]);

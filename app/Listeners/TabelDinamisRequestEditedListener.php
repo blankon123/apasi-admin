@@ -31,7 +31,7 @@ class TabelDinamisRequestEditedListener
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->tabel->user->id);
-        $msg = "Request Edit Tabel";
+        $msg = "Request Edit";
         $keterangan = "Perubahan";
         $jumlahPerubahan = 0;
 
@@ -64,7 +64,7 @@ class TabelDinamisRequestEditedListener
             $event->tabel->save();
 
             $tabelHis = TabelDinamisHistori::create([
-                'tabel_id' => $event->tabel->id,
+                'tabel_dinamis_id' => $event->tabel->id,
                 'keterangan' => $msg,
                 'user_id' => $event->user->id,
             ]);

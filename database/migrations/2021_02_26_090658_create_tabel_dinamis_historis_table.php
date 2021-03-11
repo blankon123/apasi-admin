@@ -15,7 +15,7 @@ class CreateTabelDinamisHistorisTable extends Migration
     {
         Schema::create('tabel_dinamis_historis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tabel_id');
+            $table->foreignId('tabel_dinamis_id');
             $table->string('keterangan');
             $table->string('perubahan')->nullable();
             $table->json('data')->nullable();
@@ -25,7 +25,7 @@ class CreateTabelDinamisHistorisTable extends Migration
 
         Schema::table('tabel_dinamis_historis', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('tabel_id')->references('id')->on('tabel_dinamises')->onDelete('cascade');
+            $table->foreign('tabel_dinamis_id')->references('id')->on('tabel_dinamises')->onDelete('cascade');
         });
     }
 

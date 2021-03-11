@@ -323,7 +323,7 @@ export default {
   },
   methods: {
     viewItem(item) {
-      return "/tabel/" + item.id;
+      return "/tabel/" + item.id + "/" + item.tabel_web_id;
     },
     colorize(val) {
       let color = ["gray", "blue", "orange", "green"];
