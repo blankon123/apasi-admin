@@ -19,15 +19,9 @@
       <v-divider></v-divider>
       <v-row class="py-0 my-1" v-if="notifikasi.length != 0">
         <v-card
-          v-for="(item, index, i) in notifikasi"
+          v-for="(item, index) in notifikasi"
           :key="index"
-          :class="
-            `ma-1 pa-1 ${
-              item.data.tabel
-                ? item.data.tabel.user.color
-                : item.data.publikasi.user.color
-            } darken-2`
-          "
+          :class="`ma-1 pa-1 ${colorize(item)} darken-2`"
         >
           <v-expansion-panels
             class="py-0"
@@ -86,6 +80,11 @@ export default {
   methods: {
     refresh() {
       this.$store.dispatch("indexMainStore/getNotifikasi");
+    },
+    colorize(item) {
+      return item.data.tabel
+        ? item.data.tabel.user?.color
+        : item.data.publikasi?.user?.color;
     },
     dateForHuman(arcDate) {
       let dateResult = moment(arcDate);

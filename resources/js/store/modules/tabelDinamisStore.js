@@ -31,6 +31,12 @@ const state = {
     loading: false,
     progress: 0
   },
+  tabelDetail: {
+    loading: true,
+    webLoading: true,
+    tabel: {},
+    tabelDataWeb: {}
+  },
   subjects: [],
   categories: []
 };
@@ -243,6 +249,22 @@ const actions = {
     dispatch("setTableData");
   },
 
+  getTabel({ state, dispatch }, id) {
+    axios
+      .get(state.baseUrl + id)
+      .then(res => {
+        state.tabelDetail.tabel = res.data;
+        state.tabelDetail.loading = false;
+      })
+      .catch(err => {
+        state.tabelDetail.loading = false;
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
+  },
   addTabel({ state, dispatch }, form) {
     state.tabelTable.loading = true;
     axios
@@ -325,6 +347,31 @@ const actions = {
       })
       .catch(err => {
         state.tabelTable.loading = false;
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
+  },
+
+  getTabelWeb({ state, dispatch }, id) {
+    state.tabelDetail.webLoading = true;
+    bpsApiAxios
+      .get(state.bpsApiUrl + "list/", {
+        params: {
+          model: "data",
+          domain: "6200",
+          key: process.env.MIX_WEBAPI_BPS_KEY,
+          var: id
+        }
+      })
+      .then(res => {
+        state.tabelDetail.tabelDataWeb = res.data;
+        state.tabelDetail.webLoading = false;
+      })
+      .catch(err => {
+        state.tabelDetail.webLoading = false;
         dispatch("showSnackbar", {
           text: "Ups, Terjadi Kesalahan",
           type: "error"

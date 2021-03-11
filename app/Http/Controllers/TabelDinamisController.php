@@ -74,7 +74,16 @@ class TabelDinamisController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $tabel = TabelDinamis::findOrFail($id);
+            if (Gate::allows('isAdmin') || ($tabel->user_id == $request->user()->id)) {
+                return TabelDinamis::where('id', '=', $id)->with('user', 'historis', 'historis.user', 'historis.pekerjaan')->first();
+            } else {
+                return response("Ups, Anda Tidak Berhak Mengakses ", 403);
+            }
+        } catch (\Throwable $th) {
+            return response("Ups, Ada yang salah " . $th->getMessage(), 500);
+        }
     }
 
     /**
