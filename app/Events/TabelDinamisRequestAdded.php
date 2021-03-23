@@ -19,9 +19,10 @@ class TabelDinamisRequestAdded
      *
      * @return void
      */
-    public function __construct(TabelDinamis $tabel, User $user)
+    public function __construct(TabelDinamis $tabel, $fileName, User $user)
     {
         $this->tabel = $tabel;
+        $this->fileName = $fileName;
         $this->user = $user;
     }
 

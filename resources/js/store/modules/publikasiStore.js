@@ -169,6 +169,7 @@ const actions = {
         });
       })
       .catch(err => {
+        state.deleteDialog.show = false;
         state.publikasiTable.loading = false;
         dispatch("showSnackbar", {
           text: "Ups,Terdapat Kesalahan",

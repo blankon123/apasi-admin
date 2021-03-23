@@ -19,7 +19,7 @@
               label="Petugas Pelaksana"
               outlined
               hide-details
-              class="mb-3"
+              class="my-2"
               :rules="[rules.required]"
             ></v-select>
           </v-form>
@@ -52,10 +52,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="deleteDialogInit"
-            >Batal</v-btn
+            >Tidak</v-btn
           >
           <v-btn color="blue darken-1" text @click="hapus(deleteDialog.form.id)"
-            >Batal</v-btn
+            >Hapus</v-btn
           >
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -71,6 +71,23 @@
       {{ this.title }}
       <v-spacer></v-spacer>
       <v-icon :color="this.color">{{ this.icon }}</v-icon>
+      <v-row class="pb-0 mb-0">
+        <v-col md="8" sm="12" class="pb-0 mb-0">
+          <v-text-field
+            clearable
+            @keyup.enter="cariPekerjaan()"
+            v-model="keywordPekerjaan"
+            label="Cari Pekerjaan"
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col md="4" sm="12" class="pb-0 mb-0">
+          <v-switch
+            v-model="limitJumlah"
+            :label="this.limitJumlah ? 'Limit 10' : 'Limit Off'"
+          ></v-switch>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-divider></v-divider>
     <div v-if="this.pekerjaan && this.pekerjaan.length">
@@ -139,10 +156,20 @@ export default {
   data() {
     return {
       nonDelete: ["layout"],
+      limitJumlah: false,
+      keywordPekerjaan: "",
       rules: {
         required: value => !!value || "Harus Terisi."
       }
     };
+  },
+  watch: {
+    limitJumlah(val) {
+      this.$store.dispatch("pekerjaanStore/filterBelumPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: val
+      });
+    }
   },
   computed: {
     deleteDialog() {
@@ -156,6 +183,12 @@ export default {
     }
   },
   methods: {
+    cariPekerjaan() {
+      this.$store.dispatch("pekerjaanStore/filterBelumPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: this.limitJumlah
+      });
+    },
     deleteDialogInit() {
       this.$store.dispatch("pekerjaanStore/deleteDialogInit");
     },

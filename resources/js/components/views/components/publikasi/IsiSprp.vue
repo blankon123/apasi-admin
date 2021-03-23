@@ -23,10 +23,9 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  :value="publikasi.judul_publikasi"
+                  v-model="publikasi.judul_publikasi"
                   label="Judul Publikasi"
                   outlined
-                  disabled
                   hide-details
                   prepend-inner-icon="mdi-book"
                 ></v-text-field>

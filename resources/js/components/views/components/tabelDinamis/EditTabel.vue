@@ -1,6 +1,11 @@
 <template>
   <span>
-    <v-icon small class="mr-2" @click="showDialog()">
+    <v-icon
+      small
+      class="mr-2"
+      @click="showDialog()"
+      :disabled="tabel.is_revisi == 1"
+    >
       mdi-pencil
     </v-icon>
     <v-dialog v-model="show" max-width="600px">

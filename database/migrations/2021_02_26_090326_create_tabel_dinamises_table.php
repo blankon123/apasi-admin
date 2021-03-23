@@ -24,6 +24,8 @@ class CreateTabelDinamisesTable extends Migration
             $table->integer('is_revisi')->nullable();
             $table->integer('is_deleted')->nullable();
             $table->integer('category_id')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('note')->nullable();
             $table->json('data')->nullable();
             $table->softDeletes();
         });

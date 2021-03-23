@@ -97,6 +97,26 @@
           </v-list-item>
         </v-list>
 
+        <v-divider></v-divider>
+        <v-list dense v-if="currentUser.role == 'ADMIN'">
+          <v-list-item link to="/log">
+            <v-list-item-action>
+              <v-icon>mdi-notebook</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Log Aktivitas</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link to="/trash">
+            <v-list-item-action>
+              <v-icon>mdi-trash-can</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Tempat Sampah</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
         <template v-slot:append>
           <div>
             <v-list>
@@ -150,7 +170,50 @@
             </v-col>
           </v-row>
           <v-row v-else align="center" justify="center">
-            Cangcimeng
+            <v-col cols="12" sm="8" md="4">
+              <v-card class="elevation-12">
+                <v-toolbar color="primary" flat>
+                  <v-toolbar-title
+                    >Aplikasi Pembantu Diseminasi</v-toolbar-title
+                  >
+                  <v-spacer></v-spacer>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon large target="_blank" v-on="on">
+                        <v-icon>mdi-bookshelf</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>[APASI]</span>
+                  </v-tooltip>
+                </v-toolbar>
+                <v-card-text class="text-center">
+                  <div class="text-h1">
+                    <span> <v-icon size="80"> mdi-emoticon </v-icon> </span>
+                  </div>
+                  <div class="text-h6 mb-5">
+                    Selamat Datang di APASI
+                  </div>
+                  <v-divider></v-divider>
+                  <v-btn
+                    color="primary"
+                    small
+                    class="mt-5"
+                    href="/tabelDinamis"
+                  >
+                    <v-icon>
+                      mdi-table
+                    </v-icon>
+                    Tabel Dinamis
+                  </v-btn>
+                  <v-btn color="primary" small class="mt-5" href="/publikasi">
+                    <v-icon>
+                      mdi-book
+                    </v-icon>
+                    Publikasi
+                  </v-btn>
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </v-main>
@@ -193,11 +256,6 @@ export default {
       }
     ],
     menuTabelItems: [
-      {
-        title: `Tabel Statis`,
-        icon: "mdi-table",
-        link: "/tabelStatis"
-      },
       { title: "Tabel Dinamis", icon: "mdi-table-large", link: "/tabelDinamis" }
     ],
     drawer: true,
@@ -245,19 +303,18 @@ export default {
 
 <style lang="scss">
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.01);
-  background-color: #f5f5f5;
-  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(14, 218, 92, 0);
+  background-color: rgba(14, 218, 92, 0);
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background-color: #f5f5f5;
+  width: 5px;
+  height: 5px;
+  background-color: rgba(14, 218, 92, 0);
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+  border-radius: 5px;
   background-image: -webkit-gradient(
     linear,
     left bottom,

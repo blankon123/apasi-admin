@@ -32,7 +32,7 @@ class PublikasiRilisRevisedListener
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->publikasi->user->id);
-        $msg = " Revisi Surat Rilis";
+        $msg = "Revisi Surat Rilis";
 
         Notification::send($admin, new PublikasiNotif($event->user, $event->publikasi, $msg));
         if ($user->role != "ADMIN") {

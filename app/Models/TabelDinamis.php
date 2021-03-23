@@ -42,6 +42,10 @@ class TabelDinamis extends Model
         'stage_id',
         'user_id',
         'data',
+        'is_revisi',
+        'is_deleted',
+        'unit',
+        'note',
     ];
 
     /**

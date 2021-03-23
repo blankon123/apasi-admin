@@ -80,6 +80,7 @@
             :subjects="subjects"
             :categories="categories"
             :bidangs="bidangs"
+            :user="user"
           ></add-tabel>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-tooltip bottom>
@@ -140,10 +141,10 @@
                       outlined
                     ></v-select>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="(user.role == 'ADMIN') == 'ADMIN'">
                     Bidang
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="(user.role == 'ADMIN') == 'ADMIN'">
                     <v-select
                       item-text="nama_bidang"
                       item-value="id"
@@ -174,7 +175,11 @@
         <v-row>
           <v-col>
             <v-btn icon :href="viewItem(item)" target="_blank" class="mr-2">
-              <v-icon small>
+              <v-icon
+                v-if="item.tabel_web_id"
+                small
+                :disabled="item.user_id == null"
+              >
                 mdi-eye
               </v-icon>
             </v-btn>
@@ -184,11 +189,15 @@
               :categories="categories"
               :bidangs="bidangs"
             ></edit-tabel>
-            <v-icon small @click="deleteDialogShow(item)">
+            <v-icon
+              small
+              @click="deleteDialogShow(item)"
+              :disabled="item.is_deleted == 1"
+            >
               mdi-delete
             </v-icon>
           </v-col>
-          <v-col>
+          <v-col v-if="user.role == 'ADMIN'">
             <v-select
               item-value="id"
               item-text="nama_bidang"

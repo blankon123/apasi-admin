@@ -58,7 +58,20 @@ class TabelDinamisRequestEditedListener
             $keterangan = $keterangan . " Subjek";
             $jumlahPerubahan++;
         }
-
+        if ($event->tabel_old->note != $event->tabel->note) {
+            if ($jumlahPerubahan) {
+                $keterangan = $keterangan . ",";
+            }
+            $keterangan = $keterangan . " Note";
+            $jumlahPerubahan++;
+        }
+        if ($event->tabel_old->unit != $event->tabel->unit) {
+            if ($jumlahPerubahan) {
+                $keterangan = $keterangan . ",";
+            }
+            $keterangan = $keterangan . " Unit";
+            $jumlahPerubahan++;
+        }
         if ($jumlahPerubahan) {
             $event->tabel->is_revisi = 1;
             $event->tabel->save();

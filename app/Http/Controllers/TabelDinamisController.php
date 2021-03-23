@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TabelDinamisDataEdited;
 use App\Events\TabelDinamisRequestAdded;
 use App\Events\TabelDinamisRequestDeleted;
 use App\Events\TabelDinamisRequestEdited;
 use App\Models\TabelDinamis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class TabelDinamisController extends Controller
@@ -50,17 +52,58 @@ class TabelDinamisController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(
+        $judul_tabel,
+        $subject_id,
+        $category_id,
+        $user_id,
+        $note,
+        $unit,
+        Request $request) {
+
+        DB::beginTransaction();
+        try {
+            $tabel = TabelDinamis::create([
+                'judul_tabel' => urldecode($judul_tabel),
+                'subject_id' => $subject_id,
+                'category_id' => $category_id,
+                'user_id' => $user_id,
+                'note' => $note,
+                'unit' => $unit,
+            ]);
+            $tabel->save();
+            $file_excel = $request->file('file');
+            $fileName = "Tabel " . $judul_tabel . " " . rand() . "." . $file_excel->extension();
+            $file_excel->move('tabel_baru', $fileName);
+
+            event(new TabelDinamisRequestAdded($tabel, '/tabel_baru/' . $fileName, $request->user()));
+            DB::commit();
+            return response("Permintaan Pembuatan Sukses", 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response("Ups, Terjadi Kesalahan " . $th->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Store a data resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeData($id, Request $request)
     {
         try {
-            $newTabel = TabelDinamis::create($request->all());
-            event(new TabelDinamisRequestAdded($newTabel, $request->user()));
-            return response("Sukses Menambahkan Tabel", 200);
+            $tabel_old = TabelDinamis::find($id);
+            TabelDinamis::where('id', $id)->update($request->except(['perubahan']));
+            $tabel = TabelDinamis::find($id);
+            event(new TabelDinamisDataEdited($tabel_old, $tabel, $request->user(), $request->perubahan));
+            return response("Permintaan Perubahan Sukses", 200);
         } catch (\Throwable $th) {
             return response("Ups, Terjadi Kesalahan " . $th->getMessage(), 500);
         }
@@ -72,12 +115,12 @@ class TabelDinamisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
             $tabel = TabelDinamis::findOrFail($id);
             if (Gate::allows('isAdmin') || ($tabel->user_id == $request->user()->id)) {
-                return TabelDinamis::where('id', '=', $id)->with('user', 'historis', 'historis.user', 'historis.pekerjaan')->first();
+                return TabelDinamis::where('id', '=', $id)->with('user', 'historis', 'historis.user')->get();
             } else {
                 return response("Ups, Anda Tidak Berhak Mengakses ", 403);
             }
@@ -105,6 +148,26 @@ class TabelDinamisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+    {
+        try {
+            $tabel_old = TabelDinamis::find($id);
+            TabelDinamis::where('id', $id)->update($request->all());
+            $tabel = TabelDinamis::find($id);
+            event(new TabelDinamisRequestEdited($tabel_old, $tabel, $request->user()));
+            return response("Permintaan Perubahan Sukses", 200);
+        } catch (\Throwable $th) {
+            return response("Ups, Terjadi Kesalahan " . $th, 500);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDetail(Request $request, $id)
     {
         try {
             $tabel_old = TabelDinamis::find($id);
@@ -193,6 +256,35 @@ class TabelDinamisController extends Controller
             return TabelDinamis::count();
         }
         return TabelDinamis::where('user_id', $request->user()->id)->count();
+    }
+
+    /**
+     * Display a listing of the deleted resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTrash(Request $request)
+    {
+        try {
+            return TabelDinamis::onlyTrashed()->with('user')->get();
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Restore a deleted resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id, Request $request)
+    {
+        try {
+            $restored = TabelDinamis::withTrashed()->find($id)->restore();
+            response('Sukses Restore Tabel', 200);
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
+        }
     }
 
 }
