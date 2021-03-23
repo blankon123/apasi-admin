@@ -11,8 +11,12 @@
         <v-btn color="white" text v-bind="attrs" @click="snackbar.show = false">
           Tutup
         </v-btn>
-      </template>
-    </v-snackbar>
+      </template> </v-snackbar
+    ><v-fab-transition>
+      <v-btn color="blue" fab absolute bottom right @click="refresh">
+        <v-icon>mdi-refresh</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <v-row>
       <v-col lg="4" sm="12" xs="12">
         <v-card :loading="this.loading">
@@ -63,6 +67,11 @@ import SudahPekerjaan from "../components/pekerjaan/SudahPekerjaan.vue";
 export default {
   components: { BelumPekerjaan, SedangPekerjaan, SudahPekerjaan },
   props: {},
+  data() {
+    return {
+      filterJumlah: [5, 10, 50, "Semua"]
+    };
+  },
   computed: {
     snackbar() {
       return this.$store.state.pekerjaanStore.snackbar;
@@ -78,7 +87,11 @@ export default {
     this.$store.dispatch("pekerjaanStore/init");
     this.$store.dispatch("petugasStore/getPetugasTable");
   },
-  methods: {}
+  methods: {
+    refresh() {
+      this.$store.dispatch("pekerjaanStore/init");
+    }
+  }
 };
 </script>
 

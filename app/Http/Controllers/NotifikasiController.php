@@ -17,6 +17,16 @@ class NotifikasiController extends Controller
     }
 
     /**
+     * Display all listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(Request $request)
+    {
+        return $request->user()->unreadNotifications->all();
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

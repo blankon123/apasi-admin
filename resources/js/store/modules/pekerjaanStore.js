@@ -32,6 +32,15 @@ const state = {
     loading: false,
     petugas_id: null
   },
+  ubahPetugasDialog: {
+    form: {
+      nama: null,
+      id: null
+    },
+    show: false,
+    loading: false,
+    petugas_id: null
+  },
   pekerjaan: {
     all: null,
     belum: null,
@@ -72,6 +81,49 @@ const actions = {
       });
   },
 
+  filterBelumPekerjaan({ state }, { keyword, limit }) {
+    state.pekerjaan.belum = state.pekerjaan.all.filter(item => {
+      if (item.status == 0) return true;
+    });
+    if (keyword != "") {
+      state.pekerjaan.belum = state.pekerjaan.belum.filter(item => {
+        if (item.nama.toLowerCase().includes(keyword.toLowerCase()))
+          return true;
+      });
+    }
+    if (limit) {
+      state.pekerjaan.belum = state.pekerjaan.belum.slice(0, 10);
+    }
+  },
+  filterSedangPekerjaan({ state }, { keyword, limit }) {
+    state.pekerjaan.sedang = state.pekerjaan.all.filter(item => {
+      if (item.status == 1) return true;
+    });
+    if (keyword != "") {
+      state.pekerjaan.sedang = state.pekerjaan.sedang.filter(item => {
+        if (item.nama.toLowerCase().includes(keyword.toLowerCase()))
+          return true;
+      });
+    }
+    if (limit) {
+      state.pekerjaan.sedang = state.pekerjaan.sedang.slice(0, 10);
+    }
+  },
+  filterSudahPekerjaan({ state }, { keyword, limit }) {
+    state.pekerjaan.sudah = state.pekerjaan.all.filter(item => {
+      if (item.status == 2) return true;
+    });
+    if (keyword != "") {
+      state.pekerjaan.sudah = state.pekerjaan.sudah.filter(item => {
+        if (item.nama.toLowerCase().includes(keyword.toLowerCase()))
+          return true;
+      });
+    }
+    if (limit) {
+      state.pekerjaan.sudah = state.pekerjaan.sudah.slice(0, 10);
+    }
+  },
+
   deleteDialogInit({ state }) {
     state.deleteDialog = {
       form: {
@@ -108,6 +160,54 @@ const actions = {
       .catch(err => {
         state.deleteDialog.loading = false;
         state.deleteDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Ups,Terdapat Kesalahan",
+          type: "error"
+        });
+        console.log(err.response.data);
+      });
+  },
+
+  ubahPetugasDialogInit({ state }) {
+    state.ubahPetugasDialog = {
+      form: {
+        nama: null,
+        id: null
+      },
+      petugas_id: null,
+      show: false,
+      loading: false
+    };
+  },
+  ubahPetugasDialogShow({ state }, item) {
+    state.ubahPetugasDialog = {
+      form: {
+        nama: item.nama,
+        id: item.id
+      },
+      petugas_id: item.petugas_id,
+      show: true,
+      loading: false
+    };
+  },
+  ubahPetugas({ state, dispatch }) {
+    state.ubahPetugasDialog.loading = true;
+    axios
+      .post(state.baseUrl + "/ubahPetugas/", {
+        pekerjaan_id: state.ubahPetugasDialog.form.id,
+        petugas_id: state.ubahPetugasDialog.petugas_id
+      })
+      .then(res => {
+        dispatch("init");
+        state.ubahPetugasDialog.show = false;
+        dispatch("showSnackbar", {
+          text: "Sukses Ubah Petugas",
+          type: "success"
+        });
+      })
+      .catch(err => {
+        state.ubahPetugasDialog.loading = false;
+        state.ubahPetugasDialog.show = false;
         dispatch("showSnackbar", {
           text: "Ups,Terdapat Kesalahan",
           type: "error"

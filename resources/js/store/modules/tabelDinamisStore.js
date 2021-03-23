@@ -4,6 +4,7 @@ const state = {
   bpsApiUrl: "https://webapi.bps.go.id/v1/api/",
   tabelTable: {
     loading: false,
+    currentPage: 0,
     search: "",
     data: [],
     itemsPerPage: 10,
@@ -35,10 +36,21 @@ const state = {
     loading: true,
     webLoading: true,
     tabel: {},
-    tabelDataWeb: {}
+    tabelDataWeb: {
+      var: [
+        {
+          label: "",
+          unit: "",
+          subj: "",
+          note: ""
+        }
+      ]
+    }
   },
   subjects: [],
-  categories: []
+  subjectsRun: false,
+  categories: [],
+  categoriesRun: false
 };
 const getters = {};
 const actions = {
@@ -49,6 +61,7 @@ const actions = {
   },
 
   setTableData({ state }, requestedPage = 1) {
+    state.currentPage = requestedPage;
     state.tabelTable.loading = true;
     axios
       .get(state.baseUrl, {
@@ -76,9 +89,10 @@ const actions = {
       });
   },
   setCategories({ state }) {
-    if (state.categories.length != 0) {
+    if (state.categoriesRun) {
       return true;
     }
+    state.categoriesRun = true;
     state.tabelTable.loading = true;
     let temp = [];
     function requestCategories(halaman, afterFunction) {
@@ -116,9 +130,10 @@ const actions = {
     });
   },
   setSubjects({ state }) {
-    if (state.subjects.length != 0) {
+    if (state.subjectsRun) {
       return true;
     }
+    state.subjectsRun = true;
     state.tabelTable.loading = true;
     let temp = [];
     function requestsubjects(halaman, afterFunction) {
@@ -250,10 +265,11 @@ const actions = {
   },
 
   getTabel({ state, dispatch }, id) {
+    state.tabelDetail.loading = true;
     axios
       .get(state.baseUrl + id)
       .then(res => {
-        state.tabelDetail.tabel = res.data;
+        state.tabelDetail.tabel = res.data[0];
         state.tabelDetail.loading = false;
       })
       .catch(err => {
@@ -267,12 +283,28 @@ const actions = {
   },
   addTabel({ state, dispatch }, form) {
     state.tabelTable.loading = true;
+    let url =
+      state.baseUrl +
+      "tambah/" +
+      encodeURI(form.judul_tabel) +
+      "/" +
+      form.subject_id +
+      "/" +
+      form.category_id +
+      "/" +
+      form.user_id +
+      "/" +
+      encodeURI(form.note) +
+      "/" +
+      encodeURI(form.unit);
+
+    let formData = new FormData();
+    formData.append("file", form.excel);
     axios
-      .post(state.baseUrl, {
-        judul_tabel: form.judul_tabel,
-        subject_id: form.subject_id,
-        category_id: form.category_id,
-        user_id: form.user_id
+      .post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       })
       .then(res => {
         dispatch("setTableData");
@@ -297,7 +329,7 @@ const actions = {
         user_id: form.user_id
       })
       .then(res => {
-        dispatch("setTableData", 1);
+        dispatch("setTableData", state.currentPage);
         dispatch("showSnackbar", { text: res.data, type: "success" });
       })
       .catch(err => {
@@ -316,10 +348,10 @@ const actions = {
         id: form.id
       })
       .then(res => {
-        dispatch("setTableData", 1);
+        dispatch("setTableData", state.currentPage);
         console.log(res.data);
         dispatch("showSnackbar", {
-          text: res.data,
+          text: "Permintaan Hapus Sukses",
           type: "success"
         });
       })
@@ -369,6 +401,55 @@ const actions = {
       .then(res => {
         state.tabelDetail.tabelDataWeb = res.data;
         state.tabelDetail.webLoading = false;
+      })
+      .catch(err => {
+        state.tabelDetail.webLoading = false;
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
+  },
+  stopWebLoading({ state }) {
+    state.tabelDetail.webLoading = false;
+  },
+  editDetailTabel({ state, dispatch }, { tabel, unit, note }) {
+    state.tabelDetail.webLoading = true;
+    axios
+      .put(state.baseUrl + "detail/" + tabel.id, {
+        judul_tabel: tabel.judul_tabel,
+        subject_id: tabel.subject_id,
+        category_id: tabel.category_id,
+        user_id: tabel.user_id,
+        unit: unit,
+        note: note
+      })
+      .then(res => {
+        dispatch("getTabel", state.tabelDetail.tabel.id);
+        state.tabelDetail.webLoading = false;
+        dispatch("showSnackbar", { text: res.data, type: "success" });
+      })
+      .catch(err => {
+        state.tabelDetail.webLoading = false;
+
+        dispatch("showSnackbar", {
+          text: "Ups, Terjadi Kesalahan",
+          type: "error"
+        });
+        console.log(err.message);
+      });
+  },
+  simpanTabel({ state, dispatch }, { id, perubahan, data }) {
+    state.tabelDetail.webLoading = true;
+    axios
+      .post(state.baseUrl + "data/" + id, {
+        perubahan: perubahan,
+        data: data
+      })
+      .then(res => {
+        state.tabelDetail.webLoading = false;
+        dispatch("showSnackbar", { text: res.data, type: "success" });
       })
       .catch(err => {
         state.tabelDetail.webLoading = false;

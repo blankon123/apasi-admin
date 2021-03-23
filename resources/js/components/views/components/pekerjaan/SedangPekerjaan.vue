@@ -31,6 +31,23 @@
       {{ this.title }}
       <v-spacer></v-spacer>
       <v-icon :color="this.color">{{ this.icon }}</v-icon>
+      <v-row class="pb-0 mb-0">
+        <v-col md="8" sm="12" class="pb-0 mb-0">
+          <v-text-field
+            clearable
+            @keyup.enter="cariPekerjaan"
+            v-model="keywordPekerjaan"
+            label="Cari Pekerjaan"
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col md="4" sm="12" class="pb-0 mb-0">
+          <v-switch
+            v-model="limitJumlah"
+            :label="this.limitJumlah ? 'Limit 10' : 'Limit Off'"
+          ></v-switch>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-divider></v-divider>
     <div v-if="this.pekerjaan && this.pekerjaan.length">
@@ -67,6 +84,28 @@
                   :item="item"
                 >
                 </revisi-publikasi-pekerjaan>
+                <hapus-tabel-pekerjaan
+                  v-if="item.tipe_pekerjaan == 'hapus tabel'"
+                  :petugases="petugases"
+                  :item="item"
+                >
+                </hapus-tabel-pekerjaan>
+                <tambah-data-tabel-pekerjaan
+                  v-if="item.tipe_pekerjaan == 'data tabel'"
+                  :petugases="petugases"
+                  :item="item"
+                ></tambah-data-tabel-pekerjaan>
+                <edit-tabel-pekerjaan
+                  v-if="item.tipe_pekerjaan == 'edit tabel'"
+                  :petugases="petugases"
+                  :item="item"
+                >
+                </edit-tabel-pekerjaan>
+                <tambah-tabel
+                  v-if="item.tipe_pekerjaan == 'tambah tabel'"
+                  :petugases="petugases"
+                  :item="item"
+                ></tambah-tabel>
               </div>
             </div>
 
@@ -89,15 +128,35 @@
 </template>
 
 <script>
+import EditTabelPekerjaan from "./tipe/EditTabelPekerjaan.vue";
+import HapusTabelPekerjaan from "./tipe/HapusTabelPekerjaan.vue";
 import LayoutPekerjaan from "./tipe/LayoutPekerjaan.vue";
 import RevisiPublikasiPekerjaan from "./tipe/RevisiPublikasiPekerjaan.vue";
+import TambahTabel from "./tipe/TambahTabel.vue";
 
 export default {
-  components: { LayoutPekerjaan, RevisiPublikasiPekerjaan },
+  components: {
+    LayoutPekerjaan,
+    RevisiPublikasiPekerjaan,
+    HapusTabelPekerjaan,
+    EditTabelPekerjaan,
+    TambahTabel
+  },
   name: "SedangPekerjaan",
   props: ["pekerjaan", "loading", "title", "color", "icon"],
   data() {
-    return {};
+    return {
+      limitJumlah: false,
+      keywordPekerjaan: ""
+    };
+  },
+  watch: {
+    limitJumlah(val) {
+      this.$store.dispatch("pekerjaanStore/filterSedangPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: val
+      });
+    }
   },
   computed: {
     batalDialog() {
@@ -108,6 +167,12 @@ export default {
     }
   },
   methods: {
+    cariPekerjaan() {
+      this.$store.dispatch("pekerjaanStore/filterSedangPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: this.limitJumlah
+      });
+    },
     findPetugas(petugas_id) {
       return this.petugases.filter(item => item.id == petugas_id)[0]
         ?.nama_singkat;

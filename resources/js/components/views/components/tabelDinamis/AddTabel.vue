@@ -41,6 +41,26 @@
                 ></v-textarea>
               </v-list-item>
               <v-list-item>
+                <v-textarea
+                  label="Note Tabel"
+                  v-model="tabel.note"
+                  hint="Ex: Sumber:Badan Pusat Statistik"
+                  outlined
+                  :rules="[rules.required]"
+                  rows="2"
+                ></v-textarea>
+              </v-list-item>
+              <v-list-item>
+                <v-textarea
+                  label="Unit/Satuan"
+                  v-model="tabel.unit"
+                  hint="Ex: Rumah Tangga, Liter, Meter"
+                  outlined
+                  :rules="[rules.required]"
+                  rows="1"
+                ></v-textarea>
+              </v-list-item>
+              <v-list-item>
                 <v-select
                   item-value="subcat_id"
                   item-text="title"
@@ -52,8 +72,6 @@
                   label="Kategori"
                   outlined
                 ></v-select>
-              </v-list-item>
-              <v-list-item>
                 <v-select
                   item-value="sub_id"
                   item-text="title"
@@ -70,7 +88,7 @@
                   </template>
                 </v-select>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="this.user.role == 'ADMIN'">
                 <v-select
                   item-value="id"
                   item-text="nama_bidang"
@@ -82,6 +100,16 @@
                   label="Bidang"
                   outlined
                 ></v-select>
+              </v-list-item>
+              <v-list-item>
+                <v-file-input
+                  label="File Excel"
+                  v-model="tabel.excel"
+                  outlined
+                  dense
+                  show-size
+                  :rules="[rules.required]"
+                ></v-file-input>
               </v-list-item>
             </v-list>
           </v-form>
@@ -103,7 +131,7 @@
 <script>
 export default {
   name: "AddTabel",
-  props: ["subjects", "categories", "bidangs"],
+  props: ["user", "subjects", "categories", "bidangs"],
   data() {
     return {
       show: false,
@@ -111,7 +139,10 @@ export default {
         judul_tabel: "",
         subject_id: null,
         category_id: null,
-        user_id: null
+        user_id: null,
+        unit: null,
+        note: null,
+        excel: null
       },
       rules: {
         required: value => !!value || "Harus Terisi."
@@ -130,6 +161,9 @@ export default {
   methods: {
     action() {
       if (this.$refs.formTambahJudul.validate()) {
+        if (this.user.role != "ADMIN") {
+          this.tabel.user_id = this.user.id;
+        }
         this.$store.dispatch("tabelDinamisStore/addTabel", this.tabel);
         this.show = false;
       }

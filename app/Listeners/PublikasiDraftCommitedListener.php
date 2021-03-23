@@ -35,7 +35,7 @@ class PublikasiDraftCommitedListener
     {
         $admin = User::where('role', "=", "admin")->first();
         $user = User::find($event->publikasi->user->id);
-        $msg = " Draft, Desain, dan Surat Rilis";
+        $msg = "Draft, Desain, dan Surat Rilis";
 
         Notification::send($admin, new PublikasiNotif($event->user, $event->publikasi, $msg));
         if ($user->role != "ADMIN") {
@@ -90,7 +90,7 @@ class PublikasiDraftCommitedListener
             **' . $event->user->name . '**\
             Pada \
             **' . Carbon::now()->isoFormat('dddd, D MMMM Y HH:MM') . '** \
-            \
+
 
 [**📓Link Draft**](' . $link_draft . ') - [**🖌Link Cover**](' . ')
 

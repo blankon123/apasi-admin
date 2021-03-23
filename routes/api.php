@@ -38,6 +38,8 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [PublikasiController::class, 'index']);
             Route::get('/year', [PublikasiController::class, 'indexYear']);
             Route::get('/countIndexYear', [PublikasiController::class, 'countIndexYear']);
+            Route::get('/trash', [PublikasiController::class, 'getTrash'])->middleware('can:isAdmin');
+            Route::post('/restore/{id}', [PublikasiController::class, 'restore']);
             Route::post('/draft/{id}', [PublikasiController::class, 'draft']);
             Route::post('/revisi/{id}', [PublikasiController::class, 'revisi']);
             Route::post('/', [PublikasiController::class, 'store']);
@@ -59,6 +61,13 @@ Route::prefix('v1')->group(function () {
         Route::prefix('pekerjaan')->middleware('can:isAdmin')->group(function () {
             Route::get('/', [PekerjaanController::class, 'index']);
             Route::get('/search', [PekerjaanController::class, 'search']);
+            Route::post('/ubahPetugas', [PekerjaanController::class, 'ubahPetugas']);
+            Route::post('/do/tambahTabel', [PekerjaanController::class, 'kerjakanTambahTabel']);
+            Route::post('/do/editTabel', [PekerjaanController::class, 'kerjakanEditTabel']);
+            Route::post('/do/hapusTabel', [PekerjaanController::class, 'kerjakanHapusTabel']);
+            Route::post('/do/tambahDataTabel', [PekerjaanController::class, 'kerjakanTambahDataTabel']);
+            Route::post('/do/layout/{pekerjaan_id}/{petugas_id}/{publikasi_id}', [PekerjaanController::class, 'kerjakanLayout']);
+            Route::post('/do/revisi/{pekerjaan_id}/{petugas_id}/{publikasi_id}', [PekerjaanController::class, 'kerjakanRevisi']);
             Route::post('/', [PekerjaanController::class, 'store']);
             Route::put('/kerjakan/{id}', [PekerjaanController::class, 'kerjakan']);
             Route::put('/batal/{id}', [PekerjaanController::class, 'batal']);
@@ -69,8 +78,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('tabelDinamis')->group(function () {
             Route::get('/', [TabelDinamisController::class, 'index']);
             Route::get('/countDinamis', [TabelDinamisController::class, 'countDinamis']);
+            Route::get('/trash', [TabelDinamisController::class, 'getTrash'])->middleware('can:isAdmin');
             Route::get('/{id}', [TabelDinamisController::class, 'show']);
-            Route::post('/', [TabelDinamisController::class, 'store']);
+            Route::post('/restore/{id}', [TabelDinamisController::class, 'restore']);
+            Route::post('/data/{id}', [TabelDinamisController::class, 'storeData']);
+            Route::post('/tambah/{judul_tabel}/{subject_id}/{category_id}/{user_id}/{note}/{unit}', [TabelDinamisController::class, 'store']);
+            Route::put('/detail/{id}', [TabelDinamisController::class, 'updateDetail']);
             Route::put('/requestDelete', [TabelDinamisController::class, 'requestDestroy']);
             Route::put('/{id}', [TabelDinamisController::class, 'update']);
             Route::delete('/', [TabelDinamisController::class, 'destroy'])->middleware('can:isAdmin');
@@ -80,6 +93,7 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('notifikasi')->group(function () {
             Route::get('/', [NotifikasiController::class, 'index']);
+            Route::get('/all', [NotifikasiController::class, 'all']);
             Route::post('/{id}', [NotifikasiController::class, 'update']);
         });
     });

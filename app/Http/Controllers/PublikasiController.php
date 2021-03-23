@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PublikasiAdded;
+use App\Events\PublikasiDeleted;
 use App\Events\PublikasiDesainRevised;
 use App\Events\PublikasiDraftCommited;
 use App\Events\PublikasiDraftRevised;
@@ -168,7 +169,7 @@ class PublikasiController extends Controller
             return response('Sukses Import', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response('Terdapat Kesalahan saat Import FIle, Pastikan sesuai dengan format. Pesan: ' . $th->getMessage(), 500);
+            return response('Terdapat Kesalahan saat Import File, Pastikan sesuai dengan format. Pesan: ' . $th->getMessage(), 500);
         }
     }
 
@@ -180,11 +181,12 @@ class PublikasiController extends Controller
      */
     public function destroy(Request $req)
     {
+        $publikasi = Publikasi::find($req->id);
+        event(new PublikasiDeleted($publikasi, $req->user()));
+        $publikasi->delete();
+        response('Sukses Delete', 200);
         try {
-            $publikasi = Publikasi::find($req->id);
-            event(new PublikasiDeleted($publikasi, $request->user()));
-            $publikasi->delete();
-            response('Sukses Delete', 200);
+
         } catch (\Throwable $th) {
             response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
         }
@@ -284,6 +286,35 @@ class PublikasiController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             return response('Terdapat Kesalahan saat Import File Draft. Pesan: ' . $th, 500);
+        }
+    }
+
+    /**
+     * Display a listing of the deleted resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTrash(Request $request)
+    {
+        try {
+            return Publikasi::onlyTrashed()->with('user')->get();
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Restore a deleted resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id, Request $request)
+    {
+        try {
+            $restored = Publikasi::withTrashed()->find($id)->restore();
+            response('Sukses Restore Publikasi', 200);
+        } catch (\Throwable $th) {
+            response('Terdapat Kesalahan saat Delete Publikasi' . $th->getMessage(), 500);
         }
     }
 }

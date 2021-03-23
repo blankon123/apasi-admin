@@ -64,7 +64,10 @@
             >
               {{ importDialog.errorText }}
             </v-alert>
-            <a href="" target="_blank" rel="noopener noreferrer"
+            <a
+              href="publikasi_template/Template Dummy.xlsx"
+              target="_blank"
+              rel="noopener noreferrer"
               >File Template Import
             </a>
           </v-container>
@@ -267,10 +270,19 @@
             mdi-eye
           </v-icon>
         </v-btn>
-        <v-icon small class="mr-2" @click="editDialogShow(item)">
+        <v-icon
+          v-if="user.role == 'ADMIN'"
+          small
+          class="mr-2"
+          @click="editDialogShow(item)"
+        >
           mdi-pencil
         </v-icon>
-        <v-icon small @click="deleteDialogShow(item)">
+        <v-icon
+          v-if="user.role == 'ADMIN'"
+          small
+          @click="deleteDialogShow(item)"
+        >
           mdi-delete
         </v-icon>
       </template>

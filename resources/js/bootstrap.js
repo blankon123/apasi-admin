@@ -29,7 +29,7 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    if (error.response.status === 401) {
+    if (error.response.status === 401 || error.response.status === 403) {
       // store.dispatch('logout')
       localStorage.removeItem("apasi_cred");
       router.push("/login");

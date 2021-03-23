@@ -392,7 +392,7 @@ export default {
       }).show;
     },
     dateForHuman(arcDate) {
-      let dateResult = moment(arcDate);
+      let dateResult = window.moment(arcDate);
       return dateResult.isValid()
         ? dateResult.locale("id").calendar(null, {
             lastDay: "[Kemarin, ] D MMMM yyyy",

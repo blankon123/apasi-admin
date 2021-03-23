@@ -1,69 +1,42 @@
 <template>
   <div>
-    <v-dialog v-model="kerjakanDialog.show" max-width="400px">
+    <v-dialog v-model="ubahPetugasDialog.show" max-width="500px">
       <v-card>
         <v-card-title>
-          Konfirmasi Pekerjaan
+          Perubahan Petugas
         </v-card-title>
         <v-card-text>
-          <div class="mb-1">
-            {{ this.kerjakanDialog.form.nama }}
-          </div>
-          <v-form ref="formPetugas">
+          <div>Perubahan Petugas {{ ubahPetugasDialog.form.nama }}</div>
+          <v-form ref="formPetugas" class="pt-2 mt-2">
             <v-select
               prepend-inner-icon="mdi-account-hard-hat"
-              v-model="kerjakanDialog.form.petugas_id"
+              v-model="ubahPetugasDialog.petugas_id"
               :items="petugases"
               item-text="nama_singkat"
               item-value="id"
               label="Petugas Pelaksana"
               outlined
+              dense
               hide-details
               class="mb-3"
               :rules="[rules.required]"
-            ></v-select>
+            >
+            </v-select>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="kerjakanDialogInit"
+          <v-btn color="red darken-1" text @click="ubahPetugasDialogInit"
             >Batal</v-btn
           >
-          <v-btn color="blue darken-1" text @click="kerjakan">Lanjutkan</v-btn>
+          <v-btn color="blue darken-1" text @click="ubahPetugas()">Ubah</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
         <v-progress-linear
           indeterminate
           color="white"
           class="mb-0"
-          v-if="kerjakanDialog.loading"
-        ></v-progress-linear>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="deleteDialog.show" max-width="500px">
-      <v-card>
-        <v-card-title>
-          Konfirmasi Hapus
-        </v-card-title>
-        <v-card-text>
-          Apakah anda Yakin akan Menghapus Pekerjaan
-          {{ deleteDialog.form.nama }} ?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="deleteDialogInit"
-            >Batal</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="hapus(deleteDialog.form.id)"
-            >Hapus</v-btn
-          >
-          <v-spacer></v-spacer>
-        </v-card-actions>
-        <v-progress-linear
-          indeterminate
-          color="white"
-          class="mb-0"
-          v-if="deleteDialog.loading"
+          v-if="ubahPetugasDialog.loading"
         ></v-progress-linear>
       </v-card>
     </v-dialog>
@@ -71,6 +44,23 @@
       {{ this.title }}
       <v-spacer></v-spacer>
       <v-icon :color="this.color">{{ this.icon }}</v-icon>
+      <v-row class="pb-0 mb-0">
+        <v-col md="8" sm="12" class="pb-0 mb-0">
+          <v-text-field
+            clearable
+            @keyup.enter="cariPekerjaan"
+            v-model="keywordPekerjaan"
+            label="Cari Pekerjaan"
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col md="4" sm="12" class="pb-0 mb-0">
+          <v-switch
+            v-model="limitJumlah"
+            :label="this.limitJumlah ? 'Limit 10' : 'Limit Off'"
+          ></v-switch>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-divider></v-divider>
     <div v-if="this.pekerjaan && this.pekerjaan.length">
@@ -85,41 +75,26 @@
               </v-card-title>
               <div>
                 <v-btn
-                  v-if="
-                    nonDelete.some(f => {
-                      return f !== item.tipe_pekerjaan;
-                    })
-                  "
                   rounded
                   x-small
                   elevation="2"
-                  color="red"
-                  @click="deleteDialogShow(item)"
+                  color="orange"
+                  @click="ubahPetugasDialogShow(item)"
                 >
                   <v-icon left>
-                    mdi-trash-can
+                    mdi-account-hard-hat
                   </v-icon>
-                  Hapus
-                </v-btn>
-                <v-btn
-                  rounded
-                  x-small
-                  elevation="2"
-                  color="indigo"
-                  @click="kerjakanDialogShow(item)"
-                >
-                  <v-icon left>
-                    mdi-hammer
-                  </v-icon>
-                  Kerjakan
+                  Ubah Petugas
                 </v-btn>
               </div>
             </div>
 
-            <v-card-subtitle
-              v-text="item.nama"
-              class="text-start py-0 my-0"
-            ></v-card-subtitle>
+            <v-card-subtitle class="text-start py-0 my-0">
+              {{ item.nama }} oleh
+              <span class="font-weight-bold">
+                {{ findPetugas(item.petugas_id) }}</span
+              >
+            </v-card-subtitle>
           </div>
         </v-card>
       </div>
@@ -133,51 +108,58 @@
 </template>
 
 <script>
+import LayoutPekerjaan from "./tipe/LayoutPekerjaan.vue";
+import RevisiPublikasiPekerjaan from "./tipe/RevisiPublikasiPekerjaan.vue";
+
 export default {
+  components: { LayoutPekerjaan, RevisiPublikasiPekerjaan },
   name: "SudahPekerjaan",
   props: ["pekerjaan", "loading", "title", "color", "icon"],
   data() {
     return {
-      nonDelete: ["layout"],
+      keywordPekerjaan: "",
+      limitJumlah: true,
       rules: {
         required: value => !!value || "Harus Terisi."
       }
     };
   },
+  watch: {
+    limitJumlah(val) {
+      this.$store.dispatch("pekerjaanStore/filterSudahPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: val
+      });
+    }
+  },
   computed: {
-    deleteDialog() {
-      return this.$store.state.pekerjaanStore.deleteDialog;
-    },
-    kerjakanDialog() {
-      return this.$store.state.pekerjaanStore.kerjakanDialog;
+    ubahPetugasDialog() {
+      return this.$store.state.pekerjaanStore.ubahPetugasDialog;
     },
     petugases() {
       return this.$store.state.petugasStore.all;
     }
   },
   methods: {
-    deleteDialogInit() {
-      this.$store.dispatch("pekerjaanStore/deleteDialogInit");
+    findPetugas(petugas_id) {
+      return this.petugases.filter(item => item.id == petugas_id)[0]
+        ?.nama_singkat;
     },
-    kerjakanDialogInit() {
-      this.$store.dispatch("pekerjaanStore/kerjakanDialogInit");
+    cariPekerjaan() {
+      this.$store.dispatch("pekerjaanStore/filterSudahPekerjaan", {
+        keyword: this.keywordPekerjaan,
+        limit: this.limitJumlah
+      });
     },
-
-    deleteDialogShow(item) {
-      this.$store.dispatch("pekerjaanStore/deleteDialogShow", item);
+    ubahPetugasDialogInit() {
+      this.$store.dispatch("pekerjaanStore/ubahPetugasDialogInit");
     },
-    kerjakanDialogShow(item) {
-      this.$store.dispatch("pekerjaanStore/kerjakanDialogShow", item);
+    ubahPetugasDialogShow(item) {
+      this.$store.dispatch("pekerjaanStore/ubahPetugasDialogShow", item);
     },
-
-    hapus(item) {
-      this.deleteDialog.loading = true;
-      this.$store.dispatch("pekerjaanStore/hapus", item);
-    },
-    kerjakan() {
+    ubahPetugas() {
       if (this.$refs.formPetugas.validate()) {
-        this.kerjakanDialog.loading = true;
-        this.$store.dispatch("pekerjaanStore/kerjakan");
+        this.$store.dispatch("pekerjaanStore/ubahPetugas");
       }
     }
   }

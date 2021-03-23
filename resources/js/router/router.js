@@ -9,8 +9,10 @@ import PublikasiAll from "./../components/views/main/PublikasiAll.vue";
 import PublikasiView from "./../components/views/main/PublikasiView.vue";
 import TabelStatis from "./../components/views/main/TabelStatis.vue";
 import TabelDinamis from "./../components/views/main/TabelDinamis.vue";
-import TabelView from "./../components/views/main/TabelView.vue";
+import TabelDinamisView from "./../components/views/main/TabelDinamisView.vue";
 import Pekerjaan from "./../components/views/main/Pekerjaan.vue";
+import LogAktivitas from "./../components/views/main/LogAktivitas.vue";
+import Trash from "./../components/views/main/Trash.vue";
 import Login from "./../components/views/auth/Login.vue";
 import NotFound from "./../components/views/error/NotFound.vue";
 
@@ -88,11 +90,11 @@ const routes = [
       },
       {
         path: "/tabel/:id/:web_id",
-        name: "TabelView",
+        name: "TabelDinamisView",
         meta: { requiresAuth: true },
         components: {
           default: IndexMain,
-          MainView: TabelView
+          MainView: TabelDinamisView
         }
       },
       {
@@ -102,6 +104,24 @@ const routes = [
         components: {
           default: IndexMain,
           MainView: Pekerjaan
+        }
+      },
+      {
+        path: "/log",
+        name: "Log",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: LogAktivitas
+        }
+      },
+      {
+        path: "/trash",
+        name: "Trash",
+        meta: { requiresAuth: true },
+        components: {
+          default: IndexMain,
+          MainView: Trash
         }
       }
     ]

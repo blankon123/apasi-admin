@@ -13,11 +13,15 @@ use App\Events\PublikasiDraftRevised;
 use App\Events\PublikasiEdited;
 use App\Events\PublikasiErataRevised;
 use App\Events\PublikasiImported;
+use App\Events\PublikasiRevisiDone;
 use App\Events\PublikasiRilisRevised;
 use App\Events\PublikasiSPRPCommited;
-use App\Events\PublikasiSRCommited;
 use App\Events\PublikasiUploaded;
+use App\Events\TabelDinamisAddedDone;
 use App\Events\TabelDinamisDataEdited;
+use App\Events\TabelDinamisDataEditedDone;
+use App\Events\TabelDinamisDeleted;
+use App\Events\TabelDinamisEditedDone;
 use App\Events\TabelDinamisRequestAdded;
 use App\Events\TabelDinamisRequestDeleted;
 use App\Events\TabelDinamisRequestEdited;
@@ -32,11 +36,15 @@ use App\Listeners\PublikasiDraftRevisedListener;
 use App\Listeners\PublikasiEditedListener;
 use App\Listeners\PublikasiErataRevisedListener;
 use App\Listeners\PublikasiImportedListener;
+use App\Listeners\PublikasiRevisiDoneListener;
 use App\Listeners\PublikasiRilisRevisedListener;
 use App\Listeners\PublikasiSPRPCommitedListener;
-use App\Listeners\PublikasiSRCommitedListener;
 use App\Listeners\PublikasiUploadedListener;
+use App\Listeners\TabelDinamisAddedDoneListener;
+use App\Listeners\TabelDinamisDataEditedDoneListener;
 use App\Listeners\TabelDinamisDataEditedListener;
+use App\Listeners\TabelDinamisDeletedListener;
+use App\Listeners\TabelDinamisEditedDoneListener;
 use App\Listeners\TabelDinamisRequestAddedListener;
 use App\Listeners\TabelDinamisRequestDeletedListener;
 use App\Listeners\TabelDinamisRequestEditedListener;
@@ -86,8 +94,8 @@ class EventServiceProvider extends ServiceProvider
         PublikasiSPRPCommited::class => [
             PublikasiSPRPCommitedListener::class,
         ],
-        PublikasiSRCommited::class => [
-            PublikasiSRCommitedListener::class,
+        PublikasiRevisiDone::class => [
+            PublikasiRevisiDoneListener::class,
         ],
         PublikasiUploaded::class => [
             PublikasiUploadedListener::class,
@@ -114,6 +122,18 @@ class EventServiceProvider extends ServiceProvider
         ],
         TabelDinamisDataEdited::class => [
             TabelDinamisDataEditedListener::class,
+        ],
+        TabelDinamisDataEditedDone::class => [
+            TabelDinamisDataEditedDoneListener::class,
+        ],
+        TabelDinamisEditedDone::class => [
+            TabelDinamisEditedDoneListener::class,
+        ],
+        TabelDinamisAddedDone::class => [
+            TabelDinamisAddedDoneListener::class,
+        ],
+        TabelDinamisDeleted::class => [
+            TabelDinamisDeletedListener::class,
         ],
     ];
 

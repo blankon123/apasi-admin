@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-  baseUrl: "api/v1/user",
+  baseUrl: "/api/v1/user",
   user: {},
   snackbar: {
     show: false,

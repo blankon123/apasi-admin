@@ -19,7 +19,7 @@ class PublikasiDeleted
      *
      * @return void
      */
-    public function __construct(Publikasi $pub, User $user, $fileName)
+    public function __construct(Publikasi $pub, User $user)
     {
         $this->publikasi = $pub;
         $this->user = $user;
