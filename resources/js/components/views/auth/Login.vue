@@ -63,8 +63,8 @@ export default {
     return {
       isLoading: false,
       form: {
-        username: "ipds6200",
-        password: "rahasia",
+        username: "",
+        password: "",
         device_name: "browser"
       },
       errors: {}
