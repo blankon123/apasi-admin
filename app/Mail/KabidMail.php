@@ -2,13 +2,14 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
+// use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class KabidMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    // use Queueable, SerializesModels;
+    use SerializesModels;
 
     public $maildata;
     /**
@@ -28,7 +29,7 @@ class KabidMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.kabidmail')
+        return $this->subject("Notifikasi Publikasi")->markdown('emails.kabidmail')
             ->with('maildata', $this->maildata);
     }
 }
