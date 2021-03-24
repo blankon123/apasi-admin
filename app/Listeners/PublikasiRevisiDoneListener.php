@@ -77,7 +77,7 @@ class PublikasiRevisiDoneListener
             **' . Carbon::now()->isoFormat('dddd, D MMMM Y HH:MM') . '** \
 
 
-[**📓Link Draft**](' . $link_draft . ') - [**🖌Link Cover**](' . ')
+[**📓Link Draft**](' . $link_draft . ') - [**🖌Link Cover**](' . $link_desain . ')
 
             ',
             'judul' => 'Notifikasi Penyelesaian Revisi',
