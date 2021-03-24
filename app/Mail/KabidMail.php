@@ -2,14 +2,13 @@
 
 namespace App\Mail;
 
-// use Illuminate\Bus\Queueable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class KabidMail extends Mailable
 {
-    // use Queueable, SerializesModels;
-    use SerializesModels;
+    use Queueable, SerializesModels;
 
     public $maildata;
     /**
