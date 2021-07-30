@@ -33,6 +33,13 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ### Premium Partners
 
+./vendor/bin/sail up -d
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run production
+./vendor/bin/sail composer install
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan db:seed
+
 - **[Vehikl](https://vehikl.com/)**
 - **[Tighten Co.](https://tighten.co)**
 - **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
