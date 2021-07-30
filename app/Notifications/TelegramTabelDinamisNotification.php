@@ -40,7 +40,7 @@ class TelegramTabelDinamisNotification extends Notification implements ShouldQue
 
     public function toTelegram($notifiable)
     {
-        $anchor = env("APP_URL", "http://127.0.0.1:8000") . '/tabel/' . $this->tabel->id;
+        $anchor = env("APP_URL", "http://127.0.0.1:8082") . '/tabel/' . $this->tabel->id;
         $giphy = [
             "baseURL" => "https://api.giphy.com/v1/gifs/",
             "apiKey" => env('GIPHY_TOKEN', 'YOUR GIPHY TOKEN HERE'),
@@ -62,7 +62,7 @@ class TelegramTabelDinamisNotification extends Notification implements ShouldQue
         $gifUrl = $response['data']['image_original_url'];
 
         return TelegramFile::create()
-            ->to('@apasikalteng')
+            ->to(env("TELEGRAM_GRUP", ""))
             ->content($this->msg . "\nTabel **" . $this->tabel->judul_tabel . "** \nOleh **" . $this->user->name . "**")
             ->animation($gifUrl)
             ->button('Lihat Tabel', $anchor);
