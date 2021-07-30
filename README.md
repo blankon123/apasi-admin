@@ -47,6 +47,8 @@ Selanjutnya yaitu menjalankan Laravel Sail dengan perintah berikut:
 ./vendor/bin/sail artisan queue:work
 ```
 
+Setelah menjalankan Laravel Sail, Aplikasi akan dapat dibuka di [localhost:8082](http://localhost:8082/)
+
 ## Kontribusi
 
 Silahkan menggunakan dan merubah aplikasi ini sesuai dengan kebutuhan masing-masing, jika terdapat celah kemanan, temuan dapat langsung dimasukkan ke _issue_ pada git repo ini.

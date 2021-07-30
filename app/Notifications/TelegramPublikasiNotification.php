@@ -40,7 +40,7 @@ class TelegramPublikasiNotification extends Notification implements ShouldQueue
 
     public function toTelegram($notifiable)
     {
-        $anchor = env("APP_URL", "http://127.0.0.1:8000") . '/publikasi/' . $this->publikasi->id;
+        $anchor = env("APP_URL", "http://127.0.0.1:8082") . '/publikasi/' . $this->publikasi->id;
         $giphy = [
             "baseURL" => "https://api.giphy.com/v1/gifs/",
             "apiKey" => env('GIPHY_TOKEN', 'YOUR GIPHY TOKEN HERE'),
@@ -62,7 +62,7 @@ class TelegramPublikasiNotification extends Notification implements ShouldQueue
         $gifUrl = $response['data']['image_original_url'];
 
         return TelegramFile::create()
-            ->to('@apasikalteng')
+            ->to(env("TELEGRAM_GRUP", ""))
             ->content($this->msg . "\nPublikasi **" . $this->publikasi->judul_publikasi . "** \nOleh **" . $this->user->name . "**")
             ->animation($gifUrl)
             ->button('Lihat Publikasi', $anchor);
