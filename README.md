@@ -1,68 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<h1 align="center"><b>📚APASI</b></h1>
+<p align="center">Aplikasi Pembantu Diseminasi</p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Tentang APASI
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+APASI adalah singkatan dari Aplikasi Pembantu Diseminasi yang dapat digunakan untuk manajemen publikasi dan tabel seksi Diseminasi dan Layanan Statistik seluruh BPS se-Indonesia. Beberapa produk yang dapat diatur yakni
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Alur Pembuatan Publikasi
+- Alur Rilis Publikasi
+- Alur Tabel Dinamis
+- Otomatis Sinkronisasi Tabel Dinamis
+- Manajemen Petugas Diseminasi
+- Notifikasi Email & Bot Telegram
+- Alur Pekerjaan (Belum, Sedang, dan Sudah Dikerjakan) Petugas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Penggunaan
 
-## Learning Laravel
+APASI dikembangkan menggunakan [Laravel 8](https://laravel.com/docs/contributions). Untuk pemasangan, sangat disarankan menggunakan server Linux dengan memanfaatkan Laravel Sail. Instalasi Laravel Sail dapat diikuti di [website](https://laravel.com/docs/8.x/sail).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Setelah melakukan instalasi Laravel Sail,selanjutnya yaitu melakukan cloning git ke lokal dengan perintah `git clone <this-repo-url>` , lalu membuat file `.env` dengan perintah `cp .env.example .env` , lalu mengisi informasi pada file `.env`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Selanjutnya yaitu menjalankan Laravel Sail dengan perintah berikut:
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
+```sh
+#Menjalankan Laravel Sail secara Daemon
 ./vendor/bin/sail up -d
+
+#Instalasi NPM dan Compile front-end
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run production
+
+#Instalasi PHP package
 ./vendor/bin/sail composer install
+
+#Migrasi ke database MySql di Sail
 ./vendor/bin/sail artisan migrate
+
+#Memasukkan default user ke database
 ./vendor/bin/sail artisan db:seed
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+#Menjalankan queue scheduler
+./vendor/bin/sail artisan queue:work
+```
 
-## Contributing
+## Kontribusi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Silahkan menggunakan dan merubah aplikasi ini sesuai dengan kebutuhan masing-masing, jika terdapat celah kemanan, temuan dapat langsung dimasukkan ke _issue_ pada git repo ini.
 
 ## License
 

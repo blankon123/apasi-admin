@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_IPDS','ipds'),
                 'nama_bidang' => 'IPDS',
-                'name' => 'Bidang Integrasi Pengolahan dan Diseminasi Statistik',
+                'name' => 'Integrasi Pengolahan dan Diseminasi Statistik',
                 'role' => 'ADMIN',
                 'color' => 'pink',
                 'password' => Hash::make(env('PASSWORD_IPDS','password')),
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_TU','tatausaha'),
                 'nama_bidang' => 'Tata Usaha',
-                'name' => 'Bagian Tata Usaha',
+                'name' => 'Tata Usaha',
                 'role' => 'SM',
                 'color' => 'indigo',
                 'password' => Hash::make(env('PASSWORD_TU','password')),
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_SOSIAL','sosial'),
                 'nama_bidang' => 'Sosial',
-                'name' => 'Bidang Statistik Sosial',
+                'name' => 'Statistik Sosial',
                 'role' => 'SM',
                 'color' => 'light-blue',
                 'password' => Hash::make(env('PASSWORD_SOSIAL','password')),
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_DISTRIBUSI','disjas'),
                 'nama_bidang' => 'Distribusi',
-                'name' => 'Bidang Statistik Distribusi',
+                'name' => 'Statistik Distribusi',
                 'role' => 'SM',
                 'color' => 'yellow',
                 'password' => Hash::make(env('PASSWORD_DISTRIBUSI','password')),
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_PRODUKSI','produksi'),
                 'nama_bidang' => 'Produksi',
-                'name' => 'Bidang Statistik Produksi',
+                'name' => 'Statistik Produksi',
                 'role' => 'SM',
                 'color' => 'green',
                 'password' => Hash::make(env('PASSWORD_PRODUKSI','password')),
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             array(
                 'username' => env('AKUN_NERWILIS','neraca'),
                 'nama_bidang' => 'Nerwilis',
-                'name' => 'Bidang Neraca Wilayah dan Analisis Statistik',
+                'name' => 'Neraca Wilayah dan Analisis Statistik',
                 'color' => 'deep-orange',
                 'role' => 'SM',
                 'password' => Hash::make(env('PASSWORD_NERWILIS','password')),

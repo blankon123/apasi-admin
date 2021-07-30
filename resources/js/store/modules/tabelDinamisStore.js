@@ -100,7 +100,7 @@ const actions = {
         .get(state.bpsApiUrl + "list/", {
           params: {
             model: "subcat",
-            domain: "6200",
+            domain: process.env.MIX_WEBAPI_BPS_KODE,
             key: process.env.MIX_WEBAPI_BPS_KEY,
             page: halaman
           }
@@ -141,7 +141,7 @@ const actions = {
         .get(state.bpsApiUrl + "list/", {
           params: {
             model: "subject",
-            domain: "6200",
+            domain: process.env.MIX_WEBAPI_BPS_KODE,
             key: process.env.MIX_WEBAPI_BPS_KEY,
             page: halaman
           }
@@ -215,7 +215,7 @@ const actions = {
         .get(state.bpsApiUrl + "list/", {
           params: {
             model: "var",
-            domain: "6200",
+            domain: process.env.MIX_WEBAPI_BPS_KODE,
             key: process.env.MIX_WEBAPI_BPS_KEY,
             page: halaman
           }
@@ -393,7 +393,7 @@ const actions = {
       .get(state.bpsApiUrl + "list/", {
         params: {
           model: "data",
-          domain: "6200",
+          domain: process.env.MIX_WEBAPI_BPS_KODE,
           key: process.env.MIX_WEBAPI_BPS_KEY,
           var: id
         }
