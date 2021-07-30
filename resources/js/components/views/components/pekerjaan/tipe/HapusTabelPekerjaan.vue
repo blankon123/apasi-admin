@@ -125,7 +125,7 @@ export default {
         .get(this.bpsApiUrl + "list/", {
           params: {
             model: "data",
-            domain: "6200",
+            domain: process.env.MIX_WEBAPI_BPS_KODE,
             key: process.env.MIX_WEBAPI_BPS_KEY,
             var: this.tabel.tabel_web_id
           }
