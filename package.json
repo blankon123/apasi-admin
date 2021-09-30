@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@mdi/font": "^5.8.55",
-        "handsontable": "^8.3.1",
+        "handsontable": "^10.0.0",
         "moment": "^2.29.1",
         "vue-router": "^3.4.9",
         "vuetify": "^2.4.2",
