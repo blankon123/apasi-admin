@@ -49,8 +49,8 @@ Selanjutnya yaitu menjalankan Laravel Sail dengan perintah berikut:
 #Memasukkan default user ke database
 ./vendor/bin/sail artisan db:seed
 
-#Menjalankan queue scheduler
-./vendor/bin/sail artisan queue:work
+#Menjalankan queue scheduler secara Daemon
+./vendor/bin/sail artisan queue:work --daemon
 ```
 
 Setelah menjalankan Laravel Sail, Aplikasi akan dapat dibuka di [localhost:8082](http://localhost:8082/)
