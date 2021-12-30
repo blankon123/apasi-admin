@@ -20,9 +20,15 @@ APASI adalah singkatan dari Aplikasi Pembantu Diseminasi yang dapat digunakan un
 
 ## Penggunaan
 
+Pertama kali yang harus anda lakukan yaitu melakukan cloning git ke lokal dengan perintah `git clone <this-repo-url>` , lalu membuat file `.env` dengan perintah `cp .env.example .env` , lalu mengisi informasi pada file `.env`.
+
 APASI dikembangkan menggunakan [Laravel 8](https://laravel.com/docs/contributions). Untuk pemasangan, sangat disarankan menggunakan server Linux dengan memanfaatkan Laravel Sail. Instalasi Laravel Sail dapat diikuti di [website](https://laravel.com/docs/8.x/sail).
 
-Setelah melakukan instalasi Laravel Sail,selanjutnya yaitu melakukan cloning git ke lokal dengan perintah `git clone <this-repo-url>` , lalu membuat file `.env` dengan perintah `cp .env.example .env` , lalu mengisi informasi pada file `.env`.
+Proses instalasi juga dapat dilakukan dengan metode `force install` dengan menggunakan perintah
+
+```sh
+docker run --rm -v $(pwd):/app composer install --ignore-platform-reqs
+```
 
 Selanjutnya yaitu menjalankan Laravel Sail dengan perintah berikut:
 
@@ -34,7 +40,7 @@ Selanjutnya yaitu menjalankan Laravel Sail dengan perintah berikut:
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run production
 
-#Instalasi PHP package
+#Instalasi PHP package, jika belum force install
 ./vendor/bin/sail composer install
 
 #Migrasi ke database MySql di Sail

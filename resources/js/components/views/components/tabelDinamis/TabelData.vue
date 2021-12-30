@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card style='z-index:1;'>
     <v-card-text class="my-1 py-1">
       <div :id="id" class="black--text "></div>
     </v-card-text>
